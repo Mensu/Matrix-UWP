@@ -103,7 +103,7 @@ namespace Matrix_UWP {
   }
 
   // 我也是从网上 copy 下来的啊
-  // 这个大概是发json用的
+  // 这个大概是发 json 用的
   class HttpJsonContent : IHttpContent {
     JObject json;
     HttpContentHeaderCollection headers;
