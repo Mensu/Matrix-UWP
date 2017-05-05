@@ -30,235 +30,52 @@ namespace Matrix_UWP {
   /// An empty page that can be used on its own or navigated to within a Frame.
   /// </summary>
   public sealed partial class MainPage : Page {
+    private const string defaultSvgText = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"150\" height=\"50\"><path fill=\"#222\" d=\"M56.02 34.52Q52.56 34.63 50.92 34.10Q48.94 33.45 48.64 30.06L50.08 29.00Q50.81 28.46 51.57 27.97Q51.30 29.87 52.90 31.09Q54.19 32.12 56.33 31.93Q60.70 31.51 60.51 27.97Q60.36 25.72 57.73 24.51Q54.88 23.44 52.52 22.22Q49.97 20.89 48.98 16.21Q48.86 15.75 48.75 14.99Q48.67 14.23 48.75 13.66Q48.90 12.06 50.16 11.60Q52.56 10.72 56.55 10.91Q58.38 11.03 59.18 11.10Q60.67 11.30 61.73 11.75Q63.83 12.21 64.05 14.68Q63.03 15.41 60.82 16.74Q60.40 13.73 56.02 13.73Q54.12 13.73 53.13 14.42Q51.95 14.91 52.18 16.70Q52.44 18.91 55.41 20.43Q55.95 20.66 60.44 22.30Q63.06 23.78 63.48 28.16Q63.48 28.31 63.56 29.57Q63.64 32.35 62.07 33.45Q60.21 34.40 56.02 34.52M58.34 36.92Q59.79 36.99 61.77 36.99Q63.86 36.99 65.12 36.57Q66.34 35.74 66.26 33.95Q66.22 32.96 65.84 30.90Q64.93 26.22 62.84 24.35Q62.07 22.79 60.74 22.07L55.41 19.97Q55.11 19.82 54.65 19.59L54.54 19.21L54.50 18.83Q54.35 17.42 55.49 16.82Q56.25 16.24 57.96 16.05Q59.10 15.94 60.25 16.40Q60.32 16.51 60.51 17.35Q60.70 17.20 61.20 16.97Q61.92 17.88 62.04 19.02Q62.11 18.99 65.77 16.40Q65.50 13.77 64.05 13.08Q63.48 11.83 62.04 11.30Q59.75 10.50 56.55 10.50Q51.64 10.50 49.78 11.18Q48.45 11.64 48.33 13.31Q48.29 13.85 48.71 16.05Q49.40 19.82 51.57 22.07Q52.37 23.78 53.87 24.47Q55.37 25.15 59.30 26.71L59.26 26.71L59.94 27.09L59.98 27.17Q60.13 27.59 60.17 27.93Q60.25 31.40 56.33 31.55Q55.15 31.55 53.85 31.17Q53.55 30.37 53.55 29.64Q53.55 29.38 53.58 29.11Q53.17 29.34 52.37 29.83Q51.87 28.73 52.02 27.36Q49.93 28.54 48.33 29.95Q48.37 30.75 48.45 31.78Q48.79 33.53 50.08 34.29Q51.30 36.12 53.85 36.50Q55.41 36.73 58.34 36.92Z\"/><path d=\"M2 19 C67 2,81 15,130 48\" stroke=\"#444\" fill=\"none\"/><path d=\"M3 31 C68 23,69 1,137 3\" stroke=\"#222\" fill=\"none\"/><path d=\"M1 14 C72 3,83 24,146 41\" stroke=\"#777\" fill=\"none\"/><path fill=\"#333\" d=\"M35.39 24.62Q35.54 24.28 35.50 23.86Q35.39 23.44 35.08 23.25Q34.36 22.68 33.48 22.83Q32.42 22.83 30.78 23.93Q29.37 24.85 29.37 26.03Q29.37 27.28 29.37 30.60Q29.33 33.15 29.49 35.16Q27.77 35.16 27.77 35.16Q26.78 35.13 26.06 35.20Q26.48 32.69 26.55 30.44Q26.71 25.80 26.06 24.51Q25.79 23.93 25.22 23.63Q24.38 22.91 22.82 22.79Q20.81 22.56 20.27 24.16Q20.12 24.66 20.23 25.15Q20.88 27.89 20.54 30.67Q20.23 33.49 18.83 35.93Q17.84 36.12 15.74 36.54Q18.22 33.26 18.22 28.96Q18.22 23.10 14.18 18.87Q14.94 19.18 15.90 19.40L17.61 19.78Q18.10 20.43 18.98 22.11Q19.13 20.20 21.57 20.17Q21.72 20.13 22.71 20.20Q27.73 20.55 28.88 23.36Q30.55 20.66 35.58 20.13Q36.34 20.01 37.21 20.13Q39.42 20.32 39.27 21.88Q39.19 22.53 38.93 23.29Q37.52 26.29 37.75 29.83Q37.94 33.30 39.84 36.12Q38.17 35.77 36.34 35.55Q35.12 32.99 34.93 30.22Q34.74 27.36 35.39 24.62M36.11 35.93Q36.83 36.00 38.17 36.19Q38.70 36.92 39.84 38.32Q42.77 38.90 44.87 39.54Q39.84 35.62 39.57 29.11Q39.50 27.02 40.11 25.11Q40.30 24.20 40.30 23.48Q40.34 22.60 39.73 22.03L39.69 21.95Q39.76 21.46 39.69 20.96Q39.57 20.43 39.12 20.17Q38.43 19.67 37.56 19.63Q34.74 19.56 32.07 20.51Q30.09 21.19 28.91 22.60Q27.35 20.13 22.52 19.78Q21.83 19.75 21.42 19.75Q19.36 19.75 18.75 21.00Q18.45 20.51 17.76 19.44Q15.29 18.91 13.31 18.26Q17.95 22.64 17.95 28.92Q17.95 33.64 15.10 37.11Q15.55 36.95 16.05 36.88L17.00 36.69Q16.31 37.75 15.21 38.97Q16.85 38.67 19.97 38.06Q22.63 33.95 22.63 29.04Q22.63 28.24 22.56 27.40Q22.48 26.64 23.47 25.84L23.47 25.88Q24.04 25.38 25.22 25.27Q25.72 25.34 26.02 25.34L26.06 25.57Q26.33 28.27 26.21 30.63Q26.10 32.92 25.60 35.58Q26.63 35.58 26.63 35.58Q28.04 35.55 27.70 35.55Q27.73 36.08 27.70 36.54Q27.66 36.99 27.66 37.49L30.13 37.49Q31.39 37.49 32.65 37.56Q31.12 33.87 31.31 27.93Q31.35 26.83 32.53 26.07Q33.45 25.27 34.70 25.08L35.01 25.08Q34.59 27.02 34.59 29.00Q34.59 32.77 36.11 35.93M30.78 24.35L30.63 24.54L30.63 24.43L30.78 24.35Z\"/><path fill=\"#111\" d=\"M86.10 13.96Q84.12 14.07 83.17 14.23Q81.53 14.45 80.31 14.99Q76.81 16.43 76.69 21.12Q76.62 23.78 77.26 26.71Q78.14 30.75 81.76 31.93Q83.66 32.50 85.11 32.35L85.53 32.31Q85.72 32.31 85.91 32.35Q86.06 32.35 86.21 32.31Q88.84 32.04 90.21 31.47L86.63 27.93Q86.97 27.63 87.58 27.02L88.50 26.10Q90.32 28.16 92.30 30.22Q94.62 28.39 94.89 23.02Q94.97 22.11 94.97 21.19Q94.97 15.52 89.90 14.42Q88.61 14.11 86.10 13.96M98.85 36.00Q98.28 36.46 97.10 37.33L92.68 33.64Q90.21 34.86 85.94 34.90Q79.40 35.01 76.58 32.77Q74.79 30.98 74.33 28.01Q74.14 26.22 73.76 22.64Q73.76 21.92 73.65 20.17Q73.50 18.60 73.53 17.73Q73.65 14.68 75.40 13.12Q76.92 11.79 80.12 11.30Q82.59 10.91 85.49 10.99Q92.99 11.10 96.11 13.46Q98.28 15.60 98.01 20.51Q97.82 24.16 97.63 25.49Q96.98 29.99 94.66 32.31Q96.11 33.53 98.85 36.00M94.02 11.75Q92.00 11.03 85.49 10.53Q84.12 10.57 81.34 10.69Q77.11 10.91 74.87 12.89Q73.19 14.34 73.19 17.50Q73.19 18.34 73.34 20.05Q73.50 21.76 73.50 22.64Q73.65 24.39 74.03 27.97Q74.37 30.82 75.97 32.88Q76.31 33.72 77.53 34.86Q80.27 36.88 85.45 37.14Q85.79 37.14 88.19 37.26Q92.99 37.41 95.27 36.34Q96.15 37.03 100.87 40.61Q101.48 40.08 102.77 39.09Q101.90 38.40 101.10 37.72L99.42 36.23L99.54 36.19Q98.96 35.74 97.75 34.71Q99.65 32.20 99.65 27.66Q99.65 27.25 99.69 26.41Q99.73 25.57 99.73 25.15Q99.73 19.63 99.00 17.27Q98.62 15.98 97.75 14.91Q96.95 12.78 94.02 11.75M88.00 16.32Q92.07 16.24 93.90 17.84Q94.47 19.06 94.59 20.39Q94.66 21.65 94.59 23.02Q94.24 27.97 92.30 29.68Q91.01 28.39 88.50 25.65Q87.70 26.37 86.14 27.93Q86.71 28.54 87.85 29.72L87.77 29.76Q88.34 30.29 89.37 31.36Q88.38 31.62 86.06 31.93L85.53 31.93L85.15 31.97L85.11 31.97Q81.64 31.97 79.66 30.33Q78.64 28.24 78.67 25.11Q78.83 16.40 88.00 16.32Z\"/><path fill=\"#333\" d=\"M122.34 15.79Q120.70 14.45 119.07 14.07Q117.96 13.81 115.18 13.77Q110.01 13.73 107.95 15.75Q106.31 17.31 106.43 21.00Q106.54 24.77 106.69 25.72Q107.76 31.81 115.49 31.81Q120.17 31.81 122.26 29.42Q124.17 27.25 124.40 22.49Q124.66 17.69 122.34 15.79M115.45 34.78Q108.90 34.90 105.93 32.54Q103.88 30.41 103.76 25.34Q103.72 24.81 103.57 21.54Q103.42 18.91 103.46 17.84Q103.61 14.99 105.02 13.27Q107.57 10.99 112.44 10.84Q114.19 10.76 115.07 10.80Q125.08 10.95 126.83 15.29Q127.63 17.31 127.48 20.05Q127.44 21.73 127.25 25Q127.06 27.82 126.15 29.87Q124.09 34.59 115.45 34.78M127.82 34.78Q129.19 32.99 129.31 29.91Q129.34 28.85 129.31 27.25Q129.31 26.52 129.27 24.70Q129.19 17.54 127.25 15.06Q126.87 14.07 125.77 12.97Q122.49 10.50 115.03 10.34Q107.65 10.23 104.60 12.82Q103.12 14.65 103.12 17.58Q103.12 18.87 103.27 20.20Q103.27 21.27 103.31 22.72Q103.46 26.68 103.61 27.86Q103.99 30.79 105.32 32.58Q105.78 33.87 106.85 34.63Q110.08 36.95 117.85 37.14Q125.16 37.33 127.82 34.78M124.13 22.49Q123.90 27.02 122.00 29.11Q119.94 31.40 115.49 31.43Q111.15 31.47 109.02 29.57Q108.25 27.89 108.33 25Q108.44 20.39 110.46 18.22Q112.48 16.05 117.09 16.05Q121.27 16.05 123.37 17.92Q124.24 19.71 124.13 22.49Z\"/></svg>";
     public MainPage() {
       this.InitializeComponent();
-      this.CreateHttpClient();
       this.DataContext = this;
     }
 
-    private HttpClient httpClient;
     private async void btn_Click(object sender, RoutedEventArgs e) {
       var form = new JObject();
       form["username"] = this.usernameInput.Text;
       form["password"] = this.passwordInput.Password;
       if (this.captchaInput.Text.Length > 0) {
         form["captcha"] = this.captchaInput.Text;
+        this.captchaInput.Text = "";
       }
-      IHttpContent jsonContent = new HttpJsonContent(form);
-      var response = await httpClient.PostAsync(new Uri("https://vmatrix.org.cn/api/users/login"), jsonContent);
-      var text = await response.Content.ReadAsStringAsync();
-      Debug.WriteLine($"POST Response: {text}");
-      this.textBlock.Text += text + "\n";
-      JObject obj = JsonConvert.DeserializeObject(text) as JObject;
+      var jsonReq = new HttpJsonRequest();
+      JObject obj = await jsonReq.postAsync(new Uri("https://vmatrix.org.cn/api/users/login"), form);
       updateSvg(obj);
-    }
-
-    private void CreateHttpClient() {
-      if (this.httpClient != null) {
-        this.httpClient.Dispose();
+      var status = obj["status"];
+      if (status.ToString() == "OK") {
+        this.textBlock.Text += "沃克\n";
+        return;
       }
-
-      // HttpClient functionality can be extended by plugging multiple filters together and providing
-      // HttpClient with the configured filter pipeline.
-      IHttpFilter filter = new HttpBaseProtocolFilter();
-      filter = new PlugInFilter(filter); // Adds a custom header to every request and response message.
-      this.httpClient = new HttpClient(filter);
-
-      string ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36";
-      if (!this.httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd(ua)) {
-        Debug.WriteLine("Failed to use Chrome User Agent");
-      }
-
+      this.textBlock.Text += $"不沃克: {obj["msg"].ToString()}\n";
     }
 
     private void updateSvg(JObject json) {
-      var svg = json["data"]["captcha"];
-      if (svg == null) {
+      var captcha = json["data"]["captcha"];
+      if (captcha == null) {
         Debug.WriteLine("captcha == null");
+        this.captchaInput.Visibility = Visibility.Collapsed;
+        this.svgImg.Visibility = Visibility.Collapsed;
         return;
       }
-      string svgText = svg.ToString();
+      string svgText = captcha.ToString();
       this.svgImg.Content = SvgDocument.Parse(svgText);
+      this.captchaInput.Visibility = Visibility.Visible;
+      this.svgImg.Visibility = Visibility.Visible;
     }
 
     private async void Page_Loaded(object sender, RoutedEventArgs e) {
-      var response = await httpClient.GetAsync(new Uri("https://vmatrix.org.cn/api/captcha"));
-      string text = await response.Content.ReadAsStringAsync();
-      Debug.WriteLine($"GET Response: {text}");
-      this.textBlock.Text += text + "\n";
-      JObject obj = JsonConvert.DeserializeObject(text) as JObject;
-      updateSvg(obj);
-    }
-  }
-
-  public sealed class PlugInFilter : IHttpFilter {
-    private IHttpFilter innerFilter;
-
-    public PlugInFilter(IHttpFilter innerFilter) {
-      if (innerFilter == null) {
-        throw new ArgumentException("innerFilter cannot be null.");
-      }
-      this.innerFilter = innerFilter;
-    }
-
-    public IAsyncOperationWithProgress<HttpResponseMessage, HttpProgress> SendRequestAsync(HttpRequestMessage request) {
-      return AsyncInfo.Run<HttpResponseMessage, HttpProgress>(async (cancellationToken, progress) => {
-        Uri requestUri = request.RequestUri;
-
-        HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter();
-        HttpCookieCollection cookieCollection = filter.CookieManager.GetCookies(requestUri);
-
-        string text = cookieCollection.Count + " cookies found.\r\n";
-        foreach (HttpCookie cookie in cookieCollection) {
-          text += "--------------------\r\n";
-          text += "Name: " + cookie.Name + "\r\n";
-          text += "Domain: " + cookie.Domain + "\r\n";
-          text += "Path: " + cookie.Path + "\r\n";
-          text += "Value: " + cookie.Value + "\r\n";
-          text += "Expires: " + cookie.Expires + "\r\n";
-          text += "Secure: " + cookie.Secure + "\r\n";
-          text += "HttpOnly: " + cookie.HttpOnly + "\r\n";
-          if (cookie.Name == "X-CSRF-Token") {
-            Debug.WriteLine("token added");
-            request.Headers.Add(cookie.Name, cookie.Value);
-          }
-        }
-
-        Debug.WriteLine(text);
-
-        request.Headers.Add("Custom-Header", "CustomRequestValue");
-        HttpResponseMessage response = await innerFilter.SendRequestAsync(request).AsTask(cancellationToken, progress);
-
-        cancellationToken.ThrowIfCancellationRequested();
-
-        response.Headers.Add("Custom-Header", "CustomResponseValue");
-        return response;
-      });
-    }
-
-    public void Dispose() {
-      innerFilter.Dispose();
-      GC.SuppressFinalize(this);
-    }
-  }
-
-  class HttpJsonContent : IHttpContent {
-    JObject json;
-    HttpContentHeaderCollection headers;
-
-    public HttpContentHeaderCollection Headers {
-      get {
-        return headers;
-      }
-    }
-
-    public HttpJsonContent(JObject json) {
-      this.json = json;
-      headers = new HttpContentHeaderCollection();
-      headers.ContentType = new HttpMediaTypeHeaderValue("application/json");
-      headers.ContentType.CharSet = "UTF-8";
-    }
-
-    public IAsyncOperationWithProgress<ulong, ulong> BufferAllAsync() {
-      return AsyncInfo.Run<ulong, ulong>((cancellationToken, progress) =>
-      {
-        return Task<ulong>.Run(() =>
-        {
-          ulong length = GetLength();
-
-          // Report progress.
-          progress.Report(length);
-
-          // Just return the size in bytes.
-          return length;
-        });
-      });
-    }
-
-    public IAsyncOperationWithProgress<IBuffer, ulong> ReadAsBufferAsync() {
-      return AsyncInfo.Run<IBuffer, ulong>((cancellationToken, progress) =>
-      {
-        return Task<IBuffer>.Run(() =>
-        {
-          DataWriter writer = new DataWriter();
-          writer.WriteString(JsonConvert.SerializeObject(json));
-
-          // Make sure that the DataWriter destructor does not free the buffer.
-          IBuffer buffer = writer.DetachBuffer();
-
-          // Report progress.
-          progress.Report(buffer.Length);
-
-          return buffer;
-        });
-      });
-    }
-
-    public IAsyncOperationWithProgress<IInputStream, ulong> ReadAsInputStreamAsync() {
-      return AsyncInfo.Run<IInputStream, ulong>(async (cancellationToken, progress) =>
-      {
-        InMemoryRandomAccessStream randomAccessStream = new InMemoryRandomAccessStream();
-        DataWriter writer = new DataWriter(randomAccessStream);
-        writer.WriteString(JsonConvert.SerializeObject(json));
-
-        uint bytesStored = await writer.StoreAsync().AsTask(cancellationToken);
-
-        // Make sure that the DataWriter destructor does not close the stream.
-        writer.DetachStream();
-
-        // Report progress.
-        progress.Report(randomAccessStream.Size);
-
-        return randomAccessStream.GetInputStreamAt(0);
-      });
-    }
-
-    public IAsyncOperationWithProgress<string, ulong> ReadAsStringAsync() {
-      return AsyncInfo.Run<string, ulong>((cancellationToken, progress) =>
-      {
-        return Task<string>.Run(() =>
-        {
-          string jsonString = JsonConvert.SerializeObject(json);
-
-          // Report progress (length of string).
-          progress.Report((ulong)jsonString.Length);
-
-          return jsonString;
-        });
-      });
-    }
-
-    public bool TryComputeLength(out ulong length) {
-      length = GetLength();
-      return true;
-    }
-
-    public IAsyncOperationWithProgress<ulong, ulong> WriteToStreamAsync(IOutputStream outputStream) {
-      return AsyncInfo.Run<ulong, ulong>(async (cancellationToken, progress) =>
-      {
-        DataWriter writer = new DataWriter(outputStream);
-        writer.WriteString(JsonConvert.SerializeObject(json));
-        uint bytesWritten = await writer.StoreAsync().AsTask(cancellationToken);
-
-        // Make sure that DataWriter destructor does not close the stream.
-        writer.DetachStream();
-
-        // Report progress.
-        progress.Report(bytesWritten);
-
-        return bytesWritten;
-      });
-    }
-
-    public void Dispose() {
-    }
-
-    private ulong GetLength() {
-      DataWriter writer = new DataWriter();
-      writer.WriteString(JsonConvert.SerializeObject(json));
-
-      IBuffer buffer = writer.DetachBuffer();
-      return buffer.Length;
+      var jsonReq = new HttpJsonRequest();
+      JObject obj = await jsonReq.getAsync(new Uri("https://vmatrix.org.cn/api/users/login"));
+      this.textBlock.Text += $"{obj["msg"].ToString()}\n";
+      this.svgImg.Visibility = Visibility.Visible;
+      this.svgImg.Content = SvgDocument.Parse(defaultSvgText);
+      this.svgImg.Visibility = Visibility.Collapsed;
     }
   }
 }

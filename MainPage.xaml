@@ -17,9 +17,12 @@
     </Grid.RowDefinitions>
     <TextBlock x:Name="textBlock" Margin="11,10,177,12" Grid.Row="2"/>
     <Button x:Name="btn" Click="btn_Click" Content="登陆" Margin="50,54,0,11" Grid.Row="1" RenderTransformOrigin="-0.587,0.677"/>
-    <svg:SvgImage x:Name="svgImg" Height="50" Width="150" Margin="164,13,326,34" Grid.Row="1"/>
+    <svg:SvgImage x:Name="svgImg" Height="50" Width="150" Margin="164,13,326,34"
+                  Visibility="Visible" Grid.Row="1"/>
     <TextBox x:Name="usernameInput" HorizontalAlignment="Left" TextWrapping="Wrap" PlaceholderText="用户名" VerticalAlignment="Top" Margin="22,22,0,0" Width="116"/>
     <PasswordBox x:Name="passwordInput" HorizontalAlignment="Left" PlaceholderText="密码" VerticalAlignment="Top" Margin="22,64,0,0" Width="116"/>
-    <TextBox x:Name="captchaInput" HorizontalAlignment="Left" TextWrapping="Wrap" PlaceholderText="验证码" VerticalAlignment="Top" Margin="22,13,0,0" Width="117" Grid.Row="1"/>
+    <TextBox x:Name="captchaInput" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,13,0,0"
+             TextWrapping="Wrap" PlaceholderText="验证码" Width="117" Grid.Row="1"
+             Visibility="Collapsed"/>
   </Grid>
 </Page>
