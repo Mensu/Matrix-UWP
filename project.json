@@ -1,6 +1,7 @@
 ﻿{
   "dependencies": {
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+    "Microsoft.Toolkit.Uwp.UI.Controls": "1.4.1",
     "Mntone.SvgForXaml": "0.9.1",
     "Newtonsoft.Json": "8.0.3"
   },
