@@ -6,8 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svg="using:Mntone.SvgForXaml.UI.Xaml"
+    xmlns:c="using:Matrix_UWP.Converters"
     mc:Ignorable="d"
     Loaded="Page_Loaded">
+  
+  <Page.Resources>
+    <c:CaptchaToContent x:Key="CaptchaToContent"/>
+    <c:CaptchaToVisibility x:Key="CaptchaToVisibility"/>
+  </Page.Resources>
 
   <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Grid.RowDefinitions>
@@ -17,12 +23,13 @@
     </Grid.RowDefinitions>
     <TextBlock x:Name="textBlock" Margin="11,10,177,12" Grid.Row="2"/>
     <Button x:Name="btn" Click="btn_Click" Content="登陆" Margin="50,54,0,11" Grid.Row="1" RenderTransformOrigin="-0.587,0.677"/>
-    <svg:SvgImage x:Name="svgImg" Height="50" Width="150" Margin="164,13,326,34"
-                  Visibility="Visible" Grid.Row="1"/>
+    <svg:SvgImage x:Name="svgImg" Height="50" Width="150" Margin="164,13,326,34" Grid.Row="1"
+                  Visibility="{Binding captcha, Converter={StaticResource CaptchaToVisibility}}"
+                  Content="{Binding captcha, Converter={StaticResource CaptchaToContent}}" />
     <TextBox x:Name="usernameInput" HorizontalAlignment="Left" TextWrapping="Wrap" PlaceholderText="用户名" VerticalAlignment="Top" Margin="22,22,0,0" Width="116"/>
     <PasswordBox x:Name="passwordInput" HorizontalAlignment="Left" PlaceholderText="密码" VerticalAlignment="Top" Margin="22,64,0,0" Width="116"/>
     <TextBox x:Name="captchaInput" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,13,0,0"
              TextWrapping="Wrap" PlaceholderText="验证码" Width="117" Grid.Row="1"
-             Visibility="Collapsed"/>
+             Visibility="{Binding captcha, Converter={StaticResource CaptchaToVisibility}}"/>
   </Grid>
 </Page>

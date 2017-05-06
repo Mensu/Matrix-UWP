@@ -62,8 +62,13 @@ namespace Matrix_UWP {
         if (result.success) {
           return new Captcha(result.data);
         }
-        if (result.status == "USER_NOT_FOUND" || result.status == "WRONG_PASSWORD") {
-          throw new MatrixException.WrongPassword();
+        throw new MatrixException.SoftError(result);
+      }
+
+      static async public Task<string> getCourseList() {
+        var result = await getAsync($"{root}/api/courses");
+        if (result.success) {
+          return JsonConvert.SerializeObject(result.data);
         }
         throw new MatrixException.SoftError(result);
       }
@@ -91,15 +96,12 @@ namespace Matrix_UWP {
     }
 
     class WrongCaptcha : SoftError {
-      private Model.Captcha _svg;
-      public Model.Captcha svg {
-        get {
-          return _svg;
-        }
+      public Model.Captcha captcha {
+        get;
       }
       public WrongCaptcha(Model.MatrixRequestResult result) : base("验证码错误") {
         JObject data = result.data as JObject;
-        this._svg = new Model.Captcha(result.data);
+        this.captcha = new Model.Captcha(result.data);
       }
     }
   }
