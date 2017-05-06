@@ -23,6 +23,7 @@ using Windows.Web.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -69,11 +70,16 @@ namespace Matrix_UWP {
       this.loginVm.captcha = new Model.Captcha();
       this.textBlock.Text += "沃克\n";
       try {
-        this.textBlock.Text += await Model.MatrixRequest.getCourseList();
+        var courses = await Model.MatrixRequest.getCourseList();
+        var oneCourse = await Model.MatrixRequest.getCourse(courses[0].course_id);
+        Debug.WriteLine("work");
       } catch (MatrixException.FatalError err) {
         this.textBlock.Text += $"不沃克: {err.Message}\n";
+      } catch (MatrixException.SoftError err) {
+        this.textBlock.Text += $"不沃克: {err.Message}\n";
+        return;
       }
-      this.textBlock.Text += "又沃克\n";
+      this.textBlock.Text += "always 沃克\n";
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e) {
