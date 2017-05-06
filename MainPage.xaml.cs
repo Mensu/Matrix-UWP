@@ -22,6 +22,7 @@ using Windows.Web.Http.Filters;
 using Windows.Web.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -44,25 +45,28 @@ namespace Matrix_UWP {
         captcha = this.captchaInput.Text;
       }
       this.captchaInput.Text = "";
-      this.loginVm.captcha = new Model.Captcha();
       Model.User curUser;
+      this.loginVm.captcha = new Model.Captcha(true);
       try {
         curUser = await Model.MatrixRequest.login(username, password, captcha);
       } catch (MatrixException.FatalError err) {
+        this.loginVm.captcha = new Model.Captcha();
         this.textBlock.Text += $"致命错误: {err.Message}\n";
         return;
       } catch (MatrixException.WrongCaptcha err) {
-        updateSvg(err.captcha);
         this.loginVm.captcha = err.captcha;
         return;
       } catch (MatrixException.WrongPassword err) {
+        this.loginVm.captcha = new Model.Captcha();
         this.passwordInput.Password = "";
         this.textBlock.Text += $"不沃克: {err.Message}\n";
         return;
       } catch (MatrixException.SoftError err) {
+        this.loginVm.captcha = new Model.Captcha();
         this.textBlock.Text += $"不沃克: {err.Message}\n";
         return;
       }
+      this.loginVm.captcha = new Model.Captcha();
       this.textBlock.Text += "沃克\n";
       try {
         this.textBlock.Text += await Model.MatrixRequest.getCourseList();
@@ -72,15 +76,12 @@ namespace Matrix_UWP {
       this.textBlock.Text += "又沃克\n";
     }
 
-    private void updateSvg(Model.Captcha captcha = null) {
-      //this.svgImg.Content = SvgDocument.Parse((captcha ?? new Model.Captcha()).svg);
-      //this.captchaInput.Visibility = Visibility.Visible;
-      //this.svgImg.Visibility = Visibility.Visible;
-    }
-
     private void Page_Loaded(object sender, RoutedEventArgs e) {
+      //this.loginVm.captcha = new Model.Captcha(true);
       //this.updateSvg();
-      this.loginVm.captcha = new Model.Captcha();
+      //this.loginVm.captcha = new Model.Captcha(true);
+      //this.loginVm.captcha = new Model.Captcha(false);
+      //this.loginVm.captcha = new Model.Captcha(true);
       //this.captchaInput.Visibility = Visibility.Collapsed;
       //this.svgImg.Visibility = Visibility.Collapsed;
     }
