@@ -1,0 +1,46 @@
+﻿<Page
+  x:Class="Matrix_UWP.Views.Login"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.Views"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:svg="using:Mntone.SvgForXaml.UI.Xaml"
+  mc:Ignorable="d">
+
+  <Page.Resources>
+    <Style x:Key="CenterGrid" TargetType="Grid">
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+  </Page.Resources>
+
+  <Grid Background="#f5f5f5">
+    <Grid x:Name="LoginBody" Style="{StaticResource CenterGrid}" MaxWidth="360">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="120"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Image x:Name="Logo" Source="ms-appx:///Assets/Login/Logo.png" Opacity="1" MinHeight="120" MinWidth="360" Height="120" Width="360"/>
+      <Grid Background="#ffffff" BorderBrush="Gray"  BorderThickness="0.5" x:Name="LoginPanel" Width="360" Grid.Row="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Width="360" Height="130" Padding="15">
+          <Ellipse Width="100" Height="100">
+            <Ellipse.Fill>
+              <ImageBrush x:Name="UserAvatar" ImageSource="ms-appx:///Assets/Login/Avatar.jpeg"/>
+            </Ellipse.Fill>
+          </Ellipse>
+        </Grid>
+        <StackPanel Grid.Row="1" Padding="15">
+          <TextBox x:Name="Username" PlaceholderText="用户名" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15"/>
+          <PasswordBox x:Name="Password" PlaceholderText="密码" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15"/>
+          <HyperlinkButton x:Name="ResetPasswd" Content="忘记密码？" HorizontalAlignment="Right" Margin="0, 0, 0, 10" Click="ResetPasswd_Click"/>
+          <Button x:Name="LoginBtn" Click="LoginBtn_Click" FontSize="15" Foreground="White" Background="Green"  BorderThickness="1" BorderBrush="Gray" HorizontalAlignment="Center" Width="328" Height="30" Content="确定" Padding="0" Margin="0, 0, 0, 15"/>
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Grid>
+</Page>
