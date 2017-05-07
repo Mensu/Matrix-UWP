@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -41,20 +42,25 @@ namespace Matrix_UWP {
         if (captcha.Length > 0) {
           body["captcha"] = captcha;
         }
-        var result = await postAsync($"{root}/api/users/login", body);
-        if (result.success) {
-          return new User(result.data);
+        var loginResult = await postAsync($"{root}/api/users/login", body);
+        if (!loginResult.success) {
+          switch (loginResult.status) {
+            case "NOT_FOUND":
+            case "WRONG_PASSWORD":
+              throw new MatrixException.WrongPassword();
+            case "WRONG_CAPTCHA":
+              throw new MatrixException.WrongCaptcha(loginResult);
+            default:
+              break;
+          }
+          throw new MatrixException.SoftError(loginResult);
         }
-        switch (result.status) {
-          case "USER_NOT_FOUND":
-          case "WRONG_PASSWORD":
-            throw new MatrixException.WrongPassword();
-          case "WRONG_CAPTCHA":
-            throw new MatrixException.WrongCaptcha(result);
-          default:
-            break;
+        var profile = await getAsync($"{root}/api/users/profile");
+        if (profile.success) {
+          profile.data["is_valid"] = loginResult.data["is_valid"];
+          return new User(profile.data);
         }
-        throw new MatrixException.SoftError(result);
+        throw new MatrixException.SoftError(profile);
       }
 
       static async public Task<Captcha> getCaptcha() {
@@ -65,10 +71,35 @@ namespace Matrix_UWP {
         throw new MatrixException.SoftError(result);
       }
 
-      static async public Task<string> getCourseList() {
+      static async public Task<ObservableCollection<Course>> getCourseList() {
         var result = await getAsync($"{root}/api/courses");
         if (result.success) {
-          return JsonConvert.SerializeObject(result.data);
+          JArray arr = result.data as JArray;
+          ObservableCollection<Course> ret = new ObservableCollection<Course>();
+          foreach (JObject one in arr) {
+            ret.Add(new Course(one));
+          }
+          return ret;
+        }
+        throw new MatrixException.SoftError(result);
+      }
+
+      static async public Task<Course> getCourse(int course_id) {
+        var result = await getAsync($"{root}/api/courses");
+        JObject data = new JObject();
+        if (result.success) {
+          JArray arr = result.data as JArray;
+          foreach (JObject one in arr) {
+            if (Helpers.Nullable.toInt(one["course_id"]) == course_id) {
+              data = one;
+              break;
+            }
+          }
+        }
+        result = await getAsync($"{root}/api/courses/{course_id}");
+        if (result.success) {
+          data["description"] = result.data["description"];
+          return new Course(data);
         }
         throw new MatrixException.SoftError(result);
       }
@@ -91,8 +122,12 @@ namespace Matrix_UWP {
       }
     }
 
+    class UserNotFound : SoftError {
+      public UserNotFound() : base("找不到该用户") { }
+    }
+
     class WrongPassword : SoftError {
-      public WrongPassword() : base("用户名或密码错误") { }
+      public WrongPassword() : base("密码错误") { }
     }
 
     class WrongCaptcha : SoftError {
