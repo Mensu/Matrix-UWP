@@ -86,22 +86,22 @@ namespace Matrix_UWP {
           HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter();
           HttpCookieCollection cookieCollection = filter.CookieManager.GetCookies(requestUri);
 
-          //string text = cookieCollection.Count + " cookies found.\r\n";
+          string text = cookieCollection.Count + " cookies found.\r\n";
           foreach (HttpCookie cookie in cookieCollection) {
-            //text += "--------------------\r\n";
-            //text += "Name: " + cookie.Name + "\r\n";
-            //text += "Domain: " + cookie.Domain + "\r\n";
-            //text += "Path: " + cookie.Path + "\r\n";
-            //text += "Value: " + cookie.Value + "\r\n";
-            //text += "Expires: " + cookie.Expires + "\r\n";
-            //text += "Secure: " + cookie.Secure + "\r\n";
-            //text += "HttpOnly: " + cookie.HttpOnly + "\r\n";
+            text += "--------------------\r\n";
+            text += "Name: " + cookie.Name + "\r\n";
+            text += "Domain: " + cookie.Domain + "\r\n";
+            text += "Path: " + cookie.Path + "\r\n";
+            text += "Value: " + cookie.Value + "\r\n";
+            text += "Expires: " + cookie.Expires + "\r\n";
+            text += "Secure: " + cookie.Secure + "\r\n";
+            text += "HttpOnly: " + cookie.HttpOnly + "\r\n";
             if (cookie.Name == "X-CSRF-Token") {
               request.Headers.Add(cookie.Name, cookie.Value);
               Debug.WriteLine("csrf token added");
             }
           }
-          //Debug.WriteLine(text);
+          Debug.WriteLine(text);
           //request.Headers.Add("Custom-Header", "CustomRequestValue");
           HttpResponseMessage response = await innerFilter.SendRequestAsync(request).AsTask(cancellationToken, progress);
           cancellationToken.ThrowIfCancellationRequested();
