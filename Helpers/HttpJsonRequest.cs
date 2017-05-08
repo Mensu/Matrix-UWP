@@ -23,10 +23,12 @@ namespace Matrix_UWP {
 
       public async Task<JObject> getAsync(Uri uri) {
         HttpResponseMessage response = null;
+        string meta = $"GET {uri}";
         try {
+          Debug.WriteLine($"Requesting: {meta}");
           response = await httpClient.GetAsync(uri);
         } catch (Exception e) {
-          throw new MatrixException.NetworkError(e);
+          throw new MatrixException.NetworkError(meta, e);
         }
         return await parseResponseAsJson(response);
       }
@@ -34,10 +36,12 @@ namespace Matrix_UWP {
       public async Task<JObject> postAsync(Uri uri, JObject body) {
         IHttpContent jsonContent = new HttpJsonContent(body);
         HttpResponseMessage response = null;
+        string meta = $"GET {uri}";
         try {
+          Debug.WriteLine($"Requesting: {meta}");
           response = await httpClient.PostAsync(uri, jsonContent);
         } catch (Exception e) {
-          throw new MatrixException.NetworkError(e);
+          throw new MatrixException.NetworkError(meta, e);
         }
         return await parseResponseAsJson(response);
       }
@@ -242,8 +246,8 @@ namespace Matrix_UWP {
     }
 
     class NetworkError : FatalError {
-      public NetworkError(Exception e) : base("网络异常，请检查网络设置") {
-        Debug.Fail($"网络异常: {e.Message}\n{e.StackTrace}");
+      public NetworkError(string meta, Exception e) : base("网络异常，请检查网络设置") {
+        Debug.Fail($"{meta}: 网络异常: {e.Message}\n{e.StackTrace}");
       }
     }
 

@@ -15,7 +15,7 @@ namespace Matrix_UWP.Model {
       this.visible = visible ? Visibility.Visible : Visibility.Collapsed;
     }
     public Captcha(JToken token) {
-      JObject data = token as JObject;
+      var data = token as JObject;
       this.svgText = data["captcha"].ToString();
       this.visible = Visibility.Visible;
     }
