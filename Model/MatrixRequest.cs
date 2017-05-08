@@ -7,11 +7,13 @@ using Newtonsoft.Json.Linq;
 
 namespace Matrix_UWP {
   namespace Model {
-    class MatrixRequest : Helpers.HttpJsonRequest {
+    class MatrixRequest {
       static private Helpers.HttpJsonRequest req = new Helpers.HttpJsonRequest();
+      static private Random rand = new Random();
       private const string root = "https://vmatrix.org.cn";
-      static async private Task<MatrixRequestResult> getAsync(string uri) {
-        JObject obj = await req.getAsync(new Uri(uri));
+      static async private Task<MatrixRequestResult> getAsync(string uri, string query = "") {
+        query = (query.Length == 0 ? "" : $"&{query}");
+        var obj = await req.getAsync(new Uri($"{uri}?t={rand.Next()}{query}"));
         var result = new MatrixRequestResult(obj);
         switch (result.status) {
           case "UNKNOWN_ERROR":
@@ -23,7 +25,7 @@ namespace Matrix_UWP {
         return result;
       }
       static async private Task<MatrixRequestResult> postAsync(string uri, JObject body) {
-        JObject obj = await req.postAsync(new Uri(uri), body);
+        var obj = await req.postAsync(new Uri(uri), body);
         var result = new MatrixRequestResult(obj);
         switch (result.status) {
           case "UNKNOWN_ERROR":
@@ -63,6 +65,16 @@ namespace Matrix_UWP {
         throw new MatrixException.SoftError(profile);
       }
 
+      static async public Task<bool> isLogin() {
+        MatrixRequestResult result = null;
+        try {
+          result = await getAsync($"{root}/api/users/login");
+        } catch (MatrixException.FatalError err) {
+          throw err;
+        }
+        return result.success;
+      }
+
       static async public Task<Captcha> getCaptcha() {
         var result = await getAsync($"{root}/api/captcha");
         if (result.success) {
@@ -74,8 +86,8 @@ namespace Matrix_UWP {
       static async public Task<ObservableCollection<Course>> getCourseList() {
         var result = await getAsync($"{root}/api/courses");
         if (result.success) {
-          JArray arr = result.data as JArray;
-          ObservableCollection<Course> ret = new ObservableCollection<Course>();
+          var arr = result.data as JArray;
+          var ret = new ObservableCollection<Course>();
           foreach (JObject one in arr) {
             ret.Add(new Course(one));
           }
@@ -86,22 +98,77 @@ namespace Matrix_UWP {
 
       static async public Task<Course> getCourse(int course_id) {
         var result = await getAsync($"{root}/api/courses");
-        JObject data = new JObject();
-        if (result.success) {
-          JArray arr = result.data as JArray;
-          foreach (JObject one in arr) {
-            if (Helpers.Nullable.toInt(one["course_id"]) == course_id) {
-              data = one;
-              break;
-            }
+        var data = new JObject();
+        if (!result.success) {
+          throw new MatrixException.SoftError(result);
+        }
+        var arr = result.data as JArray;
+        foreach (JObject one in arr) {
+          if (Helpers.Nullable.toInt(one["course_id"]) == course_id) {
+            data = one;
+            break;
           }
         }
         result = await getAsync($"{root}/api/courses/{course_id}");
-        if (result.success) {
-          data["description"] = result.data["description"];
-          return new Course(data);
+        if (!result.success) {
+          throw new MatrixException.SoftError(result);
         }
-        throw new MatrixException.SoftError(result);
+        data["description"] = result.data["description"];
+        return new Course(data);
+      }
+
+      static public async Task changeMsgState(int msg_id, bool is_read) {
+        var body = new JObject();
+        body["status"] = is_read;
+        var ids = new JArray();
+        ids.Add(msg_id);
+        body["ids"] = ids;
+        var result = await postAsync($"{root}/api/notification/msgStatusChange", body);
+        if (!result.success) {
+          throw new MatrixException.SoftError(result);
+        }
+      }
+
+      static async public Task<ObservableCollection<Notification>> getNotificationList() {
+        var result = await getAsync($"{root}/api/notification/unReadMessages");
+        if (!result.success) {
+          throw new MatrixException.SoftError(result);
+        }
+        var arr = result.data as JArray;
+        var ret = new ObservableCollection<Notification>();
+        foreach (JObject one in arr) {
+          ret.Add(new Notification(one));
+        }
+        result = await getAsync($"{root}/api/notification/readedMessages");
+        if (!result.success) {
+          throw new MatrixException.SoftError(result);
+        }
+        arr = result.data as JArray;
+        foreach (JObject one in arr) {
+          ret.Add(new Notification(one));
+        }
+        return ret;
+      }
+
+      static async public Task<ObservableCollection<Assignment>> getAssignmentList(int course_id) {
+        var result = await getAsync($"{root}/api/courses/{course_id}/assignments");
+        if (!result.success) {
+          throw new MatrixException.SoftError(result);
+        }
+        var arr = result.data as JArray;
+        var ret = new ObservableCollection<Assignment>();
+        foreach (JObject one in arr) {
+          ret.Add(new Assignment(one));
+        }
+        return ret;
+      }
+
+      static async public Task<Assignment> getOneAssignment(int course_id, int ca_id) {
+        var result = await getAsync($"{root}/api/courses/{course_id}/assignments/{ca_id}");
+        if (!result.success) {
+          throw new MatrixException.SoftError(result);
+        }
+        return new Assignment(result.data);
       }
     }
   }

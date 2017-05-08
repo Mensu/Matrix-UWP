@@ -8,12 +8,11 @@ using Prism.Mvvm;
 
 namespace Matrix_UWP.Model {
   class User : BindableBase {
-
     public User(JToken token = null) {
       if (token == null) {
         token = new JObject();
       }
-      JObject data = token as JObject;
+      var data = token as JObject;
       bool is_valid = Helpers.Nullable.toBool(data["is_valid"], true);
       if (is_valid == false) {
         throw new MatrixException.SoftError("登陆失败，请先去网页端验证邮箱");
@@ -25,7 +24,7 @@ namespace Matrix_UWP.Model {
       this.email = Helpers.Nullable.toString(data["email"]);
       this.academy = Helpers.Nullable.toString(data["academy"]);
       this.specialty = Helpers.Nullable.toString(data["specialty"]);
-      this.joinDate = Helpers.Nullable.toDateTimeOffset(data["create_at"], DateTimeOffset.Now);
+      this.joinDate = Helpers.Nullable.toDateTimeOffset(data["create_at"], DateTimeOffset.MinValue);
     }
 
     public int user_id {

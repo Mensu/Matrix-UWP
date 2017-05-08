@@ -12,7 +12,7 @@ namespace Matrix_UWP.Model {
       if (token == null) {
         token = new JObject();
       }
-      JObject data = token as JObject;
+      var data = token as JObject;
       this.course_id = Helpers.Nullable.toInt(data["course_id"]);
       this.name = Helpers.Nullable.toString(data["name"]);
       this.creator = new User(data["creator"]);
