@@ -23,10 +23,12 @@ namespace Matrix_UWP {
 
       public async Task<JObject> getAsync(Uri uri) {
         HttpResponseMessage response = null;
+        string meta = $"GET {uri}";
         try {
+          Debug.WriteLine($"Requesting: {meta}");
           response = await httpClient.GetAsync(uri);
         } catch (Exception e) {
-          throw new MatrixException.NetworkError(e);
+          throw new MatrixException.NetworkError(meta, e);
         }
         return await parseResponseAsJson(response);
       }
@@ -34,10 +36,12 @@ namespace Matrix_UWP {
       public async Task<JObject> postAsync(Uri uri, JObject body) {
         IHttpContent jsonContent = new HttpJsonContent(body);
         HttpResponseMessage response = null;
+        string meta = $"GET {uri}";
         try {
+          Debug.WriteLine($"Requesting: {meta}");
           response = await httpClient.PostAsync(uri, jsonContent);
         } catch (Exception e) {
-          throw new MatrixException.NetworkError(e);
+          throw new MatrixException.NetworkError(meta, e);
         }
         return await parseResponseAsJson(response);
       }
@@ -86,22 +90,22 @@ namespace Matrix_UWP {
           HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter();
           HttpCookieCollection cookieCollection = filter.CookieManager.GetCookies(requestUri);
 
-          string text = cookieCollection.Count + " cookies found.\r\n";
+          //string text = cookieCollection.Count + " cookies found.\r\n";
           foreach (HttpCookie cookie in cookieCollection) {
-            text += "--------------------\r\n";
-            text += "Name: " + cookie.Name + "\r\n";
-            text += "Domain: " + cookie.Domain + "\r\n";
-            text += "Path: " + cookie.Path + "\r\n";
-            text += "Value: " + cookie.Value + "\r\n";
-            text += "Expires: " + cookie.Expires + "\r\n";
-            text += "Secure: " + cookie.Secure + "\r\n";
-            text += "HttpOnly: " + cookie.HttpOnly + "\r\n";
+            //text += "--------------------\r\n";
+            //text += "Name: " + cookie.Name + "\r\n";
+            //text += "Domain: " + cookie.Domain + "\r\n";
+            //text += "Path: " + cookie.Path + "\r\n";
+            //text += "Value: " + cookie.Value + "\r\n";
+            //text += "Expires: " + cookie.Expires + "\r\n";
+            //text += "Secure: " + cookie.Secure + "\r\n";
+            //text += "HttpOnly: " + cookie.HttpOnly + "\r\n";
             if (cookie.Name == "X-CSRF-Token") {
               request.Headers.Add(cookie.Name, cookie.Value);
               Debug.WriteLine("csrf token added");
             }
           }
-          Debug.WriteLine(text);
+          //Debug.WriteLine(text);
           //request.Headers.Add("Custom-Header", "CustomRequestValue");
           HttpResponseMessage response = await innerFilter.SendRequestAsync(request).AsTask(cancellationToken, progress);
           cancellationToken.ThrowIfCancellationRequested();
@@ -242,8 +246,8 @@ namespace Matrix_UWP {
     }
 
     class NetworkError : FatalError {
-      public NetworkError(Exception e) : base("网络异常，请检查网络设置") {
-        Debug.Fail($"网络异常: {e.Message}\n{e.StackTrace}");
+      public NetworkError(string meta, Exception e) : base("网络异常，请检查网络设置") {
+        Debug.Fail($"{meta}: 网络异常: {e.Message}\n{e.StackTrace}");
       }
     }
 

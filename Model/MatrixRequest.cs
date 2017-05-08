@@ -9,9 +9,11 @@ namespace Matrix_UWP {
   namespace Model {
     class MatrixRequest {
       static private Helpers.HttpJsonRequest req = new Helpers.HttpJsonRequest();
+      static private Random rand = new Random();
       private const string root = "https://vmatrix.org.cn";
-      static async private Task<MatrixRequestResult> getAsync(string uri) {
-        var obj = await req.getAsync(new Uri(uri));
+      static async private Task<MatrixRequestResult> getAsync(string uri, string query = "") {
+        query = (query.Length == 0 ? "" : $"&{query}");
+        var obj = await req.getAsync(new Uri($"{uri}?t={rand.Next()}{query}"));
         var result = new MatrixRequestResult(obj);
         switch (result.status) {
           case "UNKNOWN_ERROR":
