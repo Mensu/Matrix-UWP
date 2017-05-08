@@ -39,47 +39,47 @@ namespace Matrix_UWP {
     }
 
     private async void btn_Click(object sender, RoutedEventArgs e) {
-      string username = this.usernameInput.Text;
-      string password = this.passwordInput.Password;
-      string captcha = "";
-      if (this.captchaInput.Text.Length > 0) {
-        captcha = this.captchaInput.Text;
-      }
-      this.captchaInput.Text = "";
-      Model.User curUser;
-      this.loginVm.captcha = new Model.Captcha(true);
-      try {
-        curUser = await Model.MatrixRequest.login(username, password, captcha);
-      } catch (MatrixException.FatalError err) {
-        this.loginVm.captcha = new Model.Captcha();
-        this.textBlock.Text += $"致命错误: {err.Message}\n";
-        return;
-      } catch (MatrixException.WrongCaptcha err) {
-        this.loginVm.captcha = err.captcha;
-        return;
-      } catch (MatrixException.WrongPassword err) {
-        this.loginVm.captcha = new Model.Captcha();
-        this.passwordInput.Password = "";
-        this.textBlock.Text += $"不沃克: {err.Message}\n";
-        return;
-      } catch (MatrixException.SoftError err) {
-        this.loginVm.captcha = new Model.Captcha();
-        this.textBlock.Text += $"不沃克: {err.Message}\n";
-        return;
-      }
-      this.loginVm.captcha = new Model.Captcha();
-      this.textBlock.Text += "沃克\n";
-      try {
-        var courses = await Model.MatrixRequest.getCourseList();
-        var oneCourse = await Model.MatrixRequest.getCourse(courses[0].course_id);
-        Debug.WriteLine("work");
-      } catch (MatrixException.FatalError err) {
-        this.textBlock.Text += $"不沃克: {err.Message}\n";
-      } catch (MatrixException.SoftError err) {
-        this.textBlock.Text += $"不沃克: {err.Message}\n";
-        return;
-      }
-      this.textBlock.Text += "always 沃克\n";
+      //string username = this.usernameInput.Text;
+      //string password = this.passwordInput.Password;
+      //string captcha = "";
+      //if (this.captchaInput.Text.Length > 0) {
+      //  captcha = this.captchaInput.Text;
+      //}
+      //this.captchaInput.Text = "";
+      //Model.User curUser;
+      //this.loginVm.captcha = new Model.Captcha(true);
+      //try {
+      //  curUser = await Model.MatrixRequest.login(username, password, captcha);
+      //} catch (MatrixException.FatalError err) {
+      //  this.loginVm.captcha = new Model.Captcha();
+      //  this.textBlock.Text += $"致命错误: {err.Message}\n";
+      //  return;
+      //} catch (MatrixException.WrongCaptcha err) {
+      //  this.loginVm.captcha = err.captcha;
+      //  return;
+      //} catch (MatrixException.WrongPassword err) {
+      //  this.loginVm.captcha = new Model.Captcha();
+      //  this.passwordInput.Password = "";
+      //  this.textBlock.Text += $"不沃克: {err.Message}\n";
+      //  return;
+      //} catch (MatrixException.SoftError err) {
+      //  this.loginVm.captcha = new Model.Captcha();
+      //  this.textBlock.Text += $"不沃克: {err.Message}\n";
+      //  return;
+      //}
+      //this.loginVm.captcha = new Model.Captcha();
+      //this.textBlock.Text += "沃克\n";
+      //try {
+      //  var courses = await Model.MatrixRequest.getCourseList();
+      //  var oneCourse = await Model.MatrixRequest.getCourse(courses[0].course_id);
+      //  Debug.WriteLine("work");
+      //} catch (MatrixException.FatalError err) {
+      //  this.textBlock.Text += $"不沃克: {err.Message}\n";
+      //} catch (MatrixException.SoftError err) {
+      //  this.textBlock.Text += $"不沃克: {err.Message}\n";
+      //  return;
+      //}
+      //this.textBlock.Text += "always 沃克\n";
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e) {

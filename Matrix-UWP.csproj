@@ -108,6 +108,12 @@
     <Compile Include="Model\MatrixRequestResult.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\CaptchaPopup.xaml.cs">
+      <DependentUpon>CaptchaPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\InfoMessage.xaml.cs">
+      <DependentUpon>InfoMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -139,6 +145,14 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\CaptchaPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\InfoMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Login.xaml">
       <SubType>Designer</SubType>
