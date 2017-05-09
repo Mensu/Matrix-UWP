@@ -40,7 +40,12 @@ namespace Matrix_UWP {
     }
 
     private async void Page_Loaded(object sender, RoutedEventArgs e) {
-      bool isLogin = await Model.MatrixRequest.isLogin();
+      bool isLogin = false;
+      try {
+        isLogin = await Model.MatrixRequest.isLogin();
+      } catch (Exception err) {
+        System.Diagnostics.Debug.WriteLine(err);
+      }
       if (!isLogin) {
         Frame.Navigate(typeof(Views.Login));
       }

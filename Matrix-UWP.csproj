@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\CaptchaTo.cs" />
+    <Compile Include="Converters\PaneOpenToMenuWidth.cs" />
     <Compile Include="Helpers\HttpJsonRequest.cs" />
     <Compile Include="Helpers\ISOStringConverter.cs" />
     <Compile Include="Helpers\Nullable.cs" />
@@ -130,6 +131,7 @@
   <ItemGroup>
     <Content Include="Assets\Login\Avatar.jpeg" />
     <Content Include="Assets\Login\Logo.png" />
+    <Content Include="Assets\Logo-transparent.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

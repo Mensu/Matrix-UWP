@@ -5,38 +5,63 @@
   xmlns:local="using:Matrix_UWP"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-  xmlns:c="using:Matrix_UWP.Converters"
+  xmlns:Controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  xmlns:Converter="using:Matrix_UWP.Converters"
   mc:Ignorable="d"
   Loaded="Page_Loaded">
 
   <Page.Resources>
-    <DataTemplate x:Name="HamburDefaultTemplate" x:DataType="controls:HamburgerMenuGlyphItem">
-      <Grid Width="175" Height="48">
+    <DataTemplate x:Name="HamburgerItemTemplate" x:DataType="Controls:HamburgerMenuGlyphItem">
+      <Grid Width="180" Height="48">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="48" />
           <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <SymbolIcon Grid.Column="0" Symbol="{x:Bind Glyph}" Foreground="White" />
-        <TextBlock Grid.Column="1" Text="{x:Bind Label}" Margin="20, 0" FontSize="17" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" />
+        <SymbolIcon Grid.Column="0" Symbol="{x:Bind Glyph}" Foreground="Black" />
+        <TextBlock Grid.Column="1" Text="{x:Bind Label}" Margin="20, 0" FontSize="17" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
       </Grid>
     </DataTemplate>
+    <DataTemplate x:Name="HamburgerMenuTemplate">
+      <Grid Background="#414141">
+        <Image Source="ms-appx:///Assets/Logo-transparent.png" Stretch="UniformToFill" Width="160" Height="48"/>
+      </Grid>
+    </DataTemplate>
+    <Converter:PaneOpenToMenuWidth x:Key="PaneOpenToMenuWidthCV"/>
   </Page.Resources>
 
-  <Grid x:Name="Body" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <controls:HamburgerMenu x:Name="Navigate" Width="175" HorizontalAlignment="Left" VerticalAlignment="Stretch" ItemTemplate="{StaticResource HamburDefaultTemplate}" ItemClick="HamburgerMenu_OnItemClick" PaneBackground="#E0000000" Foreground="White">
-      <controls:HamburgerMenu.ItemsSource>
-        <controls:HamburgerMenuItemCollection>
-          <controls:HamburgerMenuGlyphItem Glyph="Home" Label="主页"/>
-          <controls:HamburgerMenuGlyphItem Glyph="Edit" Label="课程"/>
-          <controls:HamburgerMenuGlyphItem Glyph="Library" Label="题库"/>
-          <controls:HamburgerMenuGlyphItem Glyph="Read" Label="通知"/>
-          <controls:HamburgerMenuGlyphItem Glyph="Setting" Label="设置"/>
-          <controls:HamburgerMenuGlyphItem Glyph="Tag" Label="关于"/>
-        </controls:HamburgerMenuItemCollection>
-      </controls:HamburgerMenu.ItemsSource>
-      <Frame x:Name="contentFrame" Margin="0,0,61,0" />
-    </controls:HamburgerMenu>
-    <RelativePanel x:Name="NavigateImage" Margin="222,66,0,0" />
+  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Controls:HamburgerMenu
+      x:Name="Navigate"
+      HamburgerWidth="{Binding ElementName=Navigate, Path=IsPaneOpen, Mode=OneWay, Converter={StaticResource PaneOpenToMenuWidthCV}, ConverterParameter=160}"
+      OpenPaneLength="160"
+      DisplayMode="CompactInline"
+      HorizontalContentAlignment="Left"
+      VerticalAlignment="Stretch"
+      ItemTemplate="{StaticResource HamburgerItemTemplate}"
+      HamburgerMenuTemplate="{StaticResource HamburgerMenuTemplate}"
+      ItemClick="HamburgerMenu_OnItemClick"
+      PaneBackground="#FAFAFA"
+      Foreground="White">
+      <Controls:HamburgerMenu.ItemsSource>
+        <Controls:HamburgerMenuItemCollection>
+          <Controls:HamburgerMenuGlyphItem Glyph="Home" Label="主页"/>
+          <Controls:HamburgerMenuGlyphItem Glyph="Edit" Label="课程"/>
+          <Controls:HamburgerMenuGlyphItem Glyph="Library" Label="题库"/>
+          <Controls:HamburgerMenuGlyphItem Glyph="Read" Label="通知"/>
+          <Controls:HamburgerMenuGlyphItem Glyph="Setting" Label="设置"/>
+          <Controls:HamburgerMenuGlyphItem Glyph="Tag" Label="关于"/>
+        </Controls:HamburgerMenuItemCollection>
+      </Controls:HamburgerMenu.ItemsSource>
+      <Controls:HamburgerMenu.Content>
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="Green">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid x:Name="Header" Grid.Row="0" Background="#414141" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+          <Grid x:Name="Content" Grid.Row="1"/>
+        </Grid>
+      </Controls:HamburgerMenu.Content>
+    </Controls:HamburgerMenu>
   </Grid>
 </Page>
