@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svg="using:Mntone.SvgForXaml.UI.Xaml"
     xmlns:c="using:Matrix_UWP.Converters"
-    xmlns:view="using:Matrix_UWP.Views"
     mc:Ignorable="d"
     Loaded="Page_Loaded">
 
@@ -31,6 +30,5 @@
     <TextBox x:Name="captchaInput" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,13,0,0"
              TextWrapping="Wrap" PlaceholderText="验证码" Width="117" Grid.Row="1"
              Visibility="{Binding captcha.visible, Mode=TwoWay}"/>
-    <view:NotificationList x:Name="notiListView" Grid.Row="2"/>
   </Grid>
 </Page>
