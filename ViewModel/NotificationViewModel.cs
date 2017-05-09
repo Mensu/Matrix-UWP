@@ -21,8 +21,22 @@ namespace Matrix_UWP.ViewModel {
       }
     }
 
+    private bool _isLoading;
+    public bool isLoading {
+      get {
+        return this._isLoading;
+      }
+      set {
+        this.SetProperty(ref this._isLoading, value);
+      }
+    }
+
     public void updateWith(ObservableCollection<Model.Notification> newList) {
       this.list = newList;
+    }
+
+    public void toggleLoading() {
+      this.isLoading = !this.isLoading;
     }
   }
 }
