@@ -75,6 +75,7 @@ namespace Matrix_UWP {
         var notifications = await Model.MatrixRequest.getNotificationList();
         var asgns = await Model.MatrixRequest.getAssignmentList(courses[0].course_id);
         var oneAsgn = await Model.MatrixRequest.getOneAssignment(asgns[0].course_id, asgns[0].ca_id);
+        await this.notiListView.refreshList();
         Debug.WriteLine("work");
       } catch (MatrixException.FatalError err) {
         this.textBlock.Text += $"不沃克: {err.Message}\n";

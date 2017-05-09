@@ -24,8 +24,8 @@ namespace Matrix_UWP.Views {
     }
 
     private async void listView_ItemClick(object sender, ItemClickEventArgs e) {
-      var notification = e.ClickedItem as Model.Notification;
-      await notification.toggleReadState();
+      //var notification = e.ClickedItem as Model.Notification;
+      //await notification.toggleReadState();
     }
 
     public async Task refreshList() {
@@ -34,7 +34,10 @@ namespace Matrix_UWP.Views {
     }
 
     private async void checkbox_Checked(object sender, RoutedEventArgs e) {
-      //await this.refreshList();
+      var notificationElem = sender as FrameworkElement;
+      var notification = notificationElem.DataContext as Model.Notification;
+      if (notification == null) return;
+      await notification.toggleReadState();
     }
   }
 }

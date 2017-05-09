@@ -5,15 +5,18 @@
     xmlns:local="using:Matrix_UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:c="using:Matrix_UWP.Converters"
     xmlns:model="using:Matrix_UWP.Model"  
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
   <UserControl.Resources>
+    <c:BoolToGray x:Key="BoolToGray"/>
+    <c:BoolToVisible x:Key="BoolToVisible"/>
     <DataTemplate x:Key="NotificationItemView" x:DataType="model:Notification">
       <UserControl>
-        <Grid Height="100">
+        <Grid Height="80">
           <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="unnamed">
             </VisualStateGroup>
@@ -21,18 +24,28 @@
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="42"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="100"/>
           </Grid.ColumnDefinitions>
 
           <CheckBox x:Name="checkbox" Grid.Column="0" VerticalAlignment="Center" Height="32" Width="32"
                     IsChecked="{x:Bind is_read, Mode=TwoWay}"
-                    Checked="checkbox_Checked"/>
-          <TextBlock x:Name="content" Grid.Column="2" VerticalAlignment="Center" FontWeight="Normal" FontSize="15" LineHeight="20" TextWrapping="Wrap"
-                     Text="{x:Bind content}"
-                      />
-          <Line x:Name="line" Grid.Column="2" Stretch="Fill" Stroke="#FF969696" StrokeThickness="2" X1="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                 />
+                    Checked="checkbox_Checked"
+                    Unchecked="checkbox_Checked"/>
+          <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="title" Grid.Row="0" VerticalAlignment="Center" FontWeight="Normal" FontSize="15" LineHeight="20" TextWrapping="Wrap"
+                       Text="{x:Bind sender}"
+                       Foreground="{x:Bind is_read, Converter={StaticResource BoolToGray}, Mode=OneWay}"/>
+            <Line x:Name="line0" Grid.Row="0" Stretch="Fill" Stroke="#FF969696" StrokeThickness="2" X1="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                  Visibility="{x:Bind is_read, Converter={StaticResource BoolToVisible}, Mode=OneWay}"/>
+            <TextBlock x:Name="content" Grid.Row="1" VerticalAlignment="Center" FontWeight="Normal" FontSize="15" LineHeight="20" TextWrapping="Wrap"
+                       Text="{x:Bind content}"
+                       Foreground="{x:Bind is_read, Converter={StaticResource BoolToGray}, Mode=OneWay}"/>
+            <Line x:Name="line1" Grid.Row="1" Stretch="Fill" Stroke="#FF969696" StrokeThickness="2" X1="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                  Visibility="{x:Bind is_read, Converter={StaticResource BoolToVisible}, Mode=OneWay}"/>
+          </Grid>
           
         </Grid>
       </UserControl>
