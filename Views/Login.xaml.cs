@@ -1,7 +1,17 @@
 ﻿using System.Threading.Tasks;
+using System;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Matrix_UWP.Helpers;
+using Windows.Web.Http.Filters;
+using Windows.Web.Http;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage.Streams;
+using Windows.Graphics.Imaging;
+using Windows.Foundation;
+using System.IO;
+using Windows.UI.Popups;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 
@@ -27,11 +37,11 @@ namespace Matrix_UWP.Views {
         return;
       }
       EnableLoginBtn();
+      TryLeave(success);
     }
 
     private void ResetPasswd_Click(object sender, RoutedEventArgs e) {
-      ContentDialog dia = new ContentDialog();
-      dia.Content = "前方施工中！\n别急，还没做呢";
+      MessageDialog dia = new MessageDialog("前方施工中！\n别急，还没做呢");
       dia.ShowAsync();
     }
 
@@ -40,12 +50,15 @@ namespace Matrix_UWP.Views {
       try {
         currentUser = await Model.MatrixRequest.login(LoginVM.username, LoginVM.password, LoginVM.captcha);
         return true;
-      } catch (MatrixException.WrongCaptcha err) {
-        useCaptcha = true;
-        ShowError("验证码错了哦，再试一遍吧");
-        captchaSvg = err.captcha.svgText;
       } catch (MatrixException.WrongPassword err) {
         ShowError("Haha，密码输错了.");
+      } catch (MatrixException.WrongCaptcha err) {
+        if (useCaptcha) {
+          ShowError("验证码错了哦，再试一遍吧");
+        } else {
+          useCaptcha = true;
+        }
+        captchaSvg = err.captcha.svgText;
       } catch (MatrixException.FatalError err) {
         ShowError($"搞出事了吧？\n致命错误：{err.Message}");
       } catch (MatrixException.MatrixException err) {
@@ -80,25 +93,36 @@ namespace Matrix_UWP.Views {
       }
     }
 
-    private void Navigate(bool success) {
+    private void TryLeave(bool success) {
       if (!success) return;
-      Frame.Navigate(typeof(MainPage));
+      if (Frame.CanGoBack) {
+        Frame.GoBack();
+      } else {
+        Frame.Navigate(typeof(MainPage));
+      }
     }
 
     private async void Captcha_OnSured(object sender, UserControls.CaptchaPopup.CaptchaEventArgs e) {
       ToggleMask();
+      LoginVM.captcha = e.captcha;
       bool success = await TryLogin();
       EnableLoginBtn();
+      TryLeave(success);
     }
 
     private void Captcha_OnClosed(object sender, UserControls.CaptchaPopup.CaptchaEventArgs e) {
       ToggleMask();
       EnableLoginBtn();
     }
-
-    private async void Username_TextChanged(object sender, TextChangedEventArgs e) {
-      // try get user avatar here
-      await Task.Delay(100);
+    BitmapImage defaultAvatar = new BitmapImage(new Uri("ms-appx:///Assets/Login/Avatar.png"));
+    private void Username_LostFocus(object sender, RoutedEventArgs e) {
+      if (Username.Text == "") return;
+      try {
+        string baseUri = "https://vmatrix.org.cn/api";
+        LoginVM.avatar = new BitmapImage(new Uri($"{baseUri}/users/profile/avatar?username={Username.Text}"));
+      } catch (Exception err) {
+        LoginVM.avatar = defaultAvatar;
+      }
     }
   }
 }

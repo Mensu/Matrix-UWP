@@ -25,7 +25,12 @@
   </Page.Resources>
 
   <Grid x:Name="LoginPageGrid" Background="#f5f5f5">
-    <Grid x:Name="LoginBody" Style="{StaticResource CenterGrid}" MaxWidth="360">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Grid Grid.Column="1" x:Name="LoginBody" Style="{StaticResource CenterGrid}" MaxWidth="360">
       <Grid.RowDefinitions>
         <RowDefinition Height="120"/>
         <RowDefinition Height="*"/>
@@ -45,7 +50,7 @@
           </Ellipse>
         </Grid>
         <StackPanel Grid.Row="1" Padding="15">
-          <TextBox x:Name="Username" Text="{x:Bind Path=LoginVM.username, Mode=TwoWay}" PlaceholderText="用户名" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15" TextChanged="Username_TextChanged"/>
+          <TextBox x:Name="Username" Text="{x:Bind Path=LoginVM.username, Mode=TwoWay}" PlaceholderText="用户名" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15" LostFocus="Username_LostFocus"/>
           <PasswordBox x:Name="Password" Password="{x:Bind Path=LoginVM.password, Mode=TwoWay}" PlaceholderText="密码" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15"/>
           <HyperlinkButton x:Name="ResetPasswd" HorizontalAlignment="Right" Margin="0, 0, 0, 10" Padding="0" Click="ResetPasswd_Click">
             <ContentControl>
@@ -84,9 +89,16 @@
         </HyperlinkButton>
       </Grid>
     </Grid>
-    <Grid x:Name="CaptchaMask" Visibility="Collapsed" Height="{Binding ElementName=LoginPageGrid, Path=Height}" Width="{Binding ElementName=LoginPageGrid, Path=Width}" Background="#60000000">
+    <Grid Grid.ColumnSpan="3" x:Name="CaptchaMask" Visibility="Collapsed" Height="{Binding ElementName=LoginPageGrid, Path=Height}" Width="{Binding ElementName=LoginPageGrid, Path=Width}" Background="#60000000">
       <uc:CaptchaPopup x:Name="Captcha" OnSured="Captcha_OnSured" OnClosed="Captcha_OnClosed"/>
     </Grid>
-    <uc:InfoMessage x:Name="Msg" Timeout="2000" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 90, 120, 0" />
+    <Grid Grid.Column="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="5*"/>
+        <RowDefinition Height="3*"/>
+        <RowDefinition Height="3*"/>
+      </Grid.RowDefinitions>
+      <uc:InfoMessage Grid.Column="2" x:Name="Msg" Timeout="2000" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30" />
+    </Grid>
   </Grid>
 </Page>
