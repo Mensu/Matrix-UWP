@@ -6,6 +6,7 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:svg="using:Mntone.SvgForXaml.UI.Xaml"
+  xmlns:uc="using:Matrix_UWP.UserControls"
   mc:Ignorable="d">
 
   <Page.Resources>
@@ -13,13 +14,22 @@
       <Setter Property="HorizontalAlignment" Value="Center"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
+    <Style x:Key="GrayLink" TargetType="HyperlinkButton">
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="Gray"/>
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
   </Page.Resources>
 
-  <Grid Background="#f5f5f5">
+  <Grid x:Name="LoginPageGrid" Background="#f5f5f5">
     <Grid x:Name="LoginBody" Style="{StaticResource CenterGrid}" MaxWidth="360">
       <Grid.RowDefinitions>
         <RowDefinition Height="120"/>
         <RowDefinition Height="*"/>
+        <RowDefinition Height="50"/>
       </Grid.RowDefinitions>
       <Image x:Name="Logo" Source="ms-appx:///Assets/Login/Logo.png" Opacity="1" MinHeight="120" MinWidth="360" Height="120" Width="360"/>
       <Grid Background="#ffffff" BorderBrush="Gray"  BorderThickness="0.5" x:Name="LoginPanel" Width="360" Grid.Row="1">
@@ -30,17 +40,53 @@
         <Grid Grid.Row="0" Width="360" Height="130" Padding="15">
           <Ellipse Width="100" Height="100">
             <Ellipse.Fill>
-              <ImageBrush x:Name="UserAvatar" ImageSource="ms-appx:///Assets/Login/Avatar.jpeg"/>
+              <ImageBrush x:Name="UserAvatar" ImageSource="{x:Bind Path=LoginVM.avatar, Mode=OneWay}"/>
             </Ellipse.Fill>
           </Ellipse>
         </Grid>
         <StackPanel Grid.Row="1" Padding="15">
-          <TextBox x:Name="Username" PlaceholderText="用户名" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15"/>
-          <PasswordBox x:Name="Password" PlaceholderText="密码" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15"/>
-          <HyperlinkButton x:Name="ResetPasswd" Content="忘记密码？" HorizontalAlignment="Right" Margin="0, 0, 0, 10" Click="ResetPasswd_Click"/>
-          <Button x:Name="LoginBtn" Click="LoginBtn_Click" FontSize="15" Foreground="White" Background="Green"  BorderThickness="1" BorderBrush="Gray" HorizontalAlignment="Center" Width="328" Height="30" Content="确定" Padding="0" Margin="0, 0, 0, 15"/>
+          <TextBox x:Name="Username" Text="{x:Bind Path=LoginVM.username, Mode=TwoWay}" PlaceholderText="用户名" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15" TextChanged="Username_TextChanged"/>
+          <PasswordBox x:Name="Password" Password="{x:Bind Path=LoginVM.password, Mode=TwoWay}" PlaceholderText="密码" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15"/>
+          <HyperlinkButton x:Name="ResetPasswd" HorizontalAlignment="Right" Margin="0, 0, 0, 10" Padding="0" Click="ResetPasswd_Click">
+            <ContentControl>
+              <TextBlock Text="忘记密码？"/>
+            </ContentControl>
+          </HyperlinkButton>
+          <Button x:Name="LoginBtn" Click="LoginBtn_Click" FontSize="15" Foreground="White" Background="#449d44"  BorderThickness="1" BorderBrush="Gray" HorizontalAlignment="Center" Width="328" Height="30" Content="确定" Padding="0" Margin="0, 0, 0, 15"/>
         </StackPanel>
       </Grid>
+      <Grid Grid.Row="2" Padding="40, 0" Margin="0, 30, 0, 0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <HyperlinkButton Grid.Column="0" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+          <ContentControl>
+            <TextBlock Text="关于我们"/>
+          </ContentControl>
+        </HyperlinkButton>
+        <HyperlinkButton Grid.Column="1" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+          <ContentControl>
+            <TextBlock Text="公众号"/>
+          </ContentControl>
+        </HyperlinkButton>
+        <HyperlinkButton Grid.Column="2" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+          <ContentControl>
+            <TextBlock Text="技术博客"/>
+          </ContentControl>
+        </HyperlinkButton>
+        <HyperlinkButton Grid.Column="3" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+          <ContentControl>
+            <TextBlock Text="联系我们"/>
+          </ContentControl>
+        </HyperlinkButton>
+      </Grid>
     </Grid>
+    <Grid x:Name="CaptchaMask" Visibility="Collapsed" Height="{Binding ElementName=LoginPageGrid, Path=Height}" Width="{Binding ElementName=LoginPageGrid, Path=Width}" Background="#60000000">
+      <uc:CaptchaPopup x:Name="Captcha" OnSured="Captcha_OnSured" OnClosed="Captcha_OnClosed"/>
+    </Grid>
+    <uc:InfoMessage x:Name="Msg" Timeout="2000" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 90, 120, 0" />
   </Grid>
 </Page>
