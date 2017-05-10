@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 using Prism.Mvvm;
 
 namespace Matrix_UWP.Model {
-  class Assignment : BindableBase {
+  public class Assignment : BindableBase {
     public Assignment(JToken token = null) {
       if (token == null) {
         token = new JObject();

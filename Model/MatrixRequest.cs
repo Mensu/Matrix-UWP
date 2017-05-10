@@ -75,6 +75,10 @@ namespace Matrix_UWP {
         return result.success;
       }
 
+      static public Uri getAvatarUri(string username = "undefined") {
+        return new Uri($"{root}/api/users/profile/avatar?t={rand.Next()}&username={username}");
+      }
+
       static async public Task<Captcha> getCaptcha() {
         var result = await getAsync($"{root}/api/captcha");
         if (result.success) {
@@ -117,9 +121,9 @@ namespace Matrix_UWP {
         return new Course(data);
       }
 
-      static public async Task changeMsgState(int msg_id, bool is_read) {
+      static public async Task changeMsgState(int msg_id, bool? is_read) {
         var body = new JObject();
-        body["status"] = is_read;
+        body["status"] = is_read == true ? 1 : 0;
         var ids = new JArray();
         ids.Add(msg_id);
         body["ids"] = ids;

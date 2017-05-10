@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 using Prism.Mvvm;
 
 namespace Matrix_UWP.Model {
-  class Notification : BindableBase {
+  public class Notification : BindableBase {
 
     public Notification(JToken token = null) {
       if (token == null) {
@@ -33,8 +33,8 @@ namespace Matrix_UWP.Model {
       get;
     }
 
-    private bool _is_read;
-    public bool is_read {
+    private bool? _is_read;
+    public bool? is_read {
       get {
         return this._is_read;
       }
@@ -83,9 +83,8 @@ namespace Matrix_UWP.Model {
       }
     }
 
-    public async void toggleReadState() {
+    public async Task toggleReadState() {
       await MatrixRequest.changeMsgState(this.msg_id, !this.is_read);
-      this.is_read = !this.is_read;
     }
 
     private Type stringToType(string str) {

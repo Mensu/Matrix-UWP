@@ -36,7 +36,7 @@ namespace Matrix_UWP {
       public async Task<JObject> postAsync(Uri uri, JObject body) {
         IHttpContent jsonContent = new HttpJsonContent(body);
         HttpResponseMessage response = null;
-        string meta = $"GET {uri}";
+        string meta = $"POST {uri}";
         try {
           Debug.WriteLine($"Requesting: {meta}");
           response = await httpClient.PostAsync(uri, jsonContent);
