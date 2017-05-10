@@ -8,7 +8,7 @@ using Prism.Mvvm;
 using Windows.UI.Xaml;
 
 namespace Matrix_UWP.Model {
-  class Captcha : BindableBase {
+  public class Captcha : BindableBase {
     private const string defaultSvgText = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"150\" height=\"50\"><path fill=\"#222\" d=\"M56.02 34.52Q52.56 34.63 50.92 34.10Q48.94 33.45 48.64 30.06L50.08 22\"/></svg>";
     public Captcha(bool visible = false) {
       this.svgText = defaultSvgText;
