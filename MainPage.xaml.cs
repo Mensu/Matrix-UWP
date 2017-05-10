@@ -56,5 +56,14 @@ namespace Matrix_UWP {
 
       await dialog.ShowAsync();
     }
+
+    private void FakeBtn_Click(object sender, RoutedEventArgs e) {
+      Navigate.IsPaneOpen = !Navigate.IsPaneOpen;
+      if (Navigate.IsPaneOpen) {
+        Navigate.Focus(FocusState.Programmatic);
+        Debug.WriteLine("Get focus to Navigate");
+      }
+      Debug.WriteLine($"Navigate.IsPaneOpen = {Navigate.IsPaneOpen}");
+    }
   }
 }

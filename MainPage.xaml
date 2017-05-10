@@ -11,8 +11,10 @@
   Loaded="Page_Loaded">
 
   <Page.Resources>
+    <!-- 定制hamburger menu的选项内容 -->
     <DataTemplate x:Name="HamburgerItemTemplate" x:DataType="Controls:HamburgerMenuGlyphItem">
-      <Grid Width="180" Height="48">
+      <!-- 因为默认缩退后的宽度为48，是被钦定的 -->
+      <Grid Width="160" Height="48">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="48" />
           <ColumnDefinition Width="Auto"/>
@@ -21,12 +23,45 @@
         <TextBlock Grid.Column="1" Text="{x:Bind Label}" Margin="20, 0" FontSize="17" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Black" />
       </Grid>
     </DataTemplate>
+    <!-- 定制hamburger menu的那个按钮，改成matrix图标 -->
     <DataTemplate x:Name="HamburgerMenuTemplate">
       <Grid Background="#414141">
         <Image Source="ms-appx:///Assets/Logo-transparent.png" Stretch="UniformToFill" Width="160" Height="48"/>
       </Grid>
     </DataTemplate>
     <Converter:PaneOpenToMenuWidth x:Key="PaneOpenToMenuWidthCV"/>
+
+    <!-- 下面这一段我也都是在Visual Studio里不停双击鼠biu搞出来的啊 -->
+    <Style x:Key="BtnNoPressStyle" TargetType="Button">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal">
+                    <Storyboard>
+                      <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                    </Storyboard>
+                  </VisualState>
+                  <VisualState x:Name="PointerOver">
+                    <!-- Drop Hover Style -->
+                  </VisualState>
+                  <VisualState x:Name="Pressed">
+                    <!-- Drop Pressed Style -->
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <!-- Not concern about Disabled Style. Do not use it. -->
+                  </VisualState>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+              <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!-- 以上部分只有删的份，没有改的份 -->
   </Page.Resources>
 
   <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -35,7 +70,7 @@
       HamburgerWidth="{Binding ElementName=Navigate, Path=IsPaneOpen, Mode=OneWay, Converter={StaticResource PaneOpenToMenuWidthCV}, ConverterParameter=160}"
       OpenPaneLength="160"
       DisplayMode="CompactInline"
-      HorizontalContentAlignment="Left"
+      HorizontalContentAlignment="Stretch"
       VerticalAlignment="Stretch"
       ItemTemplate="{StaticResource HamburgerItemTemplate}"
       HamburgerMenuTemplate="{StaticResource HamburgerMenuTemplate}"
@@ -58,10 +93,59 @@
             <RowDefinition Height="48"/>
             <RowDefinition Height="Auto"/>
           </Grid.RowDefinitions>
-          <Grid x:Name="Header" Grid.Row="0" Background="#414141" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+          <Grid x:Name="Header" Grid.Row="0" Background="#414141" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button x:Name="HeadUserIconBtn" Margin="0, 0, 20, 0" Padding="0" BorderThickness="0" Background="Transparent" Height="20" Width="40" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource BtnNoPressStyle}">
+              <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                  <Ellipse Height="20" Width="20">
+                    <Ellipse.Fill>
+                      <ImageBrush x:Name="UserAvatar" ImageSource="ms-appx:///Assets/Login/Avatar.jpeg"/>
+                    </Ellipse.Fill>
+                  </Ellipse>
+                  <Polygon Fill="White" Width="20" Points="5, 0 10, 5 15, 0" VerticalAlignment="Center"/>
+                </StackPanel>
+              </Button.Content>
+              <Button.Flyout>
+                <MenuFlyout Placement="Bottom">
+                  <MenuFlyoutItem Name="Home" Margin="10, 4" Text="主页">
+                    <MenuFlyoutItem.Template>
+                      <ControlTemplate TargetType="MenuFlyoutItem">
+                        <StackPanel Orientation="Horizontal">
+                          <SymbolIcon Margin="0, 0, 12, 0" Symbol="Home" />
+                          <TextBlock Text="{TemplateBinding Text}" />
+                        </StackPanel>
+                      </ControlTemplate>
+                    </MenuFlyoutItem.Template>
+                  </MenuFlyoutItem>
+                  <MenuFlyoutItem Name="Setting" Margin="10, 4" Text="设置">
+                    <MenuFlyoutItem.Template>
+                      <ControlTemplate TargetType="MenuFlyoutItem">
+                        <StackPanel Orientation="Horizontal">
+                          <SymbolIcon Margin="0, 0, 12, 0" Symbol="Setting" />
+                          <TextBlock Text="{TemplateBinding Text}" />
+                        </StackPanel>
+                      </ControlTemplate>
+                    </MenuFlyoutItem.Template>
+                  </MenuFlyoutItem>
+                  <MenuFlyoutSeparator Padding="1, 4"/>
+                  <MenuFlyoutItem Name="Back" Margin="10, 4" Text="退出">
+                    <MenuFlyoutItem.Template>
+                      <ControlTemplate TargetType="MenuFlyoutItem">
+                        <StackPanel Orientation="Horizontal">
+                          <SymbolIcon Margin="0, 0, 12, 0" Symbol="ClosePane" />
+                          <TextBlock Text="{TemplateBinding Text}" />
+                        </StackPanel>
+                      </ControlTemplate>
+                    </MenuFlyoutItem.Template>
+                  </MenuFlyoutItem>
+                </MenuFlyout>
+              </Button.Flyout>
+            </Button>
+          </Grid>
           <Grid x:Name="Content" Grid.Row="1"/>
         </Grid>
       </Controls:HamburgerMenu.Content>
     </Controls:HamburgerMenu>
+    <Button x:Name="FakeBtn" Style="{StaticResource BtnNoPressStyle}" Click="FakeBtn_Click" BorderThickness="0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="48" Width="{Binding ElementName=Navigate, Path=IsPaneOpen, Converter={StaticResource PaneOpenToMenuWidthCV}, ConverterParameter=160, Mode=OneWay}" Background="Transparent" Foreground="Transparent"/>
   </Grid>
 </Page>
