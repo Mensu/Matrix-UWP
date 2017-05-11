@@ -118,8 +118,7 @@ namespace Matrix_UWP.Views {
     private void Username_LostFocus(object sender, RoutedEventArgs e) {
       if (Username.Text == "") return;
       try {
-        string baseUri = "https://vmatrix.org.cn/api";
-        LoginVM.avatar = new BitmapImage(new Uri($"{baseUri}/users/profile/avatar?username={Username.Text}"));
+        LoginVM.avatar = new BitmapImage(Model.MatrixRequest.getAvatarUri(Username.Text));
       } catch (Exception err) {
         LoginVM.avatar = defaultAvatar;
       }
