@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -21,6 +22,8 @@ namespace Matrix_UWP {
         { "课程", CourseList },
         { "通知",  NotificationView }
       };
+
+      Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(500, 620));
     }
 
     private async void Page_Loaded(object sender, RoutedEventArgs e) {
