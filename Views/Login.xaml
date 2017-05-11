@@ -10,6 +10,32 @@
   mc:Ignorable="d">
 
   <Page.Resources>
+    <Style x:Key="BtnNoPressStyle" TargetType="Button">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal">
+                  </VisualState>
+                  <VisualState x:Name="PointerOver">
+                    <!-- Drop Hover Style -->
+                  </VisualState>
+                  <VisualState x:Name="Pressed">
+                    <!-- Drop Pressed Style -->
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <!-- Not concern about Disabled Style. Do not use it. -->
+                  </VisualState>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+              <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
     <Style x:Key="CenterGrid" TargetType="Grid">
       <Setter Property="HorizontalAlignment" Value="Center"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
@@ -37,7 +63,7 @@
         <RowDefinition Height="50"/>
       </Grid.RowDefinitions>
       <Image x:Name="Logo" Source="ms-appx:///Assets/Login/Logo.png" Opacity="1" MinHeight="120" MinWidth="360" Height="120" Width="360"/>
-      <Grid Background="#ffffff" BorderBrush="Gray"  BorderThickness="0.5" x:Name="LoginPanel" Width="360" Grid.Row="1">
+      <Grid Background="#ffffff" MinHeight="320" BorderBrush="Gray"  BorderThickness="0.5" x:Name="LoginPanel" Width="360" Grid.Row="1">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
@@ -60,7 +86,7 @@
           <Button x:Name="LoginBtn" Click="LoginBtn_Click" FontSize="15" Foreground="White" Background="#449d44"  BorderThickness="1" BorderBrush="Gray" HorizontalAlignment="Center" Width="328" Height="30" Content="确定" Padding="0" Margin="0, 0, 0, 15"/>
         </StackPanel>
       </Grid>
-      <Grid Grid.Row="2" Padding="40, 0" Margin="0, 30, 0, 0">
+      <Grid Grid.Row="2" Padding="40, 0" Margin="0, 25, 0, 5" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
           <ColumnDefinition/>
           <ColumnDefinition/>
@@ -72,33 +98,40 @@
             <TextBlock Text="关于我们"/>
           </ContentControl>
         </HyperlinkButton>
-        <HyperlinkButton Grid.Column="1" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+        <HyperlinkButton Grid.Column="1" Click="ShowQrCode_Click" Style="{StaticResource GrayLink}">
           <ContentControl>
             <TextBlock Text="公众号"/>
           </ContentControl>
         </HyperlinkButton>
-        <HyperlinkButton Grid.Column="2" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+        <HyperlinkButton Grid.Column="2" NavigateUri="https://blog.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
           <ContentControl>
             <TextBlock Text="技术博客"/>
           </ContentControl>
         </HyperlinkButton>
-        <HyperlinkButton Grid.Column="3" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+        <HyperlinkButton Grid.Column="3" NavigateUri="https://shang.qq.com/wpa/qunwpa?idkey=51655e117b2ef5e8125212e34fae3b360c70dbc52cdcf7d0265ace02c56dc936" Style="{StaticResource GrayLink}">
           <ContentControl>
             <TextBlock Text="联系我们"/>
           </ContentControl>
         </HyperlinkButton>
       </Grid>
     </Grid>
-    <Grid Grid.ColumnSpan="3" x:Name="CaptchaMask" Visibility="Collapsed" Height="{Binding ElementName=LoginPageGrid, Path=Height}" Width="{Binding ElementName=LoginPageGrid, Path=Width}" Background="#60000000">
-      <uc:CaptchaPopup x:Name="Captcha" OnSured="Captcha_OnSured" OnClosed="Captcha_OnClosed"/>
+    <Grid x:Name="QrCodePanel" Visibility="Collapsed" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#60000000">
+      <Grid Background="White" Height="340" Width="340" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Image VerticalAlignment="Center" HorizontalAlignment="Center" Source="ms-appx:///Assets/Login/Matrix-qr-code.png" Height="300" Width="300"/>
+        <Ellipse Height="24" Width="24" Fill="Red" HorizontalAlignment="Right" Margin="8" VerticalAlignment="Top"/>
+        <Button Height="18" Width="18" Padding="0" Style="{StaticResource BtnNoPressStyle}" Click="CloseQrCode_Click" Foreground="White" FontWeight="ExtraBold" Background="Transparent" Margin="11" HorizontalAlignment="Right" VerticalAlignment="Top">
+          <SymbolIcon HorizontalAlignment="Center" VerticalAlignment="Center" Symbol="Cancel" Height="18" Width="18"/>
+        </Button>
+      </Grid>
     </Grid>
-    <Grid Grid.Column="2">
+    <uc:CaptchaPopup Grid.ColumnSpan="3" x:Name="Captcha" OnSured="Captcha_OnSured" OnClosed="Captcha_OnClosed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <Grid Grid.ColumnSpan="3" HorizontalAlignment="Right">
       <Grid.RowDefinitions>
         <RowDefinition Height="5*"/>
         <RowDefinition Height="3*"/>
         <RowDefinition Height="3*"/>
       </Grid.RowDefinitions>
-      <uc:InfoMessage Grid.Column="2" x:Name="Msg" Timeout="2000" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30" />
+      <uc:InfoMessage Grid.Row="0" x:Name="Msg" Timeout="2000" VerticalAlignment="Center" MaxWidth="400" HorizontalAlignment="Center" Margin="30" />
     </Grid>
   </Grid>
 </Page>

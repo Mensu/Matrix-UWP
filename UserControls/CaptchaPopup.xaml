@@ -10,37 +10,39 @@
   d:DesignHeight="200"
   d:DesignWidth="308">
 
-  <Popup x:Name="ParentPopup" LayoutUpdated="ParentPopup_LayoutUpdated">
-    <Grid x:Name="Panel" Background="White" Height="220" Width="320" Padding="20">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="2*"/>
-        <RowDefinition Height="3*"/>
-        <RowDefinition Height="2*"/>
-      </Grid.RowDefinitions>
-      <Grid Grid.Row="0">
-        <TextBlock Text="请输入验证码" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
-        <AppBarButton Icon="Cancel" Height="40" Width="40" VerticalAlignment="Center" HorizontalAlignment="Right" Click="AppBarButton_Click"/>
+  <Grid x:Name="Body" Background="#60000000" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Popup x:Name="ParentPopup" LayoutUpdated="ParentPopup_LayoutUpdated">
+      <Grid x:Name="Panel" Background="White" Height="220" Width="320" Padding="20">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="2*"/>
+          <RowDefinition Height="3*"/>
+          <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+          <TextBlock Text="请输入验证码" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18"/>
+          <AppBarButton Icon="Cancel" Height="40" Width="40" VerticalAlignment="Center" HorizontalAlignment="Right" Click="AppBarButton_Click"/>
+        </Grid>
+        <Grid Grid.Row="1" Margin="0, 5, 0, 5">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          <TextBox Grid.Column="0" x:Name="CaptchaInput" PlaceholderText="验证码" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="32" Margin="12,18,3,17"/>
+          <svg:SvgImage x:Name="CaptchaImage" Grid.Column="1" Width="140" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="17,9,8,8"/>
+        </Grid>
+        <Button
+          Grid.Row="2"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Width="260" Height="30"
+          Content="确定"
+          Padding="0"
+          Foreground="White"
+          Background="#286090"
+          x:Name="LoginBtn"
+          Click="LoginBtn_Click">
+        </Button>
       </Grid>
-      <Grid Grid.Row="1" Margin="0, 5, 0, 5">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="0" x:Name="CaptchaInput" PlaceholderText="验证码" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="32" Margin="12,18,3,17"/>
-        <svg:SvgImage x:Name="CaptchaImage" Grid.Column="1" Width="140" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="17,9,8,8"/>
-      </Grid>
-      <Button
-        Grid.Row="2"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        Width="260" Height="30"
-        Content="确定"
-        Padding="0"
-        Foreground="White"
-        Background="#286090"
-        x:Name="LoginBtn"
-        Click="LoginBtn_Click">
-      </Button>
-    </Grid>
-  </Popup>
+    </Popup>
+  </Grid>
 </UserControl>
