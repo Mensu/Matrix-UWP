@@ -27,7 +27,6 @@ namespace Matrix_UWP {
     public App() {
       this.InitializeComponent();
       this.Suspending += OnSuspending;
-      Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(500, 610));
     }
 
     /// <summary>

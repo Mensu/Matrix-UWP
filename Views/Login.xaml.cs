@@ -32,7 +32,6 @@ namespace Matrix_UWP.Views {
       DisableLoginBtn();
       bool success = await TryLogin();
       if (useCaptcha) {
-        ToggleMask();
         Captcha.Show(captchaSvg);
         return;
       }
@@ -85,14 +84,6 @@ namespace Matrix_UWP.Views {
       LoginBtn.IsEnabled = true;
     }
 
-    private void ToggleMask() {
-      //if (CaptchaMask.Visibility == Visibility.Collapsed) {
-      //  CaptchaMask.Visibility = Visibility.Visible;
-      //} else {
-      //  CaptchaMask.Visibility = Visibility.Collapsed;
-      //}
-    }
-
     private void TryLeave(bool success) {
       if (!success) return;
       if (Frame.CanGoBack) {
@@ -103,7 +94,6 @@ namespace Matrix_UWP.Views {
     }
 
     private async void Captcha_OnSured(object sender, UserControls.CaptchaPopup.CaptchaEventArgs e) {
-      ToggleMask();
       LoginVM.captcha = e.captcha;
       bool success = await TryLogin();
       EnableLoginBtn();
@@ -111,7 +101,6 @@ namespace Matrix_UWP.Views {
     }
 
     private void Captcha_OnClosed(object sender, UserControls.CaptchaPopup.CaptchaEventArgs e) {
-      ToggleMask();
       EnableLoginBtn();
     }
     BitmapImage defaultAvatar = new BitmapImage(new Uri("ms-appx:///Assets/Login/Avatar.png"));
@@ -122,6 +111,14 @@ namespace Matrix_UWP.Views {
       } catch (Exception err) {
         LoginVM.avatar = defaultAvatar;
       }
+    }
+
+    private void CloseQrCode_Click(object sender, RoutedEventArgs e) {
+      QrCodePanel.Visibility = Visibility.Collapsed;
+    }
+
+    private void ShowQrCode_Click(object sender, RoutedEventArgs e) {
+      QrCodePanel.Visibility = Visibility.Visible;
     }
   }
 }
