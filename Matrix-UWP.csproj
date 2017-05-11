@@ -111,6 +111,9 @@
     <Compile Include="Model\Notification.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\CourseList.xaml.cs">
+      <DependentUpon>CourseList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\NotificationViewModel.cs" />
     <Compile Include="UserControls\CaptchaPopup.xaml.cs">
       <DependentUpon>CaptchaPopup.xaml</DependentUpon>
@@ -155,6 +158,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\CaptchaPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CourseList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
