@@ -97,7 +97,6 @@
     </Compile>
     <Compile Include="Converters\BoolTo.cs" />
     <Compile Include="Converters\CaptchaTo.cs" />
-    <Compile Include="Converters\PaneOpenToMenuWidth.cs" />
     <Compile Include="Helpers\HttpJsonRequest.cs" />
     <Compile Include="Helpers\ISOStringConverter.cs" />
     <Compile Include="Helpers\Nullable.cs" />

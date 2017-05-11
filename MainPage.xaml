@@ -29,7 +29,7 @@
         <Image Source="ms-appx:///Assets/Logo-transparent.png" Stretch="UniformToFill" Width="160" Height="48"/>
       </Grid>
     </DataTemplate>
-    <Converter:PaneOpenToMenuWidth x:Key="PaneOpenToMenuWidthCV"/>
+    <Converter:BoolToHamburgerMenuWidth x:Key="PaneOpenToMenuWidthCV"/>
 
     <!-- 下面这一段我也都是在Visual Studio里不停双击鼠biu搞出来的啊 -->
     <Style x:Key="BtnNoPressStyle" TargetType="Button">
