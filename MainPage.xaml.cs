@@ -18,6 +18,7 @@ namespace Matrix_UWP {
     public MainPage() {
       this.InitializeComponent();
     ContentPanel = new Dictionary<string, UserControl> {
+        { "课程", CourseList },
         { "通知",  NotificationView }
       };
     }
