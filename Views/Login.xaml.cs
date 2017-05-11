@@ -86,11 +86,11 @@ namespace Matrix_UWP.Views {
     }
 
     private void ToggleMask() {
-      if (CaptchaMask.Visibility == Visibility.Collapsed) {
-        CaptchaMask.Visibility = Visibility.Visible;
-      } else {
-        CaptchaMask.Visibility = Visibility.Collapsed;
-      }
+      //if (CaptchaMask.Visibility == Visibility.Collapsed) {
+      //  CaptchaMask.Visibility = Visibility.Visible;
+      //} else {
+      //  CaptchaMask.Visibility = Visibility.Collapsed;
+      //}
     }
 
     private void TryLeave(bool success) {

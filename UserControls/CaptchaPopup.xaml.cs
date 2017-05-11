@@ -29,14 +29,17 @@ namespace Matrix_UWP.UserControls {
       this.InitializeComponent();
     }
 
-    public void Show(string captcha="") {
+    public void Show(string captcha="", bool clean=false) {
       if (captcha != "") Text = captcha;
+      if (clean) CaptchaInput.Text = "";
+      Body.Visibility = Visibility.Visible;
       ParentPopup.IsOpen = true;
     }
 
     private void LoginBtn_Click(object sender, RoutedEventArgs e) {
       string captcha = this.CaptchaInput.Text;
       ParentPopup.IsOpen = false;
+      Body.Visibility = Visibility.Collapsed;
       OnSured?.Invoke(this, new CaptchaEventArgs(captcha));
       CaptchaInput.Text = "";
     }
@@ -44,6 +47,7 @@ namespace Matrix_UWP.UserControls {
 
     private void AppBarButton_Click(object sender, RoutedEventArgs e) {
       ParentPopup.IsOpen = false;
+      Body.Visibility = Visibility.Collapsed;
       OnClosed?.Invoke(this, new CaptchaEventArgs());
     }
 

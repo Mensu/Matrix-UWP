@@ -37,7 +37,7 @@
         <RowDefinition Height="50"/>
       </Grid.RowDefinitions>
       <Image x:Name="Logo" Source="ms-appx:///Assets/Login/Logo.png" Opacity="1" MinHeight="120" MinWidth="360" Height="120" Width="360"/>
-      <Grid Background="#ffffff" BorderBrush="Gray"  BorderThickness="0.5" x:Name="LoginPanel" Width="360" Grid.Row="1">
+      <Grid Background="#ffffff" MinHeight="320" BorderBrush="Gray"  BorderThickness="0.5" x:Name="LoginPanel" Width="360" Grid.Row="1">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="Auto"/>
@@ -60,7 +60,7 @@
           <Button x:Name="LoginBtn" Click="LoginBtn_Click" FontSize="15" Foreground="White" Background="#449d44"  BorderThickness="1" BorderBrush="Gray" HorizontalAlignment="Center" Width="328" Height="30" Content="确定" Padding="0" Margin="0, 0, 0, 15"/>
         </StackPanel>
       </Grid>
-      <Grid Grid.Row="2" Padding="40, 0" Margin="0, 30, 0, 0">
+      <Grid Grid.Row="2" Padding="40, 0" Margin="0, 25, 0, 5" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
           <ColumnDefinition/>
           <ColumnDefinition/>
@@ -72,33 +72,31 @@
             <TextBlock Text="关于我们"/>
           </ContentControl>
         </HyperlinkButton>
-        <HyperlinkButton Grid.Column="1" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+        <HyperlinkButton Grid.Column="1" NavigateUri="https://vmatrix.org.cn/#" Style="{StaticResource GrayLink}">
           <ContentControl>
             <TextBlock Text="公众号"/>
           </ContentControl>
         </HyperlinkButton>
-        <HyperlinkButton Grid.Column="2" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+        <HyperlinkButton Grid.Column="2" NavigateUri="https://blog.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
           <ContentControl>
             <TextBlock Text="技术博客"/>
           </ContentControl>
         </HyperlinkButton>
-        <HyperlinkButton Grid.Column="3" NavigateUri="https://about.vmatrix.org.cn/" Style="{StaticResource GrayLink}">
+        <HyperlinkButton Grid.Column="3" NavigateUri="https://shang.qq.com/wpa/qunwpa?idkey=51655e117b2ef5e8125212e34fae3b360c70dbc52cdcf7d0265ace02c56dc936" Style="{StaticResource GrayLink}">
           <ContentControl>
             <TextBlock Text="联系我们"/>
           </ContentControl>
         </HyperlinkButton>
       </Grid>
     </Grid>
-    <Grid Grid.ColumnSpan="3" x:Name="CaptchaMask" Visibility="Collapsed" Height="{Binding ElementName=LoginPageGrid, Path=Height}" Width="{Binding ElementName=LoginPageGrid, Path=Width}" Background="#60000000">
-      <uc:CaptchaPopup x:Name="Captcha" OnSured="Captcha_OnSured" OnClosed="Captcha_OnClosed"/>
-    </Grid>
-    <Grid Grid.Column="2">
+    <uc:CaptchaPopup Grid.ColumnSpan="3" x:Name="Captcha" OnSured="Captcha_OnSured" OnClosed="Captcha_OnClosed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <Grid Grid.ColumnSpan="3" HorizontalAlignment="Right">
       <Grid.RowDefinitions>
         <RowDefinition Height="5*"/>
         <RowDefinition Height="3*"/>
         <RowDefinition Height="3*"/>
       </Grid.RowDefinitions>
-      <uc:InfoMessage Grid.Column="2" x:Name="Msg" Timeout="2000" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30" />
+      <uc:InfoMessage Grid.Row="0" x:Name="Msg" Timeout="2000" VerticalAlignment="Center" MaxWidth="400" HorizontalAlignment="Center" Margin="30" />
     </Grid>
   </Grid>
 </Page>
