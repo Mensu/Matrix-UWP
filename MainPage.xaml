@@ -1,4 +1,5 @@
 ﻿<Page
+  x:Name="page"
   x:Class="Matrix_UWP.MainPage"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,11 +7,14 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:Controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  xmlns:UserControls="using:Matrix_UWP.UserControls"
   xmlns:Converter="using:Matrix_UWP.Converters"
   mc:Ignorable="d"
   Loaded="Page_Loaded">
 
   <Page.Resources>
+    <Converter:DoubleOffset x:Key="HamburgerContentHeighOffset"/>
+    <Converter:BoolToHamburgerMenuWidth x:Key="PaneOpenToMenuWidthCV"/>
     <!-- 定制hamburger menu的选项内容 -->
     <DataTemplate x:Name="HamburgerItemTemplate" x:DataType="Controls:HamburgerMenuGlyphItem">
       <!-- 因为默认缩退后的宽度为48，是被钦定的 -->
@@ -29,7 +33,6 @@
         <Image Source="ms-appx:///Assets/Logo-transparent.png" Stretch="UniformToFill" Width="160" Height="48"/>
       </Grid>
     </DataTemplate>
-    <Converter:BoolToHamburgerMenuWidth x:Key="PaneOpenToMenuWidthCV"/>
 
     <!-- 下面这一段我也都是在Visual Studio里不停双击鼠biu搞出来的啊 -->
     <Style x:Key="BtnNoPressStyle" TargetType="Button">
@@ -64,7 +67,7 @@
     <!-- 以上部分只有删的份，没有改的份 -->
   </Page.Resources>
 
-  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Grid x:Name="MainPane" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Controls:HamburgerMenu
       x:Name="Navigate"
       HamburgerWidth="{Binding ElementName=Navigate, Path=IsPaneOpen, Mode=OneWay, Converter={StaticResource PaneOpenToMenuWidthCV}, ConverterParameter=160}"
@@ -88,10 +91,10 @@
         </Controls:HamburgerMenuItemCollection>
       </Controls:HamburgerMenu.ItemsSource>
       <Controls:HamburgerMenu.Content>
-        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid VerticalAlignment="Stretch">
           <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
           <Grid x:Name="Header" Grid.Row="0" Background="#414141" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Button x:Name="HeadUserIconBtn" Margin="0, 0, 20, 0" Padding="0" BorderThickness="0" Background="Transparent" Height="20" Width="40" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource BtnNoPressStyle}">
@@ -142,7 +145,9 @@
               </Button.Flyout>
             </Button>
           </Grid>
-          <Grid x:Name="Content" Grid.Row="1"/>
+          <Grid Grid.Row="1">
+            <UserControls:NotificationList x:Name="NotificationView" Foreground="Black" Visibility="Collapsed"/>
+          </Grid>
         </Grid>
       </Controls:HamburgerMenu.Content>
     </Controls:HamburgerMenu>

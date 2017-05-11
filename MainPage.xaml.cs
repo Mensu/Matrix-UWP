@@ -1,31 +1,12 @@
-﻿using System;
+﻿using Matrix_UWP.Helpers;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Mntone.SvgForXaml;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage;
-using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.Web.Http;
-using Windows.Web.Http.Filters;
-using Windows.Web.Http.Headers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Threading;
-using System.Collections.ObjectModel;
-using Windows.UI.Popups;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -34,9 +15,11 @@ namespace Matrix_UWP {
   /// An empty page that can be used on its own or navigated to within a Frame.
   /// </summary>
   public sealed partial class MainPage : Page {
-    ViewModel.LoginViewModel loginVm;
     public MainPage() {
       this.InitializeComponent();
+    ContentPanel = new Dictionary<string, UserControl> {
+        { "通知",  NotificationView }
+      };
     }
 
     private async void Page_Loaded(object sender, RoutedEventArgs e) {
@@ -52,9 +35,20 @@ namespace Matrix_UWP {
     }
     private async void HamburgerMenu_OnItemClick(object sender, ItemClickEventArgs e) {
       var menuItem = e.ClickedItem as HamburgerMenuItem;
-      var dialog = new MessageDialog($"You clicked on {menuItem.Label} button");
+      await ShowContent(menuItem.Label);
+    }
 
-      await dialog.ShowAsync();
+    private Dictionary<string, UserControl> ContentPanel;
+    private async Task ShowContent(string label) {
+      foreach (KeyValuePair<string, UserControl> pair in ContentPanel) {
+        pair.Value.Visibility = Visibility.Collapsed;
+      }
+      if (ContentPanel.ContainsKey(label)) {
+        UserControl ctrl = ContentPanel[label];
+        IHamburgerContent icontent = (IHamburgerContent)(ctrl);
+        ctrl.Visibility = Visibility;
+        await icontent?.ResetContentAsync();
+      }
     }
 
     private void FakeBtn_Click(object sender, RoutedEventArgs e) {

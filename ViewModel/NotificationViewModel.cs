@@ -8,10 +8,7 @@ using Prism.Mvvm;
 
 namespace Matrix_UWP.ViewModel {
   class NotificationViewModel : BindableBase {
-    private ObservableCollection<Model.Notification> _list = new ObservableCollection<Model.Notification>() {
-      new Model.Notification(),
-      new Model.Notification()
-    };
+    private ObservableCollection<Model.Notification> _list = new ObservableCollection<Model.Notification>();
     public ObservableCollection<Model.Notification> list {
       get {
         return this._list;
@@ -32,7 +29,7 @@ namespace Matrix_UWP.ViewModel {
     }
 
     public void updateWith(ObservableCollection<Model.Notification> newList) {
-      this.list = newList;
+      this.list = new ObservableCollection<Model.Notification>(newList.OrderByDescending(one => one.time));
     }
 
     public void toggleLoading() {

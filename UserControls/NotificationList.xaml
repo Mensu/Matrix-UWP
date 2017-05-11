@@ -17,7 +17,7 @@
     <c:BoolToVisible x:Key="BoolToVisible"/>
     <DataTemplate x:Key="NotificationItemView" x:DataType="model:Notification">
       <UserControl>
-        <Grid Height="80">
+        <Grid Height="80" Margin="15, 0, 0, 0">
           <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="unnamed">
             </VisualStateGroup>
@@ -25,6 +25,7 @@
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="42"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
           </Grid.ColumnDefinitions>
           <CheckBox x:Name="checkbox" Grid.Column="0" VerticalAlignment="Center" Height="32" Width="32"
                     IsChecked="{x:Bind is_read, Mode=TwoWay}"
@@ -32,6 +33,7 @@
                     Unchecked="checkbox_Checked"/>
           <Grid Grid.Column="1">
             <Grid.RowDefinitions>
+              <RowDefinition Height="*"/>
               <RowDefinition Height="*"/>
               <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -45,24 +47,23 @@
                        Foreground="{x:Bind is_read, Converter={StaticResource BoolToGray}, Mode=OneWay}"/>
             <Line x:Name="line1" Grid.Row="1" Stretch="Fill" Stroke="#FF969696" StrokeThickness="2" X1="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
                   Visibility="{x:Bind is_read, Converter={StaticResource BoolToVisible}, Mode=OneWay}"/>
+            <TextBlock x:Name="time" Grid.Row="2" VerticalAlignment="Center" FontWeight="Normal" FontSize="15" LineHeight="20" TextWrapping="Wrap"
+                       Text="{x:Bind time}"
+                       Foreground="{x:Bind is_read, Converter={StaticResource BoolToGray}, Mode=OneWay}"/>
+            <Line x:Name="line2" Grid.Row="2" Stretch="Fill" Stroke="#FF969696" StrokeThickness="2" X1="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                  Visibility="{x:Bind is_read, Converter={StaticResource BoolToVisible}, Mode=OneWay}"/>
           </Grid>
-          
         </Grid>
       </UserControl>
     </DataTemplate>
   </UserControl.Resources>
 
   <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <VisualStateManager.VisualStateGroups>
-      
-    </VisualStateManager.VisualStateGroups>
-
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-
-    <TextBlock x:Name="title" Grid.Row="0" Text="通知" Style="{StaticResource HeaderTextBlockStyle}"/>
+    <TextBlock Padding="30, 0" VerticalAlignment="Center" x:Name="title" Grid.Row="0" Text="通知" Style="{StaticResource HeaderTextBlockStyle}"/>
     <Grid Grid.Row="1">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>

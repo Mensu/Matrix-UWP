@@ -19,7 +19,7 @@ using Windows.UI.Xaml.Navigation;
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace Matrix_UWP.UserControls {
-  public sealed partial class NotificationList : UserControl {
+  public sealed partial class NotificationList : UserControl,Helpers.IHamburgerContent {
     internal ViewModel.NotificationViewModel vm = new ViewModel.NotificationViewModel();
     public NotificationList() {
       this.InitializeComponent();
@@ -53,6 +53,10 @@ namespace Matrix_UWP.UserControls {
       var notification = notificationElem.DataContext as Model.Notification;
       if (notification == null) return;
       await notification.toggleReadState();
+    }
+
+    public async Task ResetContentAsync() {
+      await refreshList();
     }
   }
 }
