@@ -24,6 +24,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading;
 using System.Collections.ObjectModel;
+using Windows.UI.Popups;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -35,61 +37,33 @@ namespace Matrix_UWP {
     ViewModel.LoginViewModel loginVm;
     public MainPage() {
       this.InitializeComponent();
-      this.DataContext = this.loginVm = new ViewModel.LoginViewModel();
     }
 
-    private async void btn_Click(object sender, RoutedEventArgs e) {
-      //string username = this.usernameInput.Text;
-      //string password = this.passwordInput.Password;
-      //string captcha = "";
-      //if (this.captchaInput.Text.Length > 0) {
-      //  captcha = this.captchaInput.Text;
-      //}
-      //this.captchaInput.Text = "";
-      //Model.User curUser;
-      //this.loginVm.captcha = new Model.Captcha(true);
-      //try {
-      //  curUser = await Model.MatrixRequest.login(username, password, captcha);
-      //} catch (MatrixException.FatalError err) {
-      //  this.loginVm.captcha = new Model.Captcha();
-      //  this.textBlock.Text += $"致命错误: {err.Message}\n";
-      //  return;
-      //} catch (MatrixException.WrongCaptcha err) {
-      //  this.loginVm.captcha = err.captcha;
-      //  return;
-      //} catch (MatrixException.WrongPassword err) {
-      //  this.loginVm.captcha = new Model.Captcha();
-      //  this.passwordInput.Password = "";
-      //  this.textBlock.Text += $"不沃克: {err.Message}\n";
-      //  return;
-      //} catch (MatrixException.SoftError err) {
-      //  this.loginVm.captcha = new Model.Captcha();
-      //  this.textBlock.Text += $"不沃克: {err.Message}\n";
-      //  return;
-      //}
-      //this.loginVm.captcha = new Model.Captcha();
-      //this.textBlock.Text += "沃克\n";
-      //try {
-      //  var courses = await Model.MatrixRequest.getCourseList();
-      //  var oneCourse = await Model.MatrixRequest.getCourse(courses[0].course_id);
-      //  Debug.WriteLine("work");
-      //} catch (MatrixException.FatalError err) {
-      //  this.textBlock.Text += $"不沃克: {err.Message}\n";
-      //} catch (MatrixException.SoftError err) {
-      //  this.textBlock.Text += $"不沃克: {err.Message}\n";
-      //  return;
-      //}
-      //this.textBlock.Text += "always 沃克\n";
+    private async void Page_Loaded(object sender, RoutedEventArgs e) {
+      bool isLogin = false;
+      try {
+        isLogin = await Model.MatrixRequest.isLogin();
+      } catch (Exception err) {
+        System.Diagnostics.Debug.WriteLine(err);
+      }
+      if (!isLogin) {
+        Frame.Navigate(typeof(Views.Login));
+      }
+    }
+    private async void HamburgerMenu_OnItemClick(object sender, ItemClickEventArgs e) {
+      var menuItem = e.ClickedItem as HamburgerMenuItem;
+      var dialog = new MessageDialog($"You clicked on {menuItem.Label} button");
+
+      await dialog.ShowAsync();
     }
 
-    private void Page_Loaded(object sender, RoutedEventArgs e) {
-      //this.loginVm.captcha = new Model.Captcha(true);
-      //this.updateSvg();
-      //this.loginVm.captcha = new Model.Captcha(true);
-      //this.loginVm.captcha = new Model.Captcha(false);
-      //this.loginVm.captcha = new Model.Captcha(true);
-      //this.captchaInput.Visibility = Visibility.Collapsed;
-      //this.svgImg.Visibility = Visibility.Collapsed;
+    private void FakeBtn_Click(object sender, RoutedEventArgs e) {
+      Navigate.IsPaneOpen = !Navigate.IsPaneOpen;
+      if (Navigate.IsPaneOpen) {
+        Navigate.Focus(FocusState.Programmatic);
+        Debug.WriteLine("Get focus to Navigate");
+      }
+      Debug.WriteLine($"Navigate.IsPaneOpen = {Navigate.IsPaneOpen}");
     }
   }
 }

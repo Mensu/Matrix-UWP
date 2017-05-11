@@ -12,10 +12,10 @@
   <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center">
     <Grid x:Name="Container" Background="#449d44">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition/>
-        <ColumnDefinition/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
       </Grid.ColumnDefinitions>
-      <TextBlock x:Name="Message" Foreground="White" Grid.Column="0" Text="{x:Bind Path=Text, Mode=OneWay}" Padding="12" FontSize="23" TextAlignment="Center" VerticalAlignment="Center"/>
+      <TextBlock x:Name="Message" Foreground="White" Grid.Column="0" Text="Haha，一定是你忘了初始化文本" Padding="12" FontSize="23" TextAlignment="Center" VerticalAlignment="Center"/>
       <Button x:Name="Close" Content="✕" Foreground="White" Background="Transparent" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Height="40" Width="40" Click="Close_Click"/>
     </Grid>
   </ContentControl>

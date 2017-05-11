@@ -28,8 +28,11 @@ namespace Matrix_UWP.UserControls {
       get { return timeout.ToString(); }
       set { timeout = Convert.ToInt32((value ?? "0") == "" ? "0" : value); }
     }
-
-    public string Text = "Haha，一定是你忘了初始化文本";
+    
+    public string Text {
+      get { return Message.Text; }
+      set { Message.Text = value; }
+    }
     private MessageLevel level = MessageLevel.Info;
     public MessageLevel Level {
       get { return level; }
@@ -51,16 +54,16 @@ namespace Matrix_UWP.UserControls {
       Color color;
       switch(level) {
         case MessageLevel.Info:
-          color = Color.FromArgb(153, 153, 153, 255);
+          color = Color.FromArgb(255, 153, 153, 153);
           break;
         case MessageLevel.Warning:
-          color = Color.FromArgb(255, 143, 53, 255);
+          color = Color.FromArgb(255, 255, 143, 53);
           break;
         case MessageLevel.Error:
-          color = Color.FromArgb(255, 51, 0, 255);
+          color = Color.FromArgb(255, 255, 51, 0);
           break;
         case MessageLevel.Fatal:
-          color = Color.FromArgb(204, 0, 255, 255);
+          color = Color.FromArgb(255, 204, 0, 255);
           break;
       }
       Container.Background = new SolidColorBrush(color);
@@ -72,7 +75,7 @@ namespace Matrix_UWP.UserControls {
           uint curCallId = callId;
           await Task.Delay(timeout);
           if (curCallId == callId)
-            this.Container.Visibility = Visibility.Visible;
+            this.Container.Visibility = Visibility.Collapsed;
         }).AsTask();
       }
       this.Container.Visibility = Visibility.Visible;
