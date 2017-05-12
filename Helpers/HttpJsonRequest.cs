@@ -39,6 +39,7 @@ namespace Matrix_UWP {
         string meta = $"POST {uri}";
         try {
           Debug.WriteLine($"Requesting: {meta}");
+          Debug.WriteLine($"with body: {JsonConvert.SerializeObject(body, Formatting.Indented)}");
           response = await httpClient.PostAsync(uri, jsonContent);
         } catch (Exception e) {
           throw new MatrixException.NetworkError(meta, e);
@@ -247,7 +248,7 @@ namespace Matrix_UWP {
 
     class NetworkError : FatalError {
       public NetworkError(string meta, Exception e) : base("网络异常，请检查网络设置") {
-        Debug.Fail($"{meta}: 网络异常: {e.Message}\n{e.StackTrace}");
+        Debug.Fail($"{meta}: 网络异常: {e.Message}");
       }
     }
 
