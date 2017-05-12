@@ -47,6 +47,23 @@ namespace Matrix_UWP.Converters {
       throw new NotImplementedException();
     }
   }
+
+  class BoolToOpacity : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, string language) {
+      bool? isChecked = value as bool?;
+      switch (isChecked) {
+        case true:
+          return 1.0;
+        default:
+          return 0.0;
+      }
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language) {
+      throw new NotImplementedException();
+    }
+  }
+
   class BoolToHamburgerMenuWidth : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, string language) {
       return (value ?? false).Equals(true) ? System.Convert.ToDouble(parameter ?? 0) : 48;

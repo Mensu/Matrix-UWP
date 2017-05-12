@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Converters\BoolTo.cs" />
     <Compile Include="Converters\CaptchaTo.cs" />
+    <Compile Include="Converters\DateTimeOffsetTo.cs" />
     <Compile Include="Converters\DoubleTo.cs" />
     <Compile Include="Helpers\HttpJsonRequest.cs" />
     <Compile Include="Helpers\IHamburgerContent.cs" />
