@@ -23,6 +23,8 @@ namespace Matrix_UWP.UserControls {
       this.InitializeComponent();
     }
 
+    public event HamburgerContentHandler onError;
+
     public async Task ResetContentAsync() {
       await Task.Delay(100);
     }
