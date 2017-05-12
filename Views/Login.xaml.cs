@@ -120,5 +120,21 @@ namespace Matrix_UWP.Views {
     private void ShowQrCode_Click(object sender, RoutedEventArgs e) {
       QrCodePanel.Visibility = Visibility.Visible;
     }
+
+    private async void Username_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
+      if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
+      this.LoginVM.suggestions.Clear();
+      // TODO: 查询数据库获得匹配的数据
+      // ----
+      for (uint index = 0; index < 5; ++index) {
+        this.LoginVM.suggestions.Add($"{sender.Text} ({index})");
+      }
+      // ----
+      sender.ItemsSource = this.LoginVM.suggestions;
+    }
+
+    private void Username_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) {
+      sender.Text = args.SelectedItem?.ToString();
+    }
   }
 }

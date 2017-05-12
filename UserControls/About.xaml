@@ -10,6 +10,6 @@
   d:DesignWidth="400">
 
   <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-    <TextBlock Text="关于" Foreground="Black" Style="{StaticResource HeaderTextBlockStyle}"/>
+    <TextBlock Padding="30, 0" Text="关于" Foreground="Black" Style="{StaticResource HeaderTextBlockStyle}"/>
   </Grid>
 </UserControl>

@@ -10,6 +10,13 @@
   d:DesignWidth="400">
 
   <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-    <TextBlock Text="设置" Style="{StaticResource HeaderTextBlockStyle}"/>
+    <TextBlock Text="设置" Padding="30, 0" Style="{StaticResource HeaderTextBlockStyle}"/>
+    <TextBlock Text="昵称" Margin="10,90,325,166"/>
+    <TextBox x:Name="nicknameInput" PlaceholderText="昵称" Margin="75,85,124,166"
+             Text="{x:Bind vm.curUser.nickname, Mode=OneWay}"/>
+    <TextBlock Text="真实姓名" Margin="10,139,325,127"/>
+    <TextBox x:Name="realnameInput" Margin="75,139,144,112" IsEnabled="False"
+             Text="{x:Bind vm.curUser.realname, Mode=OneWay}"/>
+    <Button Content="提交" Margin="289,184,0,84" Click="Button_Click"/>
   </Grid>
 </UserControl>

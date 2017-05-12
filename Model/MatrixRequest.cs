@@ -96,16 +96,14 @@ namespace Matrix_UWP {
       static async public Task changeProfile(string nickname, string email, string phone, string homepage) {
         var body = new JObject();
         body["nickname"] = nickname;
-        body["email"] = email;
+        if (email.Length > 0) {
+          body["email"] = email;
+        }
         if (phone.Length > 0) {
           body["phone"] = phone;
-        } else {
-          body["phone"] = null;
         }
         if (homepage.Length > 0) {
           body["homepage"] = homepage;
-        } else {
-          body["homepage"] = null;
         }
         
         var result = await postAsync($"{root}/api/users/profile", body);

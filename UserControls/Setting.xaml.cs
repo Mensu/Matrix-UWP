@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace Matrix_UWP.UserControls {
   public sealed partial class Setting : UserControl, IHamburgerContent {
+    internal ViewModel.SettingViewModel vm = new ViewModel.SettingViewModel();
     public Setting() {
       this.InitializeComponent();
     }
@@ -26,7 +27,25 @@ namespace Matrix_UWP.UserControls {
     public event HamburgerContentHandler onError;
 
     public async Task ResetContentAsync() {
-      await Task.Delay(100);
+      try {
+        this.vm.curUser = await Model.MatrixRequest.getProfile();
+      } catch (MatrixException.NotLogin err) {
+        onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
+        // 返回登录页面？
+      } catch (MatrixException.MatrixException err) {
+        onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
+      }
+    }
+
+    private async void Button_Click(object sender, RoutedEventArgs e) {
+      try {
+        await Model.MatrixRequest.changeProfile(this.nicknameInput.Text, "", "", "");
+      } catch (MatrixException.NotLogin err) {
+        onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
+        // 返回登录页面？
+      } catch (MatrixException.MatrixException err) {
+        onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
+      }
     }
   }
 }

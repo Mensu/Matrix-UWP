@@ -76,7 +76,11 @@
           </Ellipse>
         </Grid>
         <StackPanel Grid.Row="1" Padding="15">
-          <TextBox x:Name="Username" Text="{x:Bind Path=LoginVM.username, Mode=TwoWay}" PlaceholderText="用户名" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15" LostFocus="Username_LostFocus"/>
+          <AutoSuggestBox x:Name="Username" Text="{x:Bind Path=LoginVM.username, Mode=TwoWay}" PlaceholderText="用户名" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="31" Margin="0,0,0.667,15" QueryIcon="People"
+                          LostFocus="Username_LostFocus"
+                          TextChanged="Username_TextChanged"
+                          SuggestionChosen="Username_SuggestionChosen"
+                          />
           <PasswordBox x:Name="Password" Password="{x:Bind Path=LoginVM.password, Mode=TwoWay}" PlaceholderText="密码" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15"/>
           <HyperlinkButton x:Name="ResetPasswd" HorizontalAlignment="Right" Margin="0, 0, 0, 10" Padding="0" Click="ResetPasswd_Click">
             <ContentControl>
