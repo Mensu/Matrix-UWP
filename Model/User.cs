@@ -22,6 +22,8 @@ namespace Matrix_UWP.Model {
       this.realname = Helpers.Nullable.toString(data["realname"]);
       this.nickname = Helpers.Nullable.toString(data["nickname"]);
       this.email = Helpers.Nullable.toString(data["email"]);
+      this.phone = Helpers.Nullable.toString(data["phone"], "");
+      this.homepage = Helpers.Nullable.toString(data["homepage"], "");
       this.academy = Helpers.Nullable.toString(data["academy"]);
       this.specialty = Helpers.Nullable.toString(data["specialty"]);
       this.joinDate = Helpers.Nullable.toDateTimeOffset(data["create_at"], DateTimeOffset.MinValue);
@@ -68,6 +70,26 @@ namespace Matrix_UWP.Model {
       }
       set {
         this.SetProperty(ref this._email, value);
+      }
+    }
+
+    private string _phone;
+    public string phone {
+      get {
+        return this._phone;
+      }
+      set {
+        this.SetProperty(ref this._phone, value);
+      }
+    }
+
+    private string _homepage;
+    public string homepage {
+      get {
+        return this._homepage;
+      }
+      set {
+        this.SetProperty(ref this._homepage, value);
       }
     }
 

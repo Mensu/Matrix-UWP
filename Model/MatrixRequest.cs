@@ -75,6 +75,58 @@ namespace Matrix_UWP {
         return result.success;
       }
 
+      static async public Task<bool> logout() {
+        MatrixRequestResult result = null;
+        try {
+          result = await postAsync($"{root}/api/users/logout", new JObject());
+        } catch (MatrixException.FatalError err) {
+          throw err;
+        }
+        return result.success;
+      }
+
+      static async public Task<User> getProfile() {
+        var result = await getAsync($"{root}/api/users/profile");
+        if (result.success) {
+          return new User(result.data);
+        }
+        throw new MatrixException.SoftError(result);
+      }
+
+      static async public Task changeProfile(string nickname, string email, string phone, string homepage) {
+        var body = new JObject();
+        body["nickname"] = nickname;
+        body["email"] = email;
+        if (phone.Length > 0) {
+          body["phone"] = phone;
+        } else {
+          body["phone"] = null;
+        }
+        if (homepage.Length > 0) {
+          body["homepage"] = homepage;
+        } else {
+          body["homepage"] = null;
+        }
+        
+        var result = await postAsync($"{root}/api/users/profile", body);
+        if (result.success) {
+          return;
+        }
+        throw new MatrixException.SoftError(result);
+      }
+
+      static async public Task changePassword(string oldPassword, string newPassword, string newConfirmPassword) {
+        var body = new JObject();
+        body["old_password"] = oldPassword;
+        body["new_password"] = newPassword;
+        body["new_confirm_password"] = newConfirmPassword;
+        var result = await postAsync($"{root}/api/users/password", body);
+        if (result.success) {
+          return;
+        }
+        throw new MatrixException.SoftError(result);
+      }
+
       static public Uri getAvatarUri(string username = "undefined") {
         return new Uri($"{root}/api/users/profile/avatar?t={rand.Next()}&username={username}");
       }
@@ -167,12 +219,25 @@ namespace Matrix_UWP {
         return ret;
       }
 
-      static async public Task<Assignment> getOneAssignment(int course_id, int ca_id) {
+      static async public Task<Assignment> getAssignment(int course_id, int ca_id) {
         var result = await getAsync($"{root}/api/courses/{course_id}/assignments/{ca_id}");
         if (!result.success) {
           throw new MatrixException.SoftError(result);
         }
         return new Assignment(result.data);
+      }
+
+      static async public Task<ObservableCollection<Library>> getLibraryList() {
+        var result = await getAsync($"{root}/api/libraries");
+        if (result.success) {
+          var arr = result.data as JArray;
+          var ret = new ObservableCollection<Library>();
+          foreach (JObject one in arr) {
+            ret.Add(new Library(one));
+          }
+          return ret;
+        }
+        throw new MatrixException.SoftError(result);
       }
     }
   }
@@ -189,7 +254,7 @@ namespace Matrix_UWP {
     class SoftError : MatrixException {
       public SoftError(string message) : base(message) { }
       public SoftError(Model.MatrixRequestResult result) : base(result.msg) {
-        Debug.WriteLine($"响应不 OK: {JsonConvert.SerializeObject(result)}");
+        Debug.WriteLine($"响应不 OK: {JsonConvert.SerializeObject(result, Formatting.Indented)}");
       }
     }
 
