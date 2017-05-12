@@ -110,8 +110,11 @@
     <Compile Include="Model\Notification.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserControls\LIbrary.xaml.cs">
-      <DependentUpon>LIbrary.xaml</DependentUpon>
+    <Compile Include="UserControls\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Library.xaml.cs">
+      <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
@@ -159,6 +162,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\CaptchaPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,7 +174,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\LIbrary.xaml">
+    <Page Include="UserControls\Library.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

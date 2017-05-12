@@ -19,7 +19,10 @@ namespace Matrix_UWP.Views {
     public MainPage() {
       this.InitializeComponent();
       ContentPanel = new Dictionary<string, UserControl> {
-        { "通知",  NotificationView }
+        { "题库", LibraryView },
+        { "通知",  NotificationView },
+        { "设置", SettingView },
+        { "关于", AboutView },
       };
 
       Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(500, 620));
@@ -48,9 +51,14 @@ namespace Matrix_UWP.Views {
       }
       if (ContentPanel.ContainsKey(label)) {
         UserControl ctrl = ContentPanel[label];
-        IHamburgerContent icontent = (IHamburgerContent)(ctrl);
+        IHamburgerContent icontent = null;
+        try {
+          icontent = (IHamburgerContent)(ctrl);
+        } catch (Exception err) {
+          Debug.WriteLine(err);
+        }
+        if (icontent != null) await icontent?.ResetContentAsync();
         ctrl.Visibility = Visibility;
-        await icontent?.ResetContentAsync();
       }
     }
 

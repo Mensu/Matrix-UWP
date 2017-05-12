@@ -18,8 +18,8 @@ using System.Threading.Tasks;
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace Matrix_UWP.UserControls {
-  public sealed partial class Library : UserControl, IHamburgerContent {
-    public Library() {
+  public sealed partial class About : UserControl, IHamburgerContent {
+    public About() {
       this.InitializeComponent();
     }
 
