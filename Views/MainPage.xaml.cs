@@ -18,7 +18,7 @@ namespace Matrix_UWP.Views {
   public sealed partial class MainPage : Page {
     public MainPage() {
       this.InitializeComponent();
-    ContentPanel = new Dictionary<string, UserControl> {
+      ContentPanel = new Dictionary<string, UserControl> {
         { "课程", CourseList },
         { "题库", LibraryView },
         { "通知",  NotificationView },
@@ -56,10 +56,17 @@ namespace Matrix_UWP.Views {
         try {
           icontent = (IHamburgerContent)(ctrl);
         } finally {
-          if (icontent != null) await icontent?.ResetContentAsync();
+          if (icontent != null) {
+            icontent.onError += this.ShowError;
+            await icontent?.ResetContentAsync();
+          }
           ctrl.Visibility = Visibility;
         }
       }
+    }
+
+    private void ShowError(object sender, HamburgerContentEventArgs e) {
+      Debug.WriteLine("does not work: " + e.message);
     }
 
     private void FakeBtn_Click(object sender, RoutedEventArgs e) {
