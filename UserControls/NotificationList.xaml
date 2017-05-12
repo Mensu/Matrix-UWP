@@ -74,6 +74,5 @@
                 ItemsSource="{x:Bind vm.list, Mode=OneWay}">
       </ListView>
     </Grid>
-    <uc:InfoMessage x:Name="Msg" Timeout="2000" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 90, 120, 0" />
   </Grid>
 </UserControl>

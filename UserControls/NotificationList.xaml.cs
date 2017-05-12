@@ -31,10 +31,10 @@ namespace Matrix_UWP.UserControls {
       try {
         newList = await Model.MatrixRequest.getNotificationList();
       } catch (MatrixException.SoftError err) {
-        ShowError(err.Message);
+        Debug.WriteLine(err);
         return;
       } catch (MatrixException.FatalError err) {
-        ShowError(err.Message);
+        Debug.WriteLine(err);
         return;
       } finally {
         this.vm.isLoading = false;
@@ -42,17 +42,16 @@ namespace Matrix_UWP.UserControls {
       this.vm.updateWith(newList);
     }
 
-    private void ShowError(string msg, UserControls.InfoMessage.MessageLevel level = UserControls.InfoMessage.MessageLevel.Warning) {
-      this.Msg.Level = level;
-      Msg.Text = msg;
-      Msg.Show();
-    }
-
     private async void checkbox_Checked(object sender, RoutedEventArgs e) {
-      var notificationElem = sender as FrameworkElement;
-      var notification = notificationElem.DataContext as Model.Notification;
+      var elem = sender as FrameworkElement;
+      var notification = elem.DataContext as Model.Notification;
       if (notification == null) return;
-      await notification.toggleReadState();
+      try {
+        await notification.toggleReadState();
+      } catch (MatrixException.MatrixException err) {
+        Debug.WriteLine($"更改消息已读未读时出错:");
+        Debug.WriteLine(err);
+      }
     }
 
     public async Task ResetContentAsync() {

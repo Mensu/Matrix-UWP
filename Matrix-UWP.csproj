@@ -106,6 +106,7 @@
     <Compile Include="Model\Assignment.cs" />
     <Compile Include="Model\Captcha.cs" />
     <Compile Include="Model\Course.cs" />
+    <Compile Include="Model\Library.cs" />
     <Compile Include="Model\MatrixRequest.cs" />
     <Compile Include="Model\MatrixRequestResult.cs" />
     <Compile Include="Model\Notification.cs" />
