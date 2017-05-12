@@ -54,7 +54,6 @@ namespace Matrix_UWP.UserControls {
         await notification.toggleReadState();
       } catch (MatrixException.MatrixException err) {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
-        notification.is_read = !notification.is_read;
       }
     }
 
