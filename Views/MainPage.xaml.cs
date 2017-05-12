@@ -18,7 +18,8 @@ namespace Matrix_UWP.Views {
   public sealed partial class MainPage : Page {
     public MainPage() {
       this.InitializeComponent();
-      ContentPanel = new Dictionary<string, UserControl> {
+    ContentPanel = new Dictionary<string, UserControl> {
+        { "课程", CourseList },
         { "题库", LibraryView },
         { "通知",  NotificationView },
         { "设置", SettingView },

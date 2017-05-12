@@ -1,0 +1,36 @@
+﻿<UserControl
+  x:Class="Matrix_UWP.UserControls.CourseList"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.UserControls"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:Controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  mc:Ignorable="d"
+  d:DesignHeight="720"
+  d:DesignWidth="1280">
+
+  <Grid Background="White">
+    <Pivot>
+      <PivotItem Header="进行中">
+        <ListView Margin="36, 36, 21, 21">
+          <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+              <ItemsWrapGrid/>
+            </ItemsPanelTemplate>
+          </ListView.ItemsPanel>
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <UserControl>
+                <Grid Height="119" Width="370" Padding="20, 5, 10, 10" Margin="0, 0, 15, 15">
+                  <TextBlock Height="22"/>
+                </Grid>
+              </UserControl>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+      </PivotItem>
+      <PivotItem Header="已结束"/>
+    </Pivot>
+  </Grid>
+</UserControl>
