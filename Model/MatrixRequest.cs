@@ -127,6 +127,16 @@ namespace Matrix_UWP {
         throw new MatrixException.SoftError(result);
       }
 
+      static async public Task forgetPassword(string email) {
+        var body = new JObject();
+        body["email"] = email;
+        var result = await postAsync($"{root}/api/mail/password", body);
+        if (result.success) {
+          return;
+        }
+        throw new MatrixException.SoftError(result);
+      }
+
       static public Uri getAvatarUri(string username = "undefined") {
         return new Uri($"{root}/api/users/profile/avatar?t={rand.Next()}&username={username}");
       }
