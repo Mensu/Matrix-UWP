@@ -89,7 +89,7 @@ namespace Matrix_UWP.Views {
       if (Frame.CanGoBack) {
         Frame.GoBack();
       } else {
-        Frame.Navigate(typeof(MainPage));
+        Frame.Navigate(typeof(Views.MainPage));
       }
     }
 
