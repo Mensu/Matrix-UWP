@@ -131,7 +131,7 @@
                     </MenuFlyoutItem.Template>
                   </MenuFlyoutItem>
                   <MenuFlyoutSeparator Padding="1, 4"/>
-                  <MenuFlyoutItem Name="Back" Margin="10, 4" Text="退出">
+                  <MenuFlyoutItem Name="Back" Margin="10, 4" Text="退出" Click="Logout_Click">
                     <MenuFlyoutItem.Template>
                       <ControlTemplate TargetType="MenuFlyoutItem">
                         <StackPanel Orientation="Horizontal">

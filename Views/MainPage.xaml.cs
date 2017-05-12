@@ -55,11 +55,10 @@ namespace Matrix_UWP.Views {
         IHamburgerContent icontent = null;
         try {
           icontent = (IHamburgerContent)(ctrl);
-        } catch (Exception err) {
-          Debug.WriteLine(err);
+        } finally {
+          if (icontent != null) await icontent?.ResetContentAsync();
+          ctrl.Visibility = Visibility;
         }
-        if (icontent != null) await icontent?.ResetContentAsync();
-        ctrl.Visibility = Visibility;
       }
     }
 
@@ -70,6 +69,14 @@ namespace Matrix_UWP.Views {
         Debug.WriteLine("Get focus to Navigate");
       }
       Debug.WriteLine($"Navigate.IsPaneOpen = {Navigate.IsPaneOpen}");
+    }
+
+    private async void Logout_Click(object sender, RoutedEventArgs e) {
+      try {
+        await Model.MatrixRequest.logout();
+      } finally {
+        Frame.Navigate(typeof(Views.Login));
+      }
     }
   }
 }
