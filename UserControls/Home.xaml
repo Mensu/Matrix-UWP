@@ -1,0 +1,40 @@
+﻿<UserControl
+  x:Class="Matrix_UWP.Usercontrols.Home"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.UserControls"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  mc:Ignorable="d"
+  d:DesignHeight="720"
+  d:DesignWidth="1280">
+
+
+  <Grid Background="#F5F5F5">
+    <Grid x:Name="Body" Margin="36" Padding="36" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <StackPanel Orientation="Vertical" Grid.Column="0" Padding="15, 0">
+        <Image x:Name="UserAvatar" Height="175" Width="175" Source="ms-appx:///Assets/Login/Avatar.jpeg"/>
+        <StackPanel x:Name="UsernamePane" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 15, 0, 8" Height="30">
+          <TextBlock x:Name="UserNickname" Text="matrix" FontSize="21" VerticalAlignment="Center"/>
+          <TextBlock Text=" (" FontSize="21" VerticalAlignment="Center"/>
+          <TextBlock x:Name="UserRealname" Text="matrix" VerticalAlignment="Center" FontSize="21"/>
+          <TextBlock Text=" )" FontSize="21" VerticalAlignment="Center"/>
+        </StackPanel>
+        <Line x:Name="line1" Stretch="Fill" Stroke="#969696" StrokeThickness=".5" X1="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+      </StackPanel>
+      <Pivot Grid.Column="1" Padding="13, 0" DataContext="vm">
+        <PivotItem Header="TODO">
+          <ListView/>
+        </PivotItem>
+        <PivotItem Header="Matrix植入">
+          <controls:MarkdownTextBlock x:Name="MatrixInsert" Text="{x:Bind }"/>
+        </PivotItem>
+      </Pivot>
+    </Grid>
+  </Grid>
+</UserControl>

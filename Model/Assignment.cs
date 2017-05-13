@@ -21,6 +21,8 @@ namespace Matrix_UWP.Model {
       this.description = Helpers.Nullable.toString(data["description"]);
       this.creator = new User(data["author"]);
       this.type = this.getType(data["type"]);
+      this.total_student_num = Helpers.Nullable.toInt(data["stuNumWaitingForJudging"]);
+      this.student_num_waiting_for_judge = Helpers.Nullable.toInt(data["totalStuNum"]);
     }
 
     public enum Type {
@@ -100,6 +102,18 @@ namespace Matrix_UWP.Model {
       set {
         this.SetProperty(ref this._type, value);
       }
+    }
+
+    private int _total_student_num;
+    public int total_student_num {
+      get { return _total_student_num; }
+      set { SetProperty(ref _total_student_num, value); }
+    }
+
+    private int _student_num_waiting_for_judge;
+    public int student_num_waiting_for_judge {
+      get { return _student_num_waiting_for_judge; }
+      set { SetProperty(ref _student_num_waiting_for_judge, value); }
     }
 
     private Type getType(JToken token) {

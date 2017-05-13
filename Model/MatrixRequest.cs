@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Matrix_UWP {
   namespace Model {
@@ -148,16 +149,7 @@ namespace Matrix_UWP {
       }
 
       static async public Task<ObservableCollection<Course>> getCourseList() {
-        var result = await getAsync($"{root}/api/courses");
-        if (result.success) {
-          var arr = result.data as JArray;
-          var ret = new ObservableCollection<Course>();
-          foreach (JObject one in arr) {
-            ret.Add(new Course(one));
-          }
-          return ret;
-        }
-        throw new MatrixException.SoftError(result);
+       return await getListAsync<Course>($"{root}/api/courses");
       }
 
       static async public Task<Course> getCourse(int course_id) {
@@ -194,37 +186,16 @@ namespace Matrix_UWP {
       }
 
       static async public Task<ObservableCollection<Notification>> getNotificationList() {
-        var result = await getAsync($"{root}/api/notification/unReadMessages");
-        if (!result.success) {
-          throw new MatrixException.SoftError(result);
-        }
-        var arr = result.data as JArray;
-        var ret = new ObservableCollection<Notification>();
-        foreach (JObject one in arr) {
-          ret.Add(new Notification(one));
-        }
-        result = await getAsync($"{root}/api/notification/readedMessages");
-        if (!result.success) {
-          throw new MatrixException.SoftError(result);
-        }
-        arr = result.data as JArray;
-        foreach (JObject one in arr) {
-          ret.Add(new Notification(one));
+        var ret = await getListAsync<Notification>($"{root}/api/notification/unReadMessages");
+        var read = await getListAsync<Notification>($"{root}/api/notification/readedMessages");
+        foreach (var notification in read) {
+          ret.Add(notification);
         }
         return ret;
       }
 
       static async public Task<ObservableCollection<Assignment>> getAssignmentList(int course_id) {
-        var result = await getAsync($"{root}/api/courses/{course_id}/assignments");
-        if (!result.success) {
-          throw new MatrixException.SoftError(result);
-        }
-        var arr = result.data as JArray;
-        var ret = new ObservableCollection<Assignment>();
-        foreach (JObject one in arr) {
-          ret.Add(new Assignment(one));
-        }
-        return ret;
+       return await getListAsync<Assignment>($"{root}/api/courses/{course_id}/assignments");
       }
 
       static async public Task<Assignment> getAssignment(int course_id, int ca_id) {
@@ -236,12 +207,22 @@ namespace Matrix_UWP {
       }
 
       static async public Task<ObservableCollection<Library>> getLibraryList() {
-        var result = await getAsync($"{root}/api/libraries");
+        return await getListAsync<Library>($"{root}/api/libraries");
+      }
+
+      static async public Task<ObservableCollection<Assignment>> getUnjudgeAssigment() {
+        return await getListAsync<Assignment>($"{root}/api/courses/assignments?state=started&waitingForMyJudging=1");
+      }
+
+      static async public Task<ObservableCollection<T>> getListAsync<T> (string url) {
+        MatrixRequestResult result = await getAsync(url);
         if (result.success) {
-          var arr = result.data as JArray;
-          var ret = new ObservableCollection<Library>();
+          JArray arr = result.data as JArray;
+          ObservableCollection<T> ret = new ObservableCollection<T>();
           foreach (JObject one in arr) {
-            ret.Add(new Library(one));
+            // 软爸爸的C#泛型类不能初始化，实在是很蛋疼啊。
+            // 还好软爸爸留了一条退路。
+            ret.Add((T)Activator.CreateInstance(typeof(T), one));
           }
           return ret;
         }
