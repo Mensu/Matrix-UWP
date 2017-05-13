@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 
 namespace Matrix_UWP.UserControls {
   public sealed partial class CourseList : UserControl, IHamburgerContent {
+    internal ViewModel.CourseListViewModel vm = new ViewModel.CourseListViewModel();
+
     public CourseList() {
       this.InitializeComponent();
     }
@@ -26,7 +28,21 @@ namespace Matrix_UWP.UserControls {
     public event HamburgerContentHandler onError;
 
     public async Task ResetContentAsync() {
-      await Task.Delay(100);
+      await Refresh();
+    }
+
+    public async Task Refresh() {
+      try {
+        vm.Update(await Model.MatrixRequest.getCourseList());
+      } catch (MatrixException.NotLogin err) {
+        onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
+      } catch (MatrixException.MatrixException err) {
+        onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
+      }
+    }
+
+    private async void UserControl_Loaded(object sender, RoutedEventArgs e) {
+      await Refresh();
     }
   }
 }

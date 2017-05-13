@@ -99,6 +99,7 @@
     <Compile Include="Converters\CaptchaTo.cs" />
     <Compile Include="Converters\DateTimeOffsetTo.cs" />
     <Compile Include="Converters\DoubleTo.cs" />
+    <Compile Include="Converters\UserRoleTo.cs" />
     <Compile Include="Converters\UserTo.cs" />
     <Compile Include="Helpers\HttpJsonRequest.cs" />
     <Compile Include="Helpers\IHamburgerContent.cs" />
@@ -128,6 +129,7 @@
     </Compile>
     <Compile Include="ViewModel\LibraryViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
+    <Compile Include="ViewModel\CourseListViewModel.cs" />
     <Compile Include="ViewModel\NotificationViewModel.cs" />
     <Compile Include="UserControls\CaptchaPopup.xaml.cs">
       <DependentUpon>CaptchaPopup.xaml</DependentUpon>

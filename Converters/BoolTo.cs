@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
@@ -67,6 +68,25 @@ namespace Matrix_UWP.Converters {
   class BoolToHamburgerMenuWidth : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, string language) {
       return (value ?? false).Equals(true) ? System.Convert.ToDouble(parameter ?? 0) : 48;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language) {
+      throw new NotImplementedException();
+    }
+  }
+
+  class BoolToCourseStatusString : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, string language) {
+      return (value ?? false).Equals(true) ? "进行中" : "已结束";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language) {
+      throw new NotImplementedException();
+    }
+  }
+  class BoolToCourseStatusColor : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, string language) {
+      return new SolidColorBrush((value ?? false).Equals(true) ? Colors.Green : Colors.Red);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language) {
