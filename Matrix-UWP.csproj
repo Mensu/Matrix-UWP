@@ -100,6 +100,7 @@
     <Compile Include="Converters\DateTimeOffsetTo.cs" />
     <Compile Include="Converters\DoubleTo.cs" />
     <Compile Include="Converters\UserRoleTo.cs" />
+    <Compile Include="Converters\UserTo.cs" />
     <Compile Include="Helpers\HttpJsonRequest.cs" />
     <Compile Include="Helpers\IHamburgerContent.cs" />
     <Compile Include="Helpers\ISOStringConverter.cs" />
@@ -125,6 +126,8 @@
     <Compile Include="UserControls\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\LibraryViewModel.cs" />
+    <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\CourseListViewModel.cs" />
     <Compile Include="ViewModel\NotificationViewModel.cs" />
     <Compile Include="UserControls\CaptchaPopup.xaml.cs">
@@ -133,6 +136,7 @@
     <Compile Include="UserControls\InfoMessage.xaml.cs">
       <DependentUpon>InfoMessage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>

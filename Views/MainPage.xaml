@@ -15,6 +15,7 @@
   <Page.Resources>
     <Converter:DoubleOffset x:Key="HamburgerContentHeighOffset"/>
     <Converter:BoolToHamburgerMenuWidth x:Key="PaneOpenToMenuWidthCV"/>
+    <Converter:UserToAvatar x:Key="UserToAvatar"/>
     <!-- 定制hamburger menu的选项内容 -->
     <DataTemplate x:Name="HamburgerItemTemplate" x:DataType="Controls:HamburgerMenuGlyphItem">
       <!-- 因为默认缩退后的宽度为48，是被钦定的 -->
@@ -78,9 +79,10 @@
       ItemTemplate="{StaticResource HamburgerItemTemplate}"
       HamburgerMenuTemplate="{StaticResource HamburgerMenuTemplate}"
       ItemClick="HamburgerMenu_OnItemClick"
+      ItemsSource="{x:Bind vm.menu}"
       PaneBackground="#FAFAFA"
       Foreground="White">
-      <Controls:HamburgerMenu.ItemsSource>
+      <!--<Controls:HamburgerMenu.ItemsSource>
         <Controls:HamburgerMenuItemCollection>
           <Controls:HamburgerMenuGlyphItem Glyph="Home" Label="主页"/>
           <Controls:HamburgerMenuGlyphItem Glyph="Edit" Label="课程"/>
@@ -89,7 +91,7 @@
           <Controls:HamburgerMenuGlyphItem Glyph="Setting" Label="设置"/>
           <Controls:HamburgerMenuGlyphItem Glyph="Tag" Label="关于"/>
         </Controls:HamburgerMenuItemCollection>
-      </Controls:HamburgerMenu.ItemsSource>
+      </Controls:HamburgerMenu.ItemsSource>-->
       <Controls:HamburgerMenu.Content>
         <Grid VerticalAlignment="Stretch">
           <Grid.RowDefinitions>
@@ -102,7 +104,7 @@
                 <StackPanel Orientation="Horizontal">
                   <Ellipse Height="20" Width="20">
                     <Ellipse.Fill>
-                      <ImageBrush x:Name="UserAvatar" ImageSource="ms-appx:///Assets/Login/Avatar.jpeg"/>
+                      <ImageBrush x:Name="UserAvatar" ImageSource="{x:Bind vm.curUser, Converter={StaticResource UserToAvatar}, Mode=OneWay}"/>
                     </Ellipse.Fill>
                   </Ellipse>
                   <Polygon Fill="White" Width="20" Points="5, 0 10, 5 15, 0" VerticalAlignment="Center"/>
@@ -110,7 +112,7 @@
               </Button.Content>
               <Button.Flyout>
                 <MenuFlyout Placement="Bottom">
-                  <MenuFlyoutItem Name="Home" Margin="10, 4" Text="主页">
+                  <MenuFlyoutItem Name="Home" Margin="10, 4" Text="主页" Click="Home_Click">
                     <MenuFlyoutItem.Template>
                       <ControlTemplate TargetType="MenuFlyoutItem">
                         <StackPanel Orientation="Horizontal">
@@ -120,7 +122,7 @@
                       </ControlTemplate>
                     </MenuFlyoutItem.Template>
                   </MenuFlyoutItem>
-                  <MenuFlyoutItem Name="Setting" Margin="10, 4" Text="设置">
+                  <MenuFlyoutItem Name="Setting" Margin="10, 4" Text="设置" Click="Setting_Click">
                     <MenuFlyoutItem.Template>
                       <ControlTemplate TargetType="MenuFlyoutItem">
                         <StackPanel Orientation="Horizontal">

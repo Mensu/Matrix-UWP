@@ -18,6 +18,7 @@ namespace Matrix_UWP.Model {
       this.name = Helpers.Nullable.toString(data["name"]);
       this.problemNum = Helpers.Nullable.toInt(data["problem_num"]);
       this.memberNum = Helpers.Nullable.toInt(data["member_num"]);
+      this.createdDate = Helpers.Nullable.toDateTimeOffset(data["created_at"], DateTimeOffset.MinValue);
     }
 
     public int lib_id {
@@ -61,6 +62,16 @@ namespace Matrix_UWP.Model {
       }
       set {
         this.SetProperty(ref this._memberNum, value);
+      }
+    }
+
+    private DateTimeOffset _createdDate;
+    public DateTimeOffset createdDate {
+      get {
+        return this._createdDate;
+      }
+      set {
+        this.SetProperty(ref this._createdDate, value);
       }
     }
   }

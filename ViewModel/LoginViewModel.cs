@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,12 @@ namespace Matrix_UWP.ViewModel {
     public string password {
       get { return _password; }
       set { SetProperty(ref _password, value); }
+    }
+
+    private ObservableCollection<string> _suggestions = new ObservableCollection<string>();
+    public ObservableCollection<string> suggestions {
+      get { return _suggestions; }
+      set { SetProperty(ref _suggestions, value); }
     }
   }
 }
