@@ -5,32 +5,122 @@
   xmlns:local="using:Matrix_UWP.UserControls"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:Controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  xmlns:model="using:Matrix_UWP.Model"
+  xmlns:converter="using:Matrix_UWP.Converters"
   mc:Ignorable="d"
   d:DesignHeight="720"
-  d:DesignWidth="1280">
+  d:DesignWidth="1280"
+  Loaded="UserControl_Loaded">
 
-  <Grid Background="White">
-    <Pivot>
+  <UserControl.Resources>
+    <converter:BoolToCourseStatusColor x:Key="BoolToStatusColorCV"/>
+    <converter:BoolToCourseStatusString x:Key="BoolToStatusStringCV"/>
+    <converter:UserRoleToColor x:Key="RoleToColorCV"/>
+    <converter:UserRoleToRoleString x:Key="RoleToStringCV"/>
+    <!-- Always Copy -->
+    <Style x:Key="ButtonNoStyle" TargetType="Button">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Grid x:Name="RootGrid" Background="White" BorderThickness="1" BorderBrush="Transparent">
+              <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                  <VisualState x:Name="Normal">
+                  </VisualState>
+                  <VisualState x:Name="PointerOver">
+                    <Storyboard>
+                      <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="BorderBrush">
+                        <DiscreteObjectKeyFrame KeyTime="0" Value="#30000000"/>
+                      </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                    <!-- Drop Hover Style -->
+                  </VisualState>
+                  <VisualState x:Name="Pressed">
+                    <!-- Drop Pressed Style -->
+                  </VisualState>
+                  <VisualState x:Name="Disabled">
+                    <!-- Not concern about Disabled Style. Do not use it. -->
+                  </VisualState>
+                </VisualStateGroup>
+              </VisualStateManager.VisualStateGroups>
+              <ContentPresenter x:Name="ContentPresenter" Background="Transparent" AutomationProperties.AccessibilityView="Raw" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <DataTemplate x:Key="CourseListTemplate" x:DataType="model:Course">
+
+      <Button VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Height="136" Style="{StaticResource ButtonNoStyle}" Width="370" Padding="20, 5, 10, 10" Margin="0, 0, 13, 13">
+        <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <StackPanel Grid.Row="0" Name="CouseHeader" Orientation="Horizontal" Height="42" Padding="0, 10">
+            <TextBlock Text="{x:Bind creator.realname, Mode=OneWay}" Foreground="#337ab7"/>
+            <TextBlock Text="/" Margin="3, 0" Foreground="#337ab7"/>
+            <TextBlock Text="{x:Bind name, Mode=OneTime}" Foreground="#337ab7"/>
+          </StackPanel>
+          <StackPanel Grid.Row="1" Orientation="Horizontal" Height="18" Margin="0, 0, 0, 10">
+            <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="0, 0, 10, 0"/>
+            <TextBlock VerticalAlignment="Center" Text="{x:Bind teacher, Mode=OneTime}"/>
+          </StackPanel>
+          <StackPanel Grid.Row="2" Orientation="Horizontal" Height="18" Margin="0, 0, 0, 10">
+            <TextBlock Text="&#xE163;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="0, 0, 10, 0"/>
+            <TextBlock Text="{x:Bind semester, Mode=OneTime}"/>
+            <TextBlock Text="&#xE187;" Foreground="{x:Bind role, Converter={StaticResource RoleToColorCV}, Mode=OneTime}" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="20, 0, 10, 0"/>
+            <TextBlock Text="{x:Bind role, Converter={StaticResource RoleToStringCV}, Mode=OneTime}" Foreground="{x:Bind role, Converter={StaticResource RoleToColorCV}, Mode=OneTime}"/>
+          </StackPanel>
+          <StackPanel Grid.Row="3" Orientation="Horizontal" Height="18" Margin="0, 0, 0, 3">
+            <TextBlock Text="&#xE175;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="0, 0, 10, 0"/>
+            <TextBlock Text="进行中的作业" VerticalAlignment="Center" FontSize="13"/>
+            <TextBlock Text="{x:Bind unfinishedNum, Mode=OneTime}" Margin="5, 0" VerticalAlignment="Center"/>
+            <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="15, 0, 10, 0"/>
+            <TextBlock Text="{x:Bind stuNum, Mode=OneTime}" VerticalAlignment="Center"/>
+            <Ellipse Height="13" Width="13" Fill="{x:Bind isOpen, Converter={StaticResource BoolToStatusColorCV}}" VerticalAlignment="Center" Margin="20, 0, 10, 0"/>
+            <TextBlock Text="{x:Bind isOpen, Converter={StaticResource BoolToStatusStringCV}}" VerticalAlignment="Center"/>
+          </StackPanel>
+        </Grid>
+      </Button>
+    </DataTemplate>
+    <Style x:Key="GridViewItemStyle" TargetType="GridViewItem">
+      <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+      <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+      <Setter Property="Background" Value="{ThemeResource GridViewItemBackground}"/>
+      <Setter Property="Foreground" Value="{ThemeResource GridViewItemForeground}"/>
+      <Setter Property="TabNavigation" Value="Local"/>
+      <Setter Property="IsHoldingEnabled" Value="True"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0,0,4,4"/>
+      <Setter Property="MinWidth" Value="{ThemeResource GridViewItemMinWidth}"/>
+      <Setter Property="MinHeight" Value="{ThemeResource GridViewItemMinHeight}"/>
+      <Setter Property="AllowDrop" Value="False"/>
+      <Setter Property="UseSystemFocusVisuals" Value="True"/>
+      <Setter Property="FocusVisualMargin" Value="-2"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="GridViewItem">
+            <ListViewItemPresenter PlaceholderBackground="#444444"/>
+          </ControlTemplate>
+        </Setter.Value>
+       </Setter>
+      </Style>
+  </UserControl.Resources>
+
+  <Grid Background="#F5F5F5">
+    <Pivot Margin="36, 26, 0, 0">
       <PivotItem Header="进行中">
-        <ListView Margin="36, 36, 21, 21">
-          <ListView.ItemsPanel>
-            <ItemsPanelTemplate>
-              <ItemsWrapGrid/>
-            </ItemsPanelTemplate>
-          </ListView.ItemsPanel>
-          <ListView.ItemTemplate>
-            <DataTemplate>
-              <UserControl>
-                <Grid Height="119" Width="370" Padding="20, 5, 10, 10" Margin="0, 0, 15, 15">
-                  <TextBlock Height="22"/>
-                </Grid>
-              </UserControl>
-            </DataTemplate>
-          </ListView.ItemTemplate>
-        </ListView>
+        <GridView Margin="0, 20, 21, 21" ItemsSource="{x:Bind vm.openList, Mode=OneWay}" ItemTemplate="{StaticResource CourseListTemplate}" ItemContainerStyle="{StaticResource GridViewItemStyle}"/>
       </PivotItem>
-      <PivotItem Header="已结束"/>
+      <PivotItem Header="已结束">
+        <PivotItem Header="已结束">
+          <GridView Margin="36, 36, 21, 21" ItemsSource="{x:Bind vm.closeList, Mode=OneWay}" ItemTemplate="{StaticResource CourseListTemplate}" ItemContainerStyle="{StaticResource GridViewItemStyle}"/>
+        </PivotItem>
+      </PivotItem>
     </Pivot>
   </Grid>
 </UserControl>

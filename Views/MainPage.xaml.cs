@@ -85,16 +85,20 @@ namespace Matrix_UWP.Views {
     private async void Logout_Click(object sender, RoutedEventArgs e) {
       try {
         await Model.MatrixRequest.logout();
+      } catch (Exception err) {
+        Debug.WriteLine(err.Message);
       } finally {
         Frame.Navigate(typeof(Views.Login));
       }
     }
 
     private async void Setting_Click(object sender, RoutedEventArgs e) {
+      Navigate.SelectedIndex = vm.menu.FindIndex(one => one.Label == "设置");
       await this.ShowContent("设置");
     }
 
     private async void Home_Click(object sender, RoutedEventArgs e) {
+      Navigate.SelectedIndex = vm.menu.FindIndex(one => one.Label == "主页");
       await this.ShowContent("主页");
     }
   }

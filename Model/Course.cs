@@ -8,6 +8,12 @@ using Prism.Mvvm;
 
 namespace Matrix_UWP.Model {
   public class Course : BindableBase {
+    public enum UserRole {
+      Teacher,
+      TA,
+      Student,
+      Undefined,
+    };
     public Course(JToken token = null) {
       if (token == null) {
         token = new JObject();
@@ -18,12 +24,27 @@ namespace Matrix_UWP.Model {
       this.creator = new User(data["creator"]);
       this.progressingNum = Helpers.Nullable.toInt(data["progressing_num"]);
       this.unfinishedNum = Helpers.Nullable.toInt(data["unfinished_num"]);
-      this.role = Helpers.Nullable.toString(data["role"], "student");
       this.semester = Helpers.Nullable.toString(data["semester"]);
       this.isOpen = Helpers.Nullable.toString(data["status"], "open") == "open";
       this.stuNum = Helpers.Nullable.toInt(data["student_num"]);
       this.description = Helpers.Nullable.toString(data["description"]);
       this.teacher = Helpers.Nullable.toString(data["teacher"]);
+
+      string role = Helpers.Nullable.toString(data["role"], "student");
+      switch (role) {
+        case "teacher":
+          this.role = UserRole.Teacher;
+          break;
+        case "TA":
+          this.role = UserRole.TA;
+          break;
+        case "student":
+          this.role = UserRole.Student;
+          break;
+        default:
+          this.role = UserRole.Undefined;
+          break;
+      }
     }
     public int course_id {
       get;
@@ -69,8 +90,8 @@ namespace Matrix_UWP.Model {
       }
     }
 
-    private string _role;
-    public string role {
+    private UserRole _role;
+    public UserRole role {
       get {
         return this._role;
       }

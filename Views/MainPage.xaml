@@ -82,16 +82,6 @@
       ItemsSource="{x:Bind vm.menu}"
       PaneBackground="#FAFAFA"
       Foreground="White">
-      <!--<Controls:HamburgerMenu.ItemsSource>
-        <Controls:HamburgerMenuItemCollection>
-          <Controls:HamburgerMenuGlyphItem Glyph="Home" Label="主页"/>
-          <Controls:HamburgerMenuGlyphItem Glyph="Edit" Label="课程"/>
-          <Controls:HamburgerMenuGlyphItem Glyph="Library" Label="题库"/>
-          <Controls:HamburgerMenuGlyphItem Glyph="Read" Label="通知"/>
-          <Controls:HamburgerMenuGlyphItem Glyph="Setting" Label="设置"/>
-          <Controls:HamburgerMenuGlyphItem Glyph="Tag" Label="关于"/>
-        </Controls:HamburgerMenuItemCollection>
-      </Controls:HamburgerMenu.ItemsSource>-->
       <Controls:HamburgerMenu.Content>
         <Grid VerticalAlignment="Stretch">
           <Grid.RowDefinitions>
@@ -148,7 +138,7 @@
             </Button>
           </Grid>
           <Grid Grid.Row="1">
-            <UserControls:CourseList x:Name="CourseList"/>
+            <UserControls:CourseList x:Name="CourseList" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:Library x:Name="LibraryView" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:NotificationList x:Name="NotificationView" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:Setting x:Name="SettingView" Foreground="Black" Visibility="Collapsed"/>
