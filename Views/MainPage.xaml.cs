@@ -81,6 +81,8 @@ namespace Matrix_UWP.Views {
     private async void Logout_Click(object sender, RoutedEventArgs e) {
       try {
         await Model.MatrixRequest.logout();
+      } catch (Exception err) {
+        Debug.WriteLine(err.Message);
       } finally {
         Frame.Navigate(typeof(Views.Login));
       }
