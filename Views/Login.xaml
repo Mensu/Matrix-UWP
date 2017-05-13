@@ -76,12 +76,13 @@
           </Ellipse>
         </Grid>
         <StackPanel Grid.Row="1" Padding="15">
-          <AutoSuggestBox x:Name="Username" Text="{x:Bind Path=LoginVM.username, Mode=TwoWay}" PlaceholderText="用户名" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="31" Margin="0,0,0.667,15" QueryIcon="People"
+          <AutoSuggestBox x:Name="Username" Text="{x:Bind Path=LoginVM.username, Mode=TwoWay}" PlaceholderText="用户名" HorizontalAlignment="Center" Width="328" Height="31" Margin="0, 0, 0, 15" QueryIcon="People"
                           LostFocus="Username_LostFocus"
                           TextChanged="Username_TextChanged"
                           SuggestionChosen="Username_SuggestionChosen"
-                          />
-          <PasswordBox x:Name="Password" Password="{x:Bind Path=LoginVM.password, Mode=TwoWay}" PlaceholderText="密码" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15"/>
+                          BorderBrush="Gray"
+                          AllowDrop="True"/>
+          <PasswordBox x:Name="Password" Password="{x:Bind Path=LoginVM.password, Mode=TwoWay}" PlaceholderText="密码" BorderThickness="1" HorizontalAlignment="Center" Width="328" Height="24" Margin="0, 0, 0, 15" KeyUp="Password_KeyUp"/>
           <HyperlinkButton x:Name="ResetPasswd" HorizontalAlignment="Right" Margin="0, 0, 0, 10" Padding="0" Click="ResetPasswd_Click">
             <ContentControl>
               <TextBlock Text="忘记密码？"/>
