@@ -118,7 +118,7 @@
       </PivotItem>
       <PivotItem Header="已结束">
         <PivotItem Header="已结束">
-          <GridView Margin="36, 36, 21, 21" ItemsSource="{x:Bind vm.closeList, Mode=OneWay}" ItemTemplate="{StaticResource CourseListTemplate}" ItemContainerStyle="{StaticResource GridViewItemStyle}"/>
+          <GridView Margin="0, 20, 21, 21"  ItemsSource="{x:Bind vm.closeList, Mode=OneWay}" ItemTemplate="{StaticResource CourseListTemplate}" ItemContainerStyle="{StaticResource GridViewItemStyle}"/>
         </PivotItem>
       </PivotItem>
     </Pivot>
