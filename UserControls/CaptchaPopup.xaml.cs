@@ -73,5 +73,13 @@ namespace Matrix_UWP.UserControls {
       await Task.Delay(200);
       CaptchaImage.LoadText(text);
     }
+
+    private void CaptchaInput_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
+      if (e.Key == Windows.System.VirtualKey.Enter) {
+        LoginBtn_Click(LoginBtn, new RoutedEventArgs());
+      } else if (e.Key == Windows.System.VirtualKey.Escape) {
+        AppBarButton_Click(CancelBtn, new RoutedEventArgs());
+      }
+    }
   }
 }
