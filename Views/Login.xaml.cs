@@ -12,6 +12,7 @@ using Windows.Graphics.Imaging;
 using Windows.Foundation;
 using System.IO;
 using Windows.UI.Popups;
+using System.Collections.ObjectModel;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 
@@ -23,6 +24,8 @@ namespace Matrix_UWP.Views {
     ViewModel.LoginViewModel LoginVM = new ViewModel.LoginViewModel();
     private bool useCaptcha = false;
     private string captchaSvg;
+    private ObservableCollection<string> suggestions = new ObservableCollection<string>();
+    private Model.SuggestionInput suggetstionInput = Model.SuggestionInput.GetInstance();
     public Login() {
       InitializeComponent();
       this.DataContext = LoginVM;
@@ -87,6 +90,7 @@ namespace Matrix_UWP.Views {
     private void TryLeave(bool success) {
       if (!success) return;
       if (Frame.CanGoBack) {
+        suggetstionInput.addUser(Username.Text);
         Frame.GoBack();
       } else {
         Frame.Navigate(typeof(Views.MainPage));
@@ -124,13 +128,8 @@ namespace Matrix_UWP.Views {
     private async void Username_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
       if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
       this.LoginVM.suggestions.Clear();
-      // TODO: 查询数据库获得匹配的数据
-      // ----
-      for (uint index = 0; index < 5; ++index) {
-        this.LoginVM.suggestions.Add($"{sender.Text} ({index})");
-      }
-      // ----
-      sender.ItemsSource = this.LoginVM.suggestions;
+      suggestions = suggetstionInput.loadUser(Username.Text);
+      sender.ItemsSource = suggestions;
     }
 
     private void Username_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) {

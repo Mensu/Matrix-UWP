@@ -4,7 +4,8 @@
     "Microsoft.Toolkit.Uwp.UI.Controls": "1.4.1",
     "Mntone.SvgForXaml": "0.9.1",
     "Newtonsoft.Json": "9.0.1",
-    "Prism.Core": "6.3.0"
+    "Prism.Core": "6.3.0",
+    "SQLitePCL": "3.8.7.2"
   },
   "frameworks": {
     "uap10.0": {}
