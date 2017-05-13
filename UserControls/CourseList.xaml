@@ -112,9 +112,9 @@
   </UserControl.Resources>
 
   <Grid Background="#F5F5F5">
-    <Pivot>
+    <Pivot Margin="36, 26, 0, 0">
       <PivotItem Header="进行中">
-        <GridView Margin="36, 36, 21, 21" ItemsSource="{x:Bind vm.openList, Mode=OneWay}" ItemTemplate="{StaticResource CourseListTemplate}" ItemContainerStyle="{StaticResource GridViewItemStyle}"/>
+        <GridView Margin="0, 20, 21, 21" ItemsSource="{x:Bind vm.openList, Mode=OneWay}" ItemTemplate="{StaticResource CourseListTemplate}" ItemContainerStyle="{StaticResource GridViewItemStyle}"/>
       </PivotItem>
       <PivotItem Header="已结束">
         <PivotItem Header="已结束">

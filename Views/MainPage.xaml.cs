@@ -93,10 +93,12 @@ namespace Matrix_UWP.Views {
     }
 
     private async void Setting_Click(object sender, RoutedEventArgs e) {
+      Navigate.SelectedIndex = vm.menu.FindIndex(one => one.Label == "设置");
       await this.ShowContent("设置");
     }
 
     private async void Home_Click(object sender, RoutedEventArgs e) {
+      Navigate.SelectedIndex = vm.menu.FindIndex(one => one.Label == "主页");
       await this.ShowContent("主页");
     }
   }
