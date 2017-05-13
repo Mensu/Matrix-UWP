@@ -32,13 +32,16 @@ namespace Matrix_UWP.Views {
     }
 
     private async void LoginBtn_Click(object sender, RoutedEventArgs e) {
+      await Virtual_Login_Click();
+    }
+
+    private async Task Virtual_Login_Click() {
       DisableLoginBtn();
       bool success = await TryLogin();
       if (useCaptcha) {
         Captcha.Show(captchaSvg);
         return;
       }
-      EnableLoginBtn();
       TryLeave(success);
     }
 
@@ -88,9 +91,10 @@ namespace Matrix_UWP.Views {
     }
 
     private void TryLeave(bool success) {
+      EnableLoginBtn();
       if (!success) return;
-      if (Frame.CanGoBack) {
         suggetstionInput.addUser(Username.Text);
+      if (Frame.CanGoBack) {
         Frame.GoBack();
       } else {
         Frame.Navigate(typeof(Views.MainPage));
@@ -100,7 +104,6 @@ namespace Matrix_UWP.Views {
     private async void Captcha_OnSured(object sender, UserControls.CaptchaPopup.CaptchaEventArgs e) {
       LoginVM.captcha = e.captcha;
       bool success = await TryLogin();
-      EnableLoginBtn();
       TryLeave(success);
     }
 
@@ -134,6 +137,12 @@ namespace Matrix_UWP.Views {
 
     private void Username_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) {
       sender.Text = args.SelectedItem?.ToString();
+    }
+
+    private async void Password_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
+      if (e.Key == Windows.System.VirtualKey.Enter) {
+        await Virtual_Login_Click();
+      }
     }
   }
 }
