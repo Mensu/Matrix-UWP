@@ -20,7 +20,7 @@ namespace Matrix_UWP.Model {
       this.name = Helpers.Nullable.toString(data["title"]);
       this.description = Helpers.Nullable.toString(data["description"]);
       this.creator = new User(data["author"]);
-      this.type = this.getType(data["type"]);
+      this.type = this.getType(data["type"] ?? "");
     }
 
     public enum Type {

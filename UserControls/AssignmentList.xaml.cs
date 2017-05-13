@@ -20,5 +20,28 @@ namespace Matrix_UWP.UserControls {
     public AssignmentList() {
       this.InitializeComponent();
     }
+
+    public class AssignmentItemClickEventArgs : EventArgs {
+      public AssignmentItemClickEventArgs() { }
+      public AssignmentItemClickEventArgs(int course_id, int ca_id) {
+        this.course_id = course_id;
+        this.ca_id = ca_id;
+      }
+      public int course_id = 0;
+      public int ca_id = 0;
+    }
+
+    public delegate void AssignmentItemClickEventHandler(object sender, AssignmentItemClickEventArgs e);
+    public event AssignmentItemClickEventHandler OnItemClicked;
+
+    private void listView_ItemClick(object sender, ItemClickEventArgs e) {
+      var assignment = e.ClickedItem as Model.Assignment;
+      OnItemClicked?.Invoke(sender, new AssignmentItemClickEventArgs(assignment.course_id, assignment.ca_id));
+    }
+
+    private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+      this.progressingListView.SelectedIndex = -1;
+      this.endedListView.SelectedIndex = -1;
+    }
   }
 }
