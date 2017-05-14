@@ -19,7 +19,7 @@ namespace Matrix_UWP.Helpers {
     }
 
     static public string toReadableString(DateTimeOffset datetime) {
-      return datetime.AddHours(8).ToString("yyyy-MM-dd HH:mm:ss");
+      return datetime.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss");
     }
   }
 }

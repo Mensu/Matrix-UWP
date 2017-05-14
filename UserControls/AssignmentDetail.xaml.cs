@@ -22,5 +22,9 @@ namespace Matrix_UWP.UserControls {
     public AssignmentDetail() {
       this.InitializeComponent();
     }
+    public event EventHandler<RoutedEventArgs> OnShared;
+    private void ShareBtn_Click(object sender, RoutedEventArgs e) {
+      OnShared?.Invoke(sender, e);
+    }
   }
 }
