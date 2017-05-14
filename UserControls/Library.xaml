@@ -17,7 +17,7 @@
     <c:BoolToVisible x:Key="BoolToVisible"/>
     <c:BoolToOpacity x:Key="BoolToOpacity"/>
     <c:DateTimeOffsetToString x:Key="DateTimeOffsetToString"/>
-    <DataTemplate x:Key="NotificationItemView" x:DataType="model:Library">
+    <DataTemplate x:Key="LibraryItemView" x:DataType="model:Library">
       <UserControl>
         <Grid Height="80" Margin="15, 0, 10, 0">
           <VisualStateManager.VisualStateGroups>
@@ -59,7 +59,7 @@
       </Grid.RowDefinitions>
       <ProgressRing x:Name="loadingView" Grid.Row="0" IsActive="{x:Bind vm.isLoading, Mode=OneWay}"/>
       <ListView x:Name="listView" Grid.Row="1"
-                ItemTemplate="{StaticResource NotificationItemView}"
+                ItemTemplate="{StaticResource LibraryItemView}"
                 ItemsSource="{x:Bind vm.list, Mode=OneWay}">
       </ListView>
     </Grid>
