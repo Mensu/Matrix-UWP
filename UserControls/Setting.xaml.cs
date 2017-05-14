@@ -29,6 +29,7 @@ namespace Matrix_UWP.UserControls {
     public async Task ResetContentAsync() {
       try {
         this.vm.curUser = await Model.MatrixRequest.getProfile();
+        this.vm.originalEmail = this.vm.curUser.email;
       } catch (MatrixException.NotLogin err) {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
         // 返回登录页面？
@@ -39,7 +40,8 @@ namespace Matrix_UWP.UserControls {
 
     private async void Button_Click(object sender, RoutedEventArgs e) {
       try {
-        await Model.MatrixRequest.changeProfile(this.nicknameInput.Text, "", "", "");
+        string email = this.vm.originalEmail == this.emailInput.Text ? "" : this.emailInput.Text;
+        await Model.MatrixRequest.changeProfile(this.nicknameInput.Text, email, this.phoneInput.Text, this.homepageInput.Text);
       } catch (MatrixException.NotLogin err) {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
         // 返回登录页面？

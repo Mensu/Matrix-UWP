@@ -12,5 +12,7 @@ namespace Matrix_UWP.ViewModel {
       get { return this._curUser; }
       set { this.SetProperty(ref this._curUser, value); }
     }
+
+    public string originalEmail;
   }
 }

@@ -45,6 +45,8 @@ namespace Matrix_UWP.Views {
       } catch (MatrixException.FatalError err) {
         this.ShowError(this, new HamburgerContentEventArgs(err.Message));
       }
+
+      await this.NotificationView.refreshList();
     }
     private async void HamburgerMenu_OnItemClick(object sender, ItemClickEventArgs e) {
       var menuItem = e.ClickedItem as HamburgerMenuItem;

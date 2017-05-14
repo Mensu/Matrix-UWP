@@ -95,11 +95,7 @@ namespace Matrix_UWP.Views {
       EnableLoginBtn();
       if (!success) return;
         suggetstionInput.addUser(Username.Text);
-      if (Frame.CanGoBack) {
-        Frame.GoBack();
-      } else {
-        Frame.Navigate(typeof(Views.MainPage));
-      }
+      Frame.Navigate(typeof(Views.MainPage));
     }
 
     private async void Captcha_OnSured(object sender, UserControls.CaptchaPopup.CaptchaEventArgs e) {
