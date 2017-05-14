@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tile>
+  <visual>
+    <binding template="TileSmall" branding="nameAndLogo">
+      <group>
+        <subgroup>
+          <text hint-style="caption">sender</text>
+          <text hint-style="captionSubtle">time</text>
+          <text hint-style="captionSubtle">content</text>
+        </subgroup>
+      </group>
+    </binding>
+
+    <binding template="TileMedium" branding="nameAndLogo">
+      <group>
+        <subgroup>
+          <text hint-style="caption">sender</text>
+          <text hint-style="captionSubtle">time</text>
+          <text hint-style="captionSubtle">content</text>
+        </subgroup>
+      </group>
+    </binding>
+
+    <binding template="TileWide" branding="nameAndLogo">
+      <group>
+        <subgroup>
+          <text hint-style="caption">sender</text>
+          <text hint-style="captionSubtle">time</text>
+          <text hint-style="captionSubtle">content</text>
+        </subgroup>
+      </group>
+    </binding>
+
+    <binding template="TileLarge" branding="nameAndLogo">
+      <group>
+        <subgroup>
+          <text hint-style="caption">sender</text>
+          <text hint-style="captionSubtle">time</text>
+          <text hint-style="captionSubtle">content</text>
+        </subgroup>
+      </group>
+    </binding>
+
+  </visual>
+</tile>

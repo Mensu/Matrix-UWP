@@ -61,6 +61,8 @@ namespace Matrix_UWP {
           Debug.Fail("Failed to use Chrome User Agent");
         }
 
+        this.httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.Now;
+
       }
     }
 
