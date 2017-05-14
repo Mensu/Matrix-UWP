@@ -34,8 +34,8 @@ namespace Matrix_UWP.ViewModel {
         return this._curAssignment;
       }
       set {
-        RaisePropertyChanged("canShare");
         this.SetProperty(ref this._curAssignment, value);
+        RaisePropertyChanged("canShare");
       }
     }
 
