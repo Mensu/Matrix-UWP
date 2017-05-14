@@ -40,14 +40,14 @@
           <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-          <TextBlock Text="真实姓名"/>
-          <TextBlock Text="昵称"/>
-          <TextBlock x:Name="textBlock" Text="邮箱"/>
-          <TextBlock x:Name="textBlock1" Text="主页" SelectionChanged="textBlock1_SelectionChanged"/>
-          <TextBlock x:Name="textBlock2" Text="电话"/>
-          <TextBlock x:Name="textBlock3" Text="学院"/>
-          <TextBlock x:Name="textBlock4" Text="专业"/>
-          <TextBlock x:Name="textBlock6" Text="加入时间"/>
+          <TextBlock x:Name="RealName" Text="真实姓名"/>
+          <TextBlock x:Name="NickName" Text="昵称"/>
+          <TextBlock x:Name="Email" Text="邮箱"/>
+          <TextBlock x:Name="MainPage" Text="主页"/>
+          <TextBlock x:Name="Phone" Text="电话"/>
+          <TextBlock x:Name="Academy" Text="学院"/>
+          <TextBlock x:Name="Specialty" Text="专业"/>
+          <TextBlock x:Name="JoinDate" Text="加入时间"/>
 
         </StackPanel>
         <StackPanel Grid.Column="1">
@@ -56,12 +56,12 @@
           <TextBox x:Name="emailInput" Text="{x:Bind vm.curUser.email, Mode=OneWay}"/>
           <TextBox x:Name="homepageInput" Text="{x:Bind vm.curUser.homepage, Mode=OneWay}"/>
           <TextBox x:Name="phoneInput" Text="{x:Bind vm.curUser.phone, Mode=OneWay}" />
-          <TextBox x:Name="textBox" IsEnabled="False" Text="{x:Bind vm.curUser.academy, Mode=OneWay}"/>
-          <TextBox x:Name="textBox1" IsEnabled="False" Text="{x:Bind vm.curUser.specialty, Mode=OneWay}"/>
-          <TextBox x:Name="textBox2" IsEnabled="False" Text="{x:Bind vm.curUser.joinDate, Mode=OneWay}"/>
+          <TextBox x:Name="AcademyInput" IsEnabled="False" Text="{x:Bind vm.curUser.academy, Mode=OneWay}"/>
+          <TextBox x:Name="SpecialtyInput" IsEnabled="False" Text="{x:Bind vm.curUser.specialty, Mode=OneWay}"/>
+          <TextBox x:Name="JoinDateInput" IsEnabled="False" Text="{x:Bind vm.curUser.joinDate, Mode=OneWay}"/>
         </StackPanel>
       </Grid>
     </ScrollViewer>
-    <Button Grid.Row="2" Content="提交" Click="Button_Click" Width="100" Margin="0, 40, 200, 40" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+    <Button Grid.Row="2" Content="提交" x:Name="Submit" Click="Button_Click" Width="100" Margin="0, 40, 200, 40" HorizontalAlignment="Right" VerticalAlignment="Center"/>
   </Grid>
 </UserControl>

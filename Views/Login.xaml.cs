@@ -28,6 +28,7 @@ namespace Matrix_UWP.Views {
     private Model.SuggestionInput suggetstionInput = Model.SuggestionInput.GetInstance();
     public Login() {
       InitializeComponent();
+      NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
       this.DataContext = LoginVM;
     }
 

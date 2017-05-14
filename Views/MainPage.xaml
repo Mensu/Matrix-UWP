@@ -142,7 +142,7 @@
             <UserControls:CourseList x:Name="CourseList" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:Library x:Name="LibraryView" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:NotificationList x:Name="NotificationView" Foreground="Black" Visibility="Collapsed"/>
-            <UserControls:Setting x:Name="SettingView" Foreground="Black" Visibility="Visible"/>
+            <UserControls:Setting x:Name="SettingView" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:About x:Name="AboutView" Foreground="Black" Visibility="Collapsed"/>
           </Grid>
         </Grid>

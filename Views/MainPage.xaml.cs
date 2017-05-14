@@ -18,6 +18,7 @@ namespace Matrix_UWP.Views {
   public sealed partial class MainPage : Page {
     ViewModel.MainPageViewModel vm = new ViewModel.MainPageViewModel();
     public MainPage() {
+      this.NavigationCacheMode = NavigationCacheMode.Enabled;
       this.InitializeComponent();
       this.vm.addMenuItem("主页", "Home", HomeView);
       this.vm.addMenuItem("课程", "Edit", CourseList);
@@ -69,7 +70,20 @@ namespace Matrix_UWP.Views {
     }
 
     private void ShowError(object sender, HamburgerContentEventArgs e) {
-      Debug.WriteLine("does not work: " + e.message);
+      if (has_show) return;
+      ContentDialog dia = new ContentDialog() {
+        PrimaryButtonText = "重新登陆",
+        SecondaryButtonText = "取消",
+        Content = e.message
+      };
+      dia.PrimaryButtonClick += Dia_PrimaryButtonClick;
+      dia.SecondaryButtonClick += Dia_SecondaryButtonClick;
+      has_show = true;
+      dia.ShowAsync();
+    }
+
+    private void Dia_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+      has_show = false;
     }
 
     private void FakeBtn_Click(object sender, RoutedEventArgs e) {
@@ -105,5 +119,15 @@ namespace Matrix_UWP.Views {
       Navigate.SelectedIndex = vm.menu.FindIndex(one => one.Label == "主页");
       await this.ShowContent("主页");
     }
+
+    private void Dia_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+      Frame.Navigate(typeof(Login));
+      has_show = false;
+    }
+    protected override void OnNavigatedFrom(NavigationEventArgs e) {
+      has_show = false;
+    }
+
+    private bool has_show = true;
   }
 }

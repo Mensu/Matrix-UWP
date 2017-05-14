@@ -47,10 +47,5 @@ namespace Matrix_UWP.UserControls {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
       }
     }
-
-     private void textBlock1_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
-    }
+  }
 }
