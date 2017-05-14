@@ -21,9 +21,9 @@ namespace Matrix_UWP.Model {
       this.course_name = Helpers.Nullable.toString(data["courseName"]);
       this.description = Helpers.Nullable.toString(data["description"]);
       this.creator = new User(data["author"]);
-      this.type = this.getType(data["type"]);
       this.student_num_waiting_for_judge = Helpers.Nullable.toInt(data["stuNumWaitingForJudging"]);
       this.total_student_num = Helpers.Nullable.toInt(data["totalStuNum"]);
+      this.type = this.getType(data["type"] ?? "");
     }
 
     public enum Type {
