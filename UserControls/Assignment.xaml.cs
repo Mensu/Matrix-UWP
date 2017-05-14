@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using MarkdownSharp;
+using Windows.ApplicationModel.DataTransfer;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -24,7 +26,11 @@ namespace Matrix_UWP.UserControls {
       this.InitializeComponent();
       this.listColView.DataContext = vm;
       this.detailColView.DataContext = vm;
+      DataTransferManager dataTransferMananger = DataTransferManager.GetForCurrentView();
+      dataTransferMananger.DataRequested += new TypedEventHandler<DataTransferManager, DataRequestedEventArgs>(this.shareAssignment);
+
     }
+
 
     public event HamburgerContentHandler onError;
 
@@ -68,6 +74,29 @@ namespace Matrix_UWP.UserControls {
       } finally {
         this.vm.detailIsLoading = false;
       }
+    }
+
+    private void detailColView_OnShared(object sender, RoutedEventArgs e) {
+      if (vm.curAssignment == Model.Assignment.Null) return ;
+      DataTransferManager.ShowShareUI();
+    }
+    private void shareAssignment(DataTransferManager sender, DataRequestedEventArgs args) {
+
+      string desc = vm.curAssignment.description;
+      DateTimeOffset end = vm.curAssignment.endDate;
+      var options = new MarkdownOptions {
+        AutoHyperlink = true,
+        LinkEmails = true,
+        AutoNewlines = false,
+      };
+      Markdown md = new Markdown(options);
+      string html_description = md.Transform(desc);
+      DataRequest request = args.Request;
+      request.Data.Properties.Title = "Assignment Shared from Matrix_UWP";
+      request.Data.Properties.Description = vm.curAssignment.name;
+      string html_content = HtmlFormatHelper.CreateHtmlFormat($"<h1>DDL: {end.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss")}</h1><div>{html_description}</div>");
+      System.Diagnostics.Debug.WriteLine(html_content);
+      request.Data.SetHtmlFormat(html_content);
     }
   }
 }

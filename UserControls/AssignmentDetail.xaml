@@ -25,7 +25,19 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
     <Grid Padding="36, 36, 36, 36" Grid.Row="0">
-      <TextBlock Text="{Binding curAssignment.name, Mode=OneWay}" FontWeight="Bold" FontSize="30" TextWrapping="Wrap" />
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <TextBlock Grid.Row="0" Text="{Binding curAssignment.name, Mode=OneWay}" FontWeight="Bold" FontSize="30" TextWrapping="Wrap" />
+      <Button Grid.Row="1" IsEnabled="{Binding canShare, Mode=OneWay}" HorizontalAlignment="Right" x:Name="ShareBtn" Click="ShareBtn_Click">
+        <Button.Content>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="&#xE72D;" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets"/>
+            <TextBlock Text=" Share it" VerticalAlignment="Center"/>
+          </StackPanel>
+        </Button.Content>
+      </Button>
     </Grid>
     <ProgressRing x:Name="loadingView" Grid.Row="0" IsActive="{Binding detailIsLoading, Mode=OneWay}"/>
     <ScrollViewer Grid.Row="1">

@@ -33,6 +33,6 @@
       <ColumnDefinition Width="5*"/>
     </Grid.ColumnDefinitions>
     <uc:AssignmentList x:Name="listColView" Grid.Column="0" OnItemClicked="listView_OnItemClicked"/>
-    <uc:AssignmentDetail x:Name="detailColView" Grid.Column="1"/>
+    <uc:AssignmentDetail x:Name="detailColView" Grid.Column="1" OnShared="detailColView_OnShared"/>
   </Grid>
 </UserControl>

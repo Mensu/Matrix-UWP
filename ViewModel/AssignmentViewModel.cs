@@ -28,12 +28,13 @@ namespace Matrix_UWP.ViewModel {
       }
     }
 
-    private Model.Assignment _curAssignment = new Model.Assignment();
+    private Model.Assignment _curAssignment = Model.Assignment.Null;
     public Model.Assignment curAssignment {
       get {
         return this._curAssignment;
       }
       set {
+        RaisePropertyChanged("canShare");
         this.SetProperty(ref this._curAssignment, value);
       }
     }
@@ -62,6 +63,11 @@ namespace Matrix_UWP.ViewModel {
       var now = DateTimeOffset.Now;
       this.progressingList = new ObservableCollection<Model.Assignment>(newList.Where(one => one.startDate <= now && now <= one.endDate));
       this.endedList = new ObservableCollection<Model.Assignment>(newList.Where(one => one.endDate < now));
+      this.curAssignment = Model.Assignment.Null;
+    }
+
+    public bool? canShare {
+      get { return _curAssignment != Model.Assignment.Null; }
     }
   }
 }

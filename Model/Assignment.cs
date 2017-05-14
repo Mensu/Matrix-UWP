@@ -167,5 +167,6 @@ namespace Matrix_UWP.Model {
       }
       return Type.ShortAnswer;
     }
+    static readonly public Assignment Null = new Assignment();
   }
 }
