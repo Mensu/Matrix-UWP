@@ -7,29 +7,61 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
   d:DesignHeight="800"
-  d:DesignWidth="400">
+  d:DesignWidth="1000">
 
-    <Grid Background="#F5F5F5">
-        <TextBlock Text="设置" Padding="30, 0" Style="{StaticResource HeaderTextBlockStyle}"/>
-        <TextBlock Text="昵称" Margin="10,85,325,666"/>
-        <TextBox x:Name="nicknameInput" PlaceholderText="昵称" Margin="80,85,119,666"
-             Text="{x:Bind vm.curUser.nickname, Mode=OneWay}"/>
-        <TextBlock Text="真实姓名" Margin="10,139,325,626"/>
-        <TextBox x:Name="realnameInput" Margin="80,139,119,626" IsEnabled="False"
-             Text="{x:Bind vm.curUser.realname, Mode=OneWay}"/>
-        <Button Content="提交" Margin="313,550,0,218" Click="Button_Click"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Height="28" Margin="10,197,0,0" TextWrapping="Wrap" Text="邮箱" VerticalAlignment="Top" Width="49"/>
-        <TextBox x:Name="emailInput" HorizontalAlignment="Left" Margin="80,197,0,0" TextWrapping="Wrap" Text="{x:Bind vm.curUser.email, Mode=OneWay}" VerticalAlignment="Top" Width="201"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,251,0,0" TextWrapping="Wrap" Text="主页" VerticalAlignment="Top" Height="29" SelectionChanged="textBlock1_SelectionChanged" Width="62"/>
-        <TextBox x:Name="homepageInput" HorizontalAlignment="Left" Margin="80,251,0,0" TextWrapping="Wrap" Text="{x:Bind vm.curUser.homepage, Mode=OneWay}" VerticalAlignment="Top" Width="201"/>
-        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="10,308,0,0" TextWrapping="Wrap" Text="电话" VerticalAlignment="Top"/>
-        <TextBox x:Name="phoneInput" HorizontalAlignment="Left" Margin="80,308,0,0" TextWrapping="Wrap" Text="{x:Bind vm.curUser.phone, Mode=OneWay}" VerticalAlignment="Top" Width="201"/>
-        <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="11,368,0,0" TextWrapping="Wrap" Text="Academy" VerticalAlignment="Top" Height="31"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="80,367,0,0" IsEnabled="False" TextWrapping="Wrap" Text="{x:Bind vm.curUser.academy, Mode=OneWay}" VerticalAlignment="Top" Width="201"/>
-        <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="10,422,0,0" TextWrapping="Wrap" Text="Specialty" VerticalAlignment="Top" Height="32" RenderTransformOrigin="-0.407,0.3"/>
-        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="80,422,0,0" IsEnabled="False" TextWrapping="Wrap" Text="{x:Bind vm.curUser.specialty, Mode=OneWay}" VerticalAlignment="Top" Width="201"/>
-        <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" Margin="0,477,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="33"/>
-        <TextBox x:Name="textBox2" HorizontalAlignment="Left" Margin="80,477,0,0" IsEnabled="False" TextWrapping="Wrap" Text="{x:Bind vm.curUser.joinDate, Mode=OneWay}" VerticalAlignment="Top" Width="201"/>
-        <TextBlock x:Name="textBlock6" HorizontalAlignment="Left" Margin="10,477,0,0" TextWrapping="Wrap" Text="Joindate" VerticalAlignment="Top" Height="32"/>
-    </Grid>
+  <UserControl.Resources>
+    <Style TargetType="TextBlock">
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0, 15"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="Height" Value="33"/>
+    </Style>
+    <Style TargetType="TextBox">
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="0, 15"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="Width" Value="240"/>
+    </Style>
+  </UserControl.Resources>
+  
+  <Grid Background="#F5F5F5">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" Margin="20" Text="设置" Style="{StaticResource HeaderTextBlockStyle}"/>
+    <ScrollViewer Grid.Row="1">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+          <TextBlock Text="真实姓名"/>
+          <TextBlock Text="昵称"/>
+          <TextBlock x:Name="textBlock" Text="邮箱"/>
+          <TextBlock x:Name="textBlock1" Text="主页" SelectionChanged="textBlock1_SelectionChanged"/>
+          <TextBlock x:Name="textBlock2" Text="电话"/>
+          <TextBlock x:Name="textBlock3" Text="学院"/>
+          <TextBlock x:Name="textBlock4" Text="专业"/>
+          <TextBlock x:Name="textBlock6" Text="加入时间"/>
+
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+          <TextBox x:Name="nicknameInput" PlaceholderText="昵称" Text="{x:Bind vm.curUser.nickname, Mode=OneWay}"/>
+          <TextBox x:Name="realnameInput" IsEnabled="False" Text="{x:Bind vm.curUser.realname, Mode=OneWay}" />
+          <TextBox x:Name="emailInput" Text="{x:Bind vm.curUser.email, Mode=OneWay}"/>
+          <TextBox x:Name="homepageInput" Text="{x:Bind vm.curUser.homepage, Mode=OneWay}"/>
+          <TextBox x:Name="phoneInput" Text="{x:Bind vm.curUser.phone, Mode=OneWay}" />
+          <TextBox x:Name="textBox" IsEnabled="False" Text="{x:Bind vm.curUser.academy, Mode=OneWay}"/>
+          <TextBox x:Name="textBox1" IsEnabled="False" Text="{x:Bind vm.curUser.specialty, Mode=OneWay}"/>
+          <TextBox x:Name="textBox2" IsEnabled="False" Text="{x:Bind vm.curUser.joinDate, Mode=OneWay}"/>
+        </StackPanel>
+      </Grid>
+    </ScrollViewer>
+    <Button Grid.Row="2" Content="提交" Click="Button_Click" Width="100" Margin="0, 40, 200, 40" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+  </Grid>
 </UserControl>
