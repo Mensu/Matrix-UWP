@@ -7,6 +7,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:model="using:Matrix_UWP.Model"
   xmlns:converter="using:Matrix_UWP.Converters"
+  xmlns:controls="using:Matrix_UWP.UserControls"
   mc:Ignorable="d"
   d:DesignHeight="720"
   d:DesignWidth="1280"
@@ -51,7 +52,7 @@
     </Style>
     <DataTemplate x:Key="CourseListTemplate" x:DataType="model:Course">
 
-      <Button VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Height="136" Style="{StaticResource ButtonNoStyle}" Width="370" Padding="20, 5, 10, 10" Margin="0, 0, 13, 13">
+      <Button VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Height="136" Style="{StaticResource ButtonNoStyle}" Width="370" Padding="20, 5, 10, 10" Margin="0, 0, 13, 13" Click="Button_Click" Name="{x:Bind course_id}">
         <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -112,7 +113,7 @@
   </UserControl.Resources>
 
   <Grid Background="#F5F5F5">
-    <Pivot Margin="36, 26, 0, 0">
+    <Pivot x:Name="CourstListPivot" Margin="36, 26, 0, 0">
       <PivotItem Header="进行中">
         <GridView Margin="0, 20, 21, 21" ItemsSource="{x:Bind vm.openList, Mode=OneWay}" ItemTemplate="{StaticResource CourseListTemplate}" ItemContainerStyle="{StaticResource GridViewItemStyle}"/>
       </PivotItem>
@@ -122,5 +123,6 @@
         </PivotItem>
       </PivotItem>
     </Pivot>
+    <controls:Assignment x:Name="AssignmentPane" Margin="20" Visibility="Collapsed"/>
   </Grid>
 </UserControl>

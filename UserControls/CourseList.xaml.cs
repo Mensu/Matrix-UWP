@@ -32,6 +32,8 @@ namespace Matrix_UWP.UserControls {
     }
 
     public async Task Refresh() {
+      CourstListPivot.Visibility = Visibility.Visible;
+      AssignmentPane.Visibility = Visibility.Collapsed;
       try {
         vm.Update(await Model.MatrixRequest.getCourseList());
       } catch (MatrixException.NotLogin err) {
@@ -43,6 +45,14 @@ namespace Matrix_UWP.UserControls {
 
     private async void UserControl_Loaded(object sender, RoutedEventArgs e) {
       await Refresh();
+    }
+
+    private async void Button_Click(object sender, RoutedEventArgs e) {
+      Button btn = sender as Button;
+      Task resetAssignment = AssignmentPane.refreshList(Convert.ToInt32(btn.Name));
+      CourstListPivot.Visibility = Visibility.Collapsed;
+      AssignmentPane.Visibility = Visibility.Visible;
+      await resetAssignment;
     }
   }
 }
