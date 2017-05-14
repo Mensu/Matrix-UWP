@@ -4,16 +4,29 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
+using Matrix_UWP.Helpers;
+using System.Text;
+using Windows.Storage.Streams;
 
 namespace Matrix_UWP {
   namespace Model {
     class MatrixRequest {
-      static private Helpers.HttpJsonRequest req = new Helpers.HttpJsonRequest();
+      static private Helpers.HttpJsonRequest json_req = new Helpers.HttpJsonRequest();
+      static private Helpers.MatrixHttpRequest normal_req = new Helpers.MatrixHttpRequest();
       static private Random rand = new Random();
       private const string root = "https://vmatrix.org.cn";
       static async private Task<MatrixRequestResult> getAsync(string uri, string query = "") {
-        query = (query.Length == 0 ? "" : $"&{query}");
-        var obj = await req.getAsync(new Uri($"{uri}?t={rand.Next()}{query}"));
+        string uri_str;
+        if (query != null) {
+          query = (query.Length == 0 ? "" : $"&{query}");
+          uri_str = $"{uri}?t={rand.Next()}{query}";
+        } else {
+          uri_str = $"{uri}";
+        }
+        var obj = await json_req.getAsync(new Uri(uri_str));
         var result = new MatrixRequestResult(obj);
         switch (result.status) {
           case "UNKNOWN_ERROR":
@@ -25,7 +38,7 @@ namespace Matrix_UWP {
         return result;
       }
       static async private Task<MatrixRequestResult> postAsync(string uri, JObject body) {
-        var obj = await req.postAsync(new Uri(uri), body);
+        var obj = await json_req.postAsync(new Uri(uri), body);
         var result = new MatrixRequestResult(obj);
         switch (result.status) {
           case "UNKNOWN_ERROR":
@@ -139,25 +152,16 @@ namespace Matrix_UWP {
         return new Uri($"{root}/api/users/profile/avatar?t={rand.Next()}&username={username}");
       }
 
-      static async public Task<Captcha> getCaptcha() {
+      static async public Task<string> getCaptcha() {
         var result = await getAsync($"{root}/api/captcha");
         if (result.success) {
-          return new Captcha(result.data);
+          return Helpers.Nullable.toString(result.data["captcha"]);
         }
         throw new MatrixException.SoftError(result);
       }
 
       static async public Task<ObservableCollection<Course>> getCourseList() {
-        var result = await getAsync($"{root}/api/courses");
-        if (result.success) {
-          var arr = result.data as JArray;
-          var ret = new ObservableCollection<Course>();
-          foreach (JObject one in arr) {
-            ret.Add(new Course(one));
-          }
-          return ret;
-        }
-        throw new MatrixException.SoftError(result);
+       return await getListAsync<Course>($"{root}/api/courses");
       }
 
       static async public Task<Course> getCourse(int course_id) {
@@ -194,37 +198,16 @@ namespace Matrix_UWP {
       }
 
       static async public Task<ObservableCollection<Notification>> getNotificationList() {
-        var result = await getAsync($"{root}/api/notification/unReadMessages");
-        if (!result.success) {
-          throw new MatrixException.SoftError(result);
-        }
-        var arr = result.data as JArray;
-        var ret = new ObservableCollection<Notification>();
-        foreach (JObject one in arr) {
-          ret.Add(new Notification(one));
-        }
-        result = await getAsync($"{root}/api/notification/readedMessages");
-        if (!result.success) {
-          throw new MatrixException.SoftError(result);
-        }
-        arr = result.data as JArray;
-        foreach (JObject one in arr) {
-          ret.Add(new Notification(one));
+        var ret = await getListAsync<Notification>($"{root}/api/notification/unReadMessages");
+        var read = await getListAsync<Notification>($"{root}/api/notification/readedMessages");
+        foreach (var notification in read) {
+          ret.Add(notification);
         }
         return ret;
       }
 
       static async public Task<ObservableCollection<Assignment>> getAssignmentList(int course_id) {
-        var result = await getAsync($"{root}/api/courses/{course_id}/assignments");
-        if (!result.success) {
-          throw new MatrixException.SoftError(result);
-        }
-        var arr = result.data as JArray;
-        var ret = new ObservableCollection<Assignment>();
-        foreach (JObject one in arr) {
-          ret.Add(new Assignment(one));
-        }
-        return ret;
+       return await getListAsync<Assignment>($"{root}/api/courses/{course_id}/assignments");
       }
 
       static async public Task<Assignment> getAssignment(int course_id, int ca_id) {
@@ -236,12 +219,34 @@ namespace Matrix_UWP {
       }
 
       static async public Task<ObservableCollection<Library>> getLibraryList() {
-        var result = await getAsync($"{root}/api/libraries");
+        return await getListAsync<Library>($"{root}/api/libraries");
+      }
+
+      static async public Task<ObservableCollection<Assignment>> getUnjudgeAssignment() {
+        return await getListAsync<Assignment>($"{root}/api/courses/assignments?state=started&waitingForMyJudging=1", null);
+      }
+
+      static async public Task<ObservableCollection<Assignment>> getUnfinishAssignment() {
+        return await getListAsync<Assignment>($"{root}/api/courses/assignments?state=progressing&unsubmitted=1&notFullGrade=1", null);
+      }
+
+      static async public Task<string> getMatrixNotification() {
+        HttpResponseMessage response;
+        response = await normal_req.getAsync(new Uri($"{root}/data/notification.md"));
+        IBuffer buffer = await response.Content.ReadAsBufferAsync();
+        DataReader reader = DataReader.FromBuffer(buffer);
+        return reader.ReadString(buffer.Length);
+      }
+
+      static async public Task<ObservableCollection<T>> getListAsync<T> (string uri, string query="") {
+        MatrixRequestResult result = await getAsync(uri, query);
         if (result.success) {
-          var arr = result.data as JArray;
-          var ret = new ObservableCollection<Library>();
+          JArray arr = result.data as JArray;
+          ObservableCollection<T> ret = new ObservableCollection<T>();
           foreach (JObject one in arr) {
-            ret.Add(new Library(one));
+            // 软爸爸的C#泛型类不能初始化，实在是很蛋疼啊。
+            // 还好软爸爸留了一条退路。
+            ret.Add((T)Activator.CreateInstance(typeof(T), one));
           }
           return ret;
         }
@@ -275,12 +280,12 @@ namespace Matrix_UWP {
     }
 
     class WrongCaptcha : SoftError {
-      public Model.Captcha captcha {
+      public string captcha {
         get;
       }
       public WrongCaptcha(Model.MatrixRequestResult result) : base("验证码错误") {
         JObject data = result.data as JObject;
-        this.captcha = new Model.Captcha(result.data);
+        this.captcha = Helpers.Nullable.toString(result.data["captcha"]);
       }
     }
   }

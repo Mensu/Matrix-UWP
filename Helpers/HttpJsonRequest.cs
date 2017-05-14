@@ -15,13 +15,13 @@ using Newtonsoft.Json.Linq;
 
 namespace Matrix_UWP {
   namespace Helpers {
-    class HttpJsonRequest {
+    class MatrixHttpRequest {
       private HttpClient httpClient;
-      public HttpJsonRequest() {
+      public MatrixHttpRequest() {
         this.init();
       }
 
-      public async Task<JObject> getAsync(Uri uri) {
+      public async Task<HttpResponseMessage> getAsync(Uri uri) {
         HttpResponseMessage response = null;
         string meta = $"GET {uri}";
         try {
@@ -30,10 +30,10 @@ namespace Matrix_UWP {
         } catch (Exception e) {
           throw new MatrixException.NetworkError(meta, e);
         }
-        return await parseResponseAsJson(response);
+        return response;
       }
 
-      public async Task<JObject> postAsync(Uri uri, JObject body) {
+      public async Task<HttpResponseMessage> postAsync(Uri uri, JObject body) {
         IHttpContent jsonContent = new HttpJsonContent(body);
         HttpResponseMessage response = null;
         string meta = $"POST {uri}";
@@ -44,17 +44,9 @@ namespace Matrix_UWP {
         } catch (Exception e) {
           throw new MatrixException.NetworkError(meta, e);
         }
-        return await parseResponseAsJson(response);
+        return response;
       }
 
-      private async Task<JObject> parseResponseAsJson(HttpResponseMessage response) {
-        var text = await response.Content.ReadAsStringAsync();
-        try {
-          return JsonConvert.DeserializeObject(text) as JObject;
-        } catch (Exception e) {
-          throw new MatrixException.ParseError(e, text);
-        }
-      }
 
       private void init() {
         // HttpClient functionality can be extended by plugging multiple filters together and providing
@@ -69,6 +61,26 @@ namespace Matrix_UWP {
           Debug.Fail("Failed to use Chrome User Agent");
         }
 
+      }
+    }
+
+    class HttpJsonRequest: MatrixHttpRequest {
+
+      private async Task<JObject> parseResponseAsJson(HttpResponseMessage response) {
+        var text = await response.Content.ReadAsStringAsync();
+        try {
+          return JsonConvert.DeserializeObject(text) as JObject;
+        } catch (Exception e) {
+          throw new MatrixException.ParseError(e, text);
+        }
+      }
+      public async new Task<JObject> getAsync(Uri uri) {
+        var response = await base.getAsync(uri);
+        return await parseResponseAsJson(response);
+      }
+      public async new Task<JObject> postAsync(Uri uri, JObject body) {
+        var response = await base.postAsync(uri, body);
+        return await parseResponseAsJson(response);
       }
     }
 
@@ -258,5 +270,5 @@ namespace Matrix_UWP {
       }
     }
   }
-  
+
 }

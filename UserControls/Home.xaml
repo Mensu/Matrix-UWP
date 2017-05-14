@@ -1,0 +1,115 @@
+﻿<UserControl
+  x:Class="Matrix_UWP.UserControls.Home"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.UserControls"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  xmlns:models="using:Matrix_UWP.Model"
+  xmlns:converters="using:Matrix_UWP.Converters"
+  mc:Ignorable="d"
+  d:DesignHeight="720"
+  d:DesignWidth="1280">
+
+  <UserControl.Resources>
+    <converters:DateTimeOffsetToString x:Key="DatetimeOffsetCV"/>
+    <converters:DateTimeOffsetToOffsetString x:Key="OffsetCV"/>
+    <converters:AssignemtTypeToString x:Key="AssignmentToStrCV"/>
+    <converters:BoolToVisible x:Key="BoolToVisibleCV"/>
+    <DataTemplate x:Key="UnfinishedTemplate" x:DataType="models:Assignment">
+      <Grid Height="81" HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="75"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="130"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Margin="3" Text="{x:Bind type, Mode=OneTime, Converter={StaticResource AssignmentToStrCV}}" FontSize="15" TextWrapping="WrapWholeWords" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <!-- 非常暴力地撑出宽度 -->
+        <Line Grid.Column="1" Stretch="Fill" X1="1" Opacity="0"/>
+        <StackPanel Grid.Column="1" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+          <TextBlock Text="{x:Bind name, Mode=OneTime}" HorizontalAlignment="Center" TextTrimming="WordEllipsis" Foreground="#3bafda" FontSize="20"/>
+          <TextBlock Text="{x:Bind course_name, Mode=OneTime}"  HorizontalAlignment="Center" FontSize="13"/>
+        </StackPanel>
+        <Grid Grid.Column="2">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <TextBlock Text="剩       天" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          <TextBlock Text="{x:Bind endDate, Converter={StaticResource OffsetCV}, Mode=OneTime}" Foreground="Red" FontSize="30" Grid.Row="0" LineHeight="51" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          <TextBlock Text="{x:Bind endDate, Converter={StaticResource DatetimeOffsetCV}, Mode=OneTime}" Grid.Row="1" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+          <TextBlock Text="截止" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="11"/>
+        </Grid>
+      </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="NotCorrectedTemplate" x:DataType="models:Assignment">
+      <Grid Height="80" HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="75"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="140"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Margin="3" Text="{x:Bind type, Mode=OneTime, Converter={StaticResource AssignmentToStrCV}}" FontSize="15" TextWrapping="WrapWholeWords" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Line Grid.Column="1" Stretch="Fill" X1="1" Opacity="0"/>
+        <StackPanel Grid.Column="1" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+          <TextBlock Text="{x:Bind name, Mode=OneTime}" HorizontalAlignment="Center" TextTrimming="WordEllipsis" Foreground="#3bafda" FontSize="20"/>
+          <TextBlock Text="{x:Bind course_name, Mode=OneTime}"  HorizontalAlignment="Center" FontSize="13"/>
+        </StackPanel>
+        <Grid Grid.Column="2">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+          </Grid.RowDefinitions>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock VerticalAlignment="Center" FontSize="28" Text="{x:Bind student_num_judged, Mode=OneTime}"/>
+            <TextBlock VerticalAlignment="Center" FontSize="23" Text=" / "/>
+            <TextBlock VerticalAlignment="Center" FontSize="28" Text="{x:Bind total_student_num, Mode=OneTime}"/>
+          </StackPanel>
+          <TextBlock Grid.Row="1" Text="批改进度" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+      </Grid>
+    </DataTemplate>
+  </UserControl.Resources>
+
+  <Grid Background="#F5F5F5">
+    <Grid x:Name="Body" Margin="36" Padding="36, 36, 36, 10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="White">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <StackPanel Orientation="Vertical" Grid.Column="0" Padding="15, 0">
+        <Ellipse Height="175" Width="175">
+          <Ellipse.Fill>
+            <ImageBrush x:Name="UserAvatar" ImageSource="{x:Bind vm.avatar, Mode=OneWay}"/>
+          </Ellipse.Fill>
+        </Ellipse>
+        <StackPanel x:Name="UsernamePane" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 15, 0, 8" Height="30">
+          <TextBlock x:Name="UserNickname" Text="{x:Bind vm.currentUser.nickname, Mode=OneWay}" FontSize="21" VerticalAlignment="Center"/>
+          <TextBlock Text=" (" FontSize="21" VerticalAlignment="Center"/>
+          <TextBlock x:Name="UserRealname" Text="{x:Bind vm.currentUser.realname, Mode=OneWay}" VerticalAlignment="Center" FontSize="21"/>
+          <TextBlock Text=" )" FontSize="21" VerticalAlignment="Center"/>
+        </StackPanel>
+        <Line x:Name="line1" Stretch="Fill" Stroke="#969696" StrokeThickness=".5" X1="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+      </StackPanel>
+      <Pivot Grid.Column="1" Padding="13, 0">
+        <PivotItem Header="TODO">
+          <ScrollViewer>
+            <StackPanel>
+              <TextBlock Text="未完成的作业" FontSize="26" Margin="10, 20" Visibility="{x:Bind vm.has_unfinished, Converter={StaticResource BoolToVisibleCV}}"/>
+              <ListView x:Name="UnfinishAssignment" HorizontalContentAlignment="Stretch" ItemsSource="{x:Bind vm.unfinished_list, Mode=OneWay}" ItemTemplate="{StaticResource UnfinishedTemplate}"/>
+              <TextBlock Text="未批改的作业" FontSize="26" Margin="10, 20" Visibility="{x:Bind vm.has_not_corrected, Converter={StaticResource BoolToVisibleCV}}"/>
+              <ListView x:Name="NotCorrectedAssignemt" ItemsSource="{x:Bind vm.not_corrected_list, Mode=OneWay}" ItemTemplate="{StaticResource NotCorrectedTemplate}"/>
+            </StackPanel>
+          </ScrollViewer>
+        </PivotItem>
+        <PivotItem Header="Matrix植入">
+          <ScrollViewer>
+            <controls:MarkdownTextBlock x:Name="MatrixInsert" LinkClicked="MatrixInsert_LinkClicked" Padding="20" Text="{x:Bind vm.matrix_notification, Mode=OneWay}"/>
+          </ScrollViewer>
+        </PivotItem>
+      </Pivot>
+    </Grid>
+  </Grid>
+</UserControl>
