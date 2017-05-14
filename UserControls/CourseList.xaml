@@ -50,7 +50,6 @@
       </Setter>
     </Style>
     <DataTemplate x:Key="CourseListTemplate" x:DataType="model:Course">
-
       <Button VerticalContentAlignment="Top" HorizontalContentAlignment="Left" Height="136" Style="{StaticResource ButtonNoStyle}" Width="370" Padding="20, 5, 10, 10" Margin="0, 0, 13, 13">
         <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
           <Grid.RowDefinitions>

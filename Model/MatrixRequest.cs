@@ -5,16 +5,28 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
+using Matrix_UWP.Helpers;
+using System.Text;
+using Windows.Storage.Streams;
 
 namespace Matrix_UWP {
   namespace Model {
     class MatrixRequest {
-      static private Helpers.HttpJsonRequest req = new Helpers.HttpJsonRequest();
+      static private Helpers.HttpJsonRequest json_req = new Helpers.HttpJsonRequest();
+      static private Helpers.MatrixHttpRequest normal_req = new Helpers.MatrixHttpRequest();
       static private Random rand = new Random();
       private const string root = "https://vmatrix.org.cn";
       static async private Task<MatrixRequestResult> getAsync(string uri, string query = "") {
-        query = (query.Length == 0 ? "" : $"&{query}");
-        var obj = await req.getAsync(new Uri($"{uri}?t={rand.Next()}{query}"));
+        string uri_str;
+        if (query != null) {
+          query = (query.Length == 0 ? "" : $"&{query}");
+          uri_str = $"{uri}?t={rand.Next()}{query}";
+        } else {
+          uri_str = $"{uri}";
+        }
+        var obj = await json_req.getAsync(new Uri(uri_str));
         var result = new MatrixRequestResult(obj);
         switch (result.status) {
           case "UNKNOWN_ERROR":
@@ -26,7 +38,7 @@ namespace Matrix_UWP {
         return result;
       }
       static async private Task<MatrixRequestResult> postAsync(string uri, JObject body) {
-        var obj = await req.postAsync(new Uri(uri), body);
+        var obj = await json_req.postAsync(new Uri(uri), body);
         var result = new MatrixRequestResult(obj);
         switch (result.status) {
           case "UNKNOWN_ERROR":
@@ -140,10 +152,10 @@ namespace Matrix_UWP {
         return new Uri($"{root}/api/users/profile/avatar?t={rand.Next()}&username={username}");
       }
 
-      static async public Task<Captcha> getCaptcha() {
+      static async public Task<string> getCaptcha() {
         var result = await getAsync($"{root}/api/captcha");
         if (result.success) {
-          return new Captcha(result.data);
+          return Helpers.Nullable.toString(result.data["captcha"]);
         }
         throw new MatrixException.SoftError(result);
       }
@@ -210,12 +222,24 @@ namespace Matrix_UWP {
         return await getListAsync<Library>($"{root}/api/libraries");
       }
 
-      static async public Task<ObservableCollection<Assignment>> getUnjudgeAssigment() {
-        return await getListAsync<Assignment>($"{root}/api/courses/assignments?state=started&waitingForMyJudging=1");
+      static async public Task<ObservableCollection<Assignment>> getUnjudgeAssignment() {
+        return await getListAsync<Assignment>($"{root}/api/courses/assignments?state=started&waitingForMyJudging=1", null);
       }
 
-      static async public Task<ObservableCollection<T>> getListAsync<T> (string url) {
-        MatrixRequestResult result = await getAsync(url);
+      static async public Task<ObservableCollection<Assignment>> getUnfinishAssignment() {
+        return await getListAsync<Assignment>($"{root}/api/courses/assignments?state=progressing&unsubmitted=1&notFullGrade=1", null);
+      }
+
+      static async public Task<string> getMatrixNotification() {
+        HttpResponseMessage response;
+        response = await normal_req.getAsync(new Uri($"{root}/data/notification.md"));
+        IBuffer buffer = await response.Content.ReadAsBufferAsync();
+        DataReader reader = DataReader.FromBuffer(buffer);
+        return reader.ReadString(buffer.Length);
+      }
+
+      static async public Task<ObservableCollection<T>> getListAsync<T> (string uri, string query="") {
+        MatrixRequestResult result = await getAsync(uri, query);
         if (result.success) {
           JArray arr = result.data as JArray;
           ObservableCollection<T> ret = new ObservableCollection<T>();
@@ -256,12 +280,12 @@ namespace Matrix_UWP {
     }
 
     class WrongCaptcha : SoftError {
-      public Model.Captcha captcha {
+      public string captcha {
         get;
       }
       public WrongCaptcha(Model.MatrixRequestResult result) : base("验证码错误") {
         JObject data = result.data as JObject;
-        this.captcha = new Model.Captcha(result.data);
+        this.captcha = Helpers.Nullable.toString(result.data["captcha"]);
       }
     }
   }

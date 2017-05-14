@@ -9,7 +9,7 @@
   d:DesignHeight="300"
   d:DesignWidth="400">
 
-  <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+  <Grid Background="#F5F5F5">
     <TextBlock Text="设置" Padding="30, 0" Style="{StaticResource HeaderTextBlockStyle}"/>
     <TextBlock Text="昵称" Margin="10,90,325,166"/>
     <TextBox x:Name="nicknameInput" PlaceholderText="昵称" Margin="75,85,124,166"

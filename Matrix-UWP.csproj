@@ -95,8 +95,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\AssignemtTypeTo.cs" />
     <Compile Include="Converters\BoolTo.cs" />
-    <Compile Include="Converters\CaptchaTo.cs" />
     <Compile Include="Converters\DateTimeOffsetTo.cs" />
     <Compile Include="Converters\DoubleTo.cs" />
     <Compile Include="Converters\UserRoleTo.cs" />
@@ -106,7 +106,6 @@
     <Compile Include="Helpers\ISOStringConverter.cs" />
     <Compile Include="Helpers\Nullable.cs" />
     <Compile Include="Model\Assignment.cs" />
-    <Compile Include="Model\Captcha.cs" />
     <Compile Include="Model\Course.cs" />
     <Compile Include="Model\Library.cs" />
     <Compile Include="Model\MatrixRequest.cs" />

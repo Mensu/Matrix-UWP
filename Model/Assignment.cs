@@ -18,16 +18,18 @@ namespace Matrix_UWP.Model {
       this.startDate = Helpers.Nullable.toDateTimeOffset(data["startdate"], DateTimeOffset.MinValue);
       this.endDate = Helpers.Nullable.toDateTimeOffset(data["enddate"], DateTimeOffset.MinValue);
       this.name = Helpers.Nullable.toString(data["title"]);
+      this.course_name = Helpers.Nullable.toString(data["courseName"]);
       this.description = Helpers.Nullable.toString(data["description"]);
       this.creator = new User(data["author"]);
       this.type = this.getType(data["type"]);
-      this.total_student_num = Helpers.Nullable.toInt(data["stuNumWaitingForJudging"]);
-      this.student_num_waiting_for_judge = Helpers.Nullable.toInt(data["totalStuNum"]);
+      this.student_num_waiting_for_judge = Helpers.Nullable.toInt(data["stuNumWaitingForJudging"]);
+      this.total_student_num = Helpers.Nullable.toInt(data["totalStuNum"]);
     }
 
     public enum Type {
       RealtimeProgramming,
       ScheduleProgramming,
+      ProgrammingProblem,
       Choice,
       Report,
       FileUpload,
@@ -106,18 +108,46 @@ namespace Matrix_UWP.Model {
 
     private int _total_student_num;
     public int total_student_num {
-      get { return _total_student_num; }
-      set { SetProperty(ref _total_student_num, value); }
+      get {
+        return _total_student_num;
+      }
+      set {
+        SetProperty(ref _total_student_num, value);
+        RaisePropertyChanged("student_num_judged");
+      }
     }
 
     private int _student_num_waiting_for_judge;
     public int student_num_waiting_for_judge {
-      get { return _student_num_waiting_for_judge; }
-      set { SetProperty(ref _student_num_waiting_for_judge, value); }
+      get {
+        return _student_num_waiting_for_judge;
+      }
+      set {
+        SetProperty(ref _student_num_waiting_for_judge, value);
+        RaisePropertyChanged("student_num_judged");
+      }
+    }
+
+    public int student_num_judged {
+      get {
+        return _total_student_num - _student_num_waiting_for_judge;
+      }
+    }
+
+    private string _course_name;
+    public string course_name {
+      get {
+        return _course_name;
+      }
+      set {
+        SetProperty(ref _course_name, value);
+      }
     }
 
     private Type getType(JToken token) {
       switch (token.ToString()) {
+        case "Programming problem":
+          return Type.ProgrammingProblem;
         case "Realtime Programming":
           return Type.RealtimeProgramming;
         case "Schedule Programming":
@@ -137,6 +167,5 @@ namespace Matrix_UWP.Model {
       }
       return Type.ShortAnswer;
     }
-
   }
 }

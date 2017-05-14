@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -19,13 +19,12 @@ namespace Matrix_UWP.Views {
     ViewModel.MainPageViewModel vm = new ViewModel.MainPageViewModel();
     public MainPage() {
       this.InitializeComponent();
-
+      this.vm.addMenuItem("主页", "Home", HomeView);
       this.vm.addMenuItem("课程", "Edit", CourseList);
       this.vm.addMenuItem("题库", "Library", LibraryView);
       this.vm.addMenuItem("通知", "Read", NotificationView);
       this.vm.addMenuItem("设置", "Setting", SettingView);
       this.vm.addMenuItem("关于", "Tag", AboutView);
-
       Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(500, 620));
     }
 
@@ -98,6 +97,11 @@ namespace Matrix_UWP.Views {
     }
 
     private async void Home_Click(object sender, RoutedEventArgs e) {
+      Navigate.SelectedIndex = vm.menu.FindIndex(one => one.Label == "主页");
+      await this.ShowContent("主页");
+    }
+
+    protected override async void OnNavigatedTo(NavigationEventArgs e) {
       Navigate.SelectedIndex = vm.menu.FindIndex(one => one.Label == "主页");
       await this.ShowContent("主页");
     }

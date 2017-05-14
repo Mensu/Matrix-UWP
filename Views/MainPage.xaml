@@ -137,7 +137,8 @@
               </Button.Flyout>
             </Button>
           </Grid>
-          <Grid Grid.Row="1">
+          <Grid Grid.Row="1" Background="#F5F5F5">
+            <UserControls:Home x:Name="HomeView" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:CourseList x:Name="CourseList" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:Library x:Name="LibraryView" Foreground="Black" Visibility="Collapsed"/>
             <UserControls:NotificationList x:Name="NotificationView" Foreground="Black" Visibility="Collapsed"/>

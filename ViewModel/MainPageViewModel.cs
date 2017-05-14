@@ -10,7 +10,6 @@ using Windows.UI.Xaml.Controls;
 namespace Matrix_UWP.ViewModel {
   public class MainPageViewModel : BindableBase {
     internal HamburgerMenuItemCollection menu = new HamburgerMenuItemCollection() {
-      new HamburgerMenuGlyphItem() { Glyph = "Home", Label = "主页" }
     };
     private Model.User _curUser = new Model.User();
     public Model.User curUser {
