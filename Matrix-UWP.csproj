@@ -95,8 +95,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\AssignemtTypeTo.cs" />
     <Compile Include="Converters\BoolTo.cs" />
-    <Compile Include="Converters\CaptchaTo.cs" />
     <Compile Include="Converters\DateTimeOffsetTo.cs" />
     <Compile Include="Converters\DoubleTo.cs" />
     <Compile Include="Converters\UserRoleTo.cs" />
@@ -106,7 +106,6 @@
     <Compile Include="Helpers\ISOStringConverter.cs" />
     <Compile Include="Helpers\Nullable.cs" />
     <Compile Include="Model\Assignment.cs" />
-    <Compile Include="Model\Captcha.cs" />
     <Compile Include="Model\Course.cs" />
     <Compile Include="Model\Library.cs" />
     <Compile Include="Model\MatrixRequest.cs" />
@@ -130,6 +129,9 @@
     <Compile Include="UserControls\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Library.xaml.cs">
       <DependentUpon>Library.xaml</DependentUpon>
     </Compile>
@@ -137,6 +139,7 @@
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AssignmentViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\LibraryViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\CourseListViewModel.cs" />
@@ -205,6 +208,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CourseList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
