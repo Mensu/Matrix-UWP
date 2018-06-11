@@ -13,16 +13,16 @@ namespace Matrix_UWP.Model {
         token = new JObject();
       }
       var data = token as JObject;
-      this.course_id = Helpers.Nullable.toInt(data["course_id"]);
-      this.ca_id = Helpers.Nullable.toInt(data["ca_id"]);
-      this.startDate = Helpers.Nullable.toDateTimeOffset(data["startdate"], DateTimeOffset.MinValue);
-      this.endDate = Helpers.Nullable.toDateTimeOffset(data["enddate"], DateTimeOffset.MinValue);
-      this.name = Helpers.Nullable.toString(data["title"]);
-      this.course_name = Helpers.Nullable.toString(data["courseName"]);
-      this.description = Helpers.Nullable.toString(data["description"]);
+      this.course_id = Helpers.Nullable.ToInt(data["course_id"]);
+      this.ca_id = Helpers.Nullable.ToInt(data["ca_id"]);
+      this.startDate = Helpers.Nullable.ToDateTimeOffset(data["startdate"], DateTimeOffset.MinValue);
+      this.endDate = Helpers.Nullable.ToDateTimeOffset(data["enddate"], DateTimeOffset.MinValue);
+      this.name = Helpers.Nullable.ToString(data["title"]);
+      this.course_name = Helpers.Nullable.ToString(data["courseName"]);
+      this.description = Helpers.Nullable.ToString(data["description"]);
       this.creator = new User(data["author"]);
-      this.student_num_waiting_for_judge = Helpers.Nullable.toInt(data["stuNumWaitingForJudging"]);
-      this.total_student_num = Helpers.Nullable.toInt(data["totalStuNum"]);
+      this.student_num_waiting_for_judge = Helpers.Nullable.ToInt(data["stuNumWaitingForJudging"]);
+      this.total_student_num = Helpers.Nullable.ToInt(data["totalStuNum"]);
       this.type = this.getType(data["type"] ?? "");
     }
 

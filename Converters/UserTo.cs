@@ -13,7 +13,7 @@ namespace Matrix_UWP.Converters {
       if (curUser == null) {
         return new BitmapImage(new Uri("ms-appx:///Assets/Login/Avatar.png"));
       } else {
-        return new BitmapImage(Model.MatrixRequest.getAvatarUri(curUser.username));
+        return new BitmapImage(Model.MatrixRequest.GetAvatarUri(curUser.username));
       }
     }
 

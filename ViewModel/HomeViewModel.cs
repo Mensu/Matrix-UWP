@@ -67,13 +67,13 @@ namespace Matrix_UWP.ViewModel {
     }
 
     public async Task update() {
-      this.unfinished_list = await Model.MatrixRequest.getUnfinishAssignment();
-      this.not_corrected_list = await Model.MatrixRequest.getUnjudgeAssignment();
-      this.matrix_notification = await Model.MatrixRequest.getMatrixNotification();
-      Model.User curUser = await Model.MatrixRequest.getProfile();
+      this.unfinished_list = await Model.MatrixRequest.GetUnfinishAssignment();
+      this.not_corrected_list = await Model.MatrixRequest.GetUnjudgeAssignment();
+      this.matrix_notification = await Model.MatrixRequest.GetMatrixNotification();
+      Model.User curUser = await Model.MatrixRequest.GetProfile();
       if (curUser.user_id != _currentUser.user_id) {
         currentUser = curUser;
-        avatar = new BitmapImage(Model.MatrixRequest.getAvatarUri(curUser.username));
+        avatar = new BitmapImage(Model.MatrixRequest.GetAvatarUri(curUser.username));
       }
     }
   }

@@ -32,7 +32,7 @@ namespace Matrix_UWP.Views {
     private async void Page_Loaded(object sender, RoutedEventArgs e) {
       bool isLogin = false;
       try {
-        isLogin = await Model.MatrixRequest.isLogin();
+        isLogin = await Model.MatrixRequest.IsLogin();
       } catch (MatrixException.FatalError err) {
         this.ShowError(this, new HamburgerContentEventArgs(err.Message));
       }
@@ -41,7 +41,7 @@ namespace Matrix_UWP.Views {
       }
 
       try {
-        this.vm.curUser = await Model.MatrixRequest.getProfile();
+        this.vm.curUser = await Model.MatrixRequest.GetProfile();
       } catch (MatrixException.FatalError err) {
         this.ShowError(this, new HamburgerContentEventArgs(err.Message));
       }

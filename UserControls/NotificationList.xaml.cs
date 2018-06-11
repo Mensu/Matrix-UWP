@@ -37,7 +37,7 @@ namespace Matrix_UWP.UserControls {
       ObservableCollection<Model.Notification> newList = vm.list;
       vm.isLoading = true;
       try {
-        newList = await Model.MatrixRequest.getNotificationList();
+        newList = await Model.MatrixRequest.GetNotificationList();
       } catch (MatrixException.SoftError err) {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
         return;

@@ -33,7 +33,7 @@ namespace Matrix_UWP.UserControls {
       ObservableCollection<Model.Library> newList = vm.list;
       vm.isLoading = true;
       try {
-        newList = await Model.MatrixRequest.getLibraryList();
+        newList = await Model.MatrixRequest.GetLibraryList();
       } catch (MatrixException.SoftError err) {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
         return;

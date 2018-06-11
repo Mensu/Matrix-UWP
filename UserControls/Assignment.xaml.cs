@@ -35,7 +35,7 @@ namespace Matrix_UWP.UserControls {
     public event HamburgerContentHandler onError;
 
     public async Task ResetContentAsync() {
-      var courseList = await Model.MatrixRequest.getCourseList();
+      var courseList = await Model.MatrixRequest.GetCourseList();
       await refreshList(59);
     }
 
@@ -44,7 +44,7 @@ namespace Matrix_UWP.UserControls {
       bool success = false;
       this.vm.listIsLoading = true;
       try {
-        newList = await Model.MatrixRequest.getAssignmentList(course_id);
+        newList = await Model.MatrixRequest.GetAssignmentList(course_id);
         success = true;
       } catch (MatrixException.SoftError err) {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
@@ -64,7 +64,7 @@ namespace Matrix_UWP.UserControls {
     private async void listView_OnItemClicked(object sender, AssignmentList.AssignmentItemClickEventArgs e) {
       this.vm.detailIsLoading = true;
       try {
-        this.vm.curAssignment = await Model.MatrixRequest.getAssignment(e.course_id, e.ca_id);
+        this.vm.curAssignment = await Model.MatrixRequest.GetAssignment(e.course_id, e.ca_id);
       } catch (MatrixException.SoftError err) {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
         return;

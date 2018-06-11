@@ -35,7 +35,7 @@ namespace Matrix_UWP.UserControls {
       CourstListPivot.Visibility = Visibility.Visible;
       AssignmentPane.Visibility = Visibility.Collapsed;
       try {
-        vm.Update(await Model.MatrixRequest.getCourseList());
+        vm.Update(await Model.MatrixRequest.GetCourseList());
       } catch (MatrixException.NotLogin err) {
         onError?.Invoke(this, new HamburgerContentEventArgs(err.Message));
       } catch (MatrixException.MatrixException err) {

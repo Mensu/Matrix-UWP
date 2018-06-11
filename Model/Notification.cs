@@ -14,10 +14,10 @@ namespace Matrix_UWP.Model {
         token = new JObject();
       }
       var data = token as JObject;
-      this.msg_id = Helpers.Nullable.toInt(data["id"]);
-      this.is_read = Helpers.Nullable.toBool(data["status"]);
-      this.time = Helpers.Nullable.toDateTimeOffset(data["time"], DateTimeOffset.MinValue);
-      this.type = this.stringToType(Helpers.Nullable.toString(data["type"]));
+      this.msg_id = Helpers.Nullable.ToInt(data["id"]);
+      this.is_read = Helpers.Nullable.ToBool(data["status"]);
+      this.time = Helpers.Nullable.ToDateTimeOffset(data["time"], DateTimeOffset.MinValue);
+      this.type = this.stringToType(Helpers.Nullable.ToString(data["type"]));
       this.content = this.getContent(data["content"]);
       this.sender = this.getSender(data["sender"]);
     }
@@ -84,7 +84,7 @@ namespace Matrix_UWP.Model {
     }
 
     public async Task toggleReadState() {
-      await MatrixRequest.changeMsgState(this.msg_id, !this.is_read);
+      await MatrixRequest.ChangeMsgState(this.msg_id, !this.is_read);
     }
 
     private Type stringToType(string str) {
@@ -104,11 +104,11 @@ namespace Matrix_UWP.Model {
     private string getContent(JToken content) {
       switch (this.type) {
         case Type.Course:
-          return Helpers.Nullable.toString(content["text"]);
+          return Helpers.Nullable.ToString(content["text"]);
         case Type.Homework:
-          return $"{Helpers.Nullable.toString(content["action"])}了作业“{Helpers.Nullable.toString(content["prob_title"])}”";
+          return $"{Helpers.Nullable.ToString(content["action"])}了作业“{Helpers.Nullable.ToString(content["prob_title"])}”";
         case Type.Discussion:
-          string title = Helpers.Nullable.toString(content["title"]);
+          string title = Helpers.Nullable.ToString(content["title"]);
           if (content["text"] == null) {
             if (content["rep_id"] == null) {
               return $"评论了你的话题“{title}”";
@@ -125,16 +125,16 @@ namespace Matrix_UWP.Model {
         default:
           break;
       }
-      return Helpers.Nullable.toString(content);
+      return Helpers.Nullable.ToString(content);
     }
 
     private string getSender(JToken sender) {
       switch (this.type) {
         case Type.Course:
-          return Helpers.Nullable.toString(sender["name"]);
+          return Helpers.Nullable.ToString(sender["name"]);
         case Type.Homework:
         case Type.Discussion:
-          return Helpers.Nullable.toString(sender["name"]?["nickname"]);
+          return Helpers.Nullable.ToString(sender["name"]?["nickname"]);
         default:
           break;
       }

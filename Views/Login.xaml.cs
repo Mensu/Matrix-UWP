@@ -54,7 +54,7 @@ namespace Matrix_UWP.Views {
     private async Task<bool> TryLogin() {
       Model.User currentUser;
       try {
-        currentUser = await Model.MatrixRequest.login(LoginVM.username, LoginVM.password, LoginVM.captcha);
+        currentUser = await Model.MatrixRequest.Login(LoginVM.username, LoginVM.password, LoginVM.captcha);
         return true;
       } catch (MatrixException.WrongPassword err) {
         ShowError("Haha，密码输错了.");
@@ -64,7 +64,7 @@ namespace Matrix_UWP.Views {
         } else {
           useCaptcha = true;
         }
-        captchaSvg = err.captcha;
+        captchaSvg = err.Captcha;
       } catch (MatrixException.FatalError err) {
         ShowError($"搞出事了吧？\n致命错误：{err.Message}");
       } catch (MatrixException.MatrixException err) {
@@ -111,7 +111,7 @@ namespace Matrix_UWP.Views {
     private void Username_LostFocus(object sender, RoutedEventArgs e) {
       if (Username.Text == "") return;
       try {
-        LoginVM.avatar = new BitmapImage(Model.MatrixRequest.getAvatarUri(Username.Text));
+        LoginVM.avatar = new BitmapImage(Model.MatrixRequest.GetAvatarUri(Username.Text));
       } catch (Exception err) {
         LoginVM.avatar = defaultAvatar;
       }

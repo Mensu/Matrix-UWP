@@ -13,12 +13,12 @@ namespace Matrix_UWP.Model {
         token = new JObject();
       }
       var data = token as JObject;
-      this.lib_id = Helpers.Nullable.toInt(data["lib_id"]);
-      this.owner = Helpers.Nullable.toString(data["creator"]);
-      this.name = Helpers.Nullable.toString(data["name"]);
-      this.problemNum = Helpers.Nullable.toInt(data["problem_num"]);
-      this.memberNum = Helpers.Nullable.toInt(data["member_num"]);
-      this.createdDate = Helpers.Nullable.toDateTimeOffset(data["created_at"], DateTimeOffset.MinValue);
+      this.lib_id = Helpers.Nullable.ToInt(data["lib_id"]);
+      this.owner = Helpers.Nullable.ToString(data["creator"]);
+      this.name = Helpers.Nullable.ToString(data["name"]);
+      this.problemNum = Helpers.Nullable.ToInt(data["problem_num"]);
+      this.memberNum = Helpers.Nullable.ToInt(data["member_num"]);
+      this.createdDate = Helpers.Nullable.ToDateTimeOffset(data["created_at"], DateTimeOffset.MinValue);
     }
 
     public int lib_id {

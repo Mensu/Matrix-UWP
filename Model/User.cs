@@ -13,20 +13,20 @@ namespace Matrix_UWP.Model {
         token = new JObject();
       }
       var data = token as JObject;
-      bool is_valid = Helpers.Nullable.toBool(data["is_valid"], true);
+      bool is_valid = Helpers.Nullable.ToBool(data["is_valid"], true);
       if (is_valid == false) {
         throw new MatrixException.SoftError("登陆失败，请先去网页端验证邮箱");
       }
-      this.user_id = Helpers.Nullable.toInt(data["user_id"]);
-      this.username = Helpers.Nullable.toString(data["username"]);
-      this.realname = Helpers.Nullable.toString(data["realname"]);
-      this.nickname = Helpers.Nullable.toString(data["nickname"]);
-      this.email = Helpers.Nullable.toString(data["email"]);
-      this.phone = Helpers.Nullable.toString(data["phone"], "");
-      this.homepage = Helpers.Nullable.toString(data["homepage"], "");
-      this.academy = Helpers.Nullable.toString(data["academy"]);
-      this.specialty = Helpers.Nullable.toString(data["specialty"]);
-      this.joinDate = Helpers.Nullable.toDateTimeOffset(data["create_at"], DateTimeOffset.MinValue);
+      this.user_id = Helpers.Nullable.ToInt(data["user_id"]);
+      this.username = Helpers.Nullable.ToString(data["username"]);
+      this.realname = Helpers.Nullable.ToString(data["realname"]);
+      this.nickname = Helpers.Nullable.ToString(data["nickname"]);
+      this.email = Helpers.Nullable.ToString(data["email"]);
+      this.phone = Helpers.Nullable.ToString(data["phone"], "");
+      this.homepage = Helpers.Nullable.ToString(data["homepage"], "");
+      this.academy = Helpers.Nullable.ToString(data["academy"]);
+      this.specialty = Helpers.Nullable.ToString(data["specialty"]);
+      this.joinDate = Helpers.Nullable.ToDateTimeOffset(data["create_at"], DateTimeOffset.MinValue);
     }
 
     public int user_id {
