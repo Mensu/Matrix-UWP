@@ -102,7 +102,7 @@ namespace Matrix_UWP {
           HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter();
           HttpCookieCollection cookieCollection = filter.CookieManager.GetCookies(requestUri);
 
-          var csrf = cookieCollection.First(cookie => cookie.Name == "X-CSRF-Token");
+          var csrf = cookieCollection.FirstOrDefault(cookie => cookie.Name == "X-CSRF-Token");
           if (csrf != null) {
             request.Headers.Add(csrf.Name, csrf.Value);
             Debug.Write("csrf token added");
