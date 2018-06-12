@@ -109,7 +109,7 @@ namespace Matrix_UWP {
         if (homepage.Length > 0) {
           body["homepage"] = homepage;
         }
-        
+
         var result = await PostAsync($"{root}/api/users/profile", body);
         if (result.success) {
           return;
@@ -154,7 +154,7 @@ namespace Matrix_UWP {
       }
 
       static async public Task<ObservableCollection<Course>> GetCourseList() {
-       return await GetListAsync<Course>($"{root}/api/courses");
+        return await GetListAsync<Course>($"{root}/api/courses");
       }
 
       static async public Task<Course> GetCourse(int course_id) {
@@ -202,7 +202,7 @@ namespace Matrix_UWP {
       }
 
       static async public Task<ObservableCollection<Assignment>> GetAssignmentList(int course_id) {
-       return await GetListAsync<Assignment>($"{root}/api/courses/{course_id}/assignments");
+        return await GetListAsync<Assignment>($"{root}/api/courses/{course_id}/assignments");
       }
 
       static async public Task<Assignment> GetAssignment(int course_id, int ca_id) {
@@ -233,7 +233,7 @@ namespace Matrix_UWP {
         return reader.ReadString(buffer.Length);
       }
 
-      static async public Task<ObservableCollection<T>> GetListAsync<T> (string uri, string query="") where T : class {
+      static async public Task<ObservableCollection<T>> GetListAsync<T>(string uri, string query = "") where T : class {
         MatrixRequestResult result = await GetAsync(uri, query);
         if (result.success) {
           JArray arr = result.data as JArray;

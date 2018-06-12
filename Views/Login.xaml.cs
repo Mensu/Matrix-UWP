@@ -64,7 +64,7 @@ namespace Matrix_UWP.Views {
         } else {
           useCaptcha = true;
         }
-        captchaSvg = err.Captcha;
+        captchaSvg = await Model.MatrixRequest.GetCaptcha();
       } catch (MatrixException.FatalError err) {
         ShowError($"搞出事了吧？\n致命错误：{err.Message}");
       } catch (MatrixException.MatrixException err) {
