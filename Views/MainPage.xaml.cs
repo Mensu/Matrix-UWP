@@ -30,22 +30,11 @@ namespace Matrix_UWP.Views {
     }
 
     private async void Page_Loaded(object sender, RoutedEventArgs e) {
-      bool isLogin = false;
-      try {
-        isLogin = await Model.MatrixRequest.IsLogin();
-      } catch (MatrixException.FatalError err) {
-        this.ShowError(this, new HamburgerContentEventArgs(err.Message));
-      }
-      if (!isLogin) {
-        Frame.Navigate(typeof(Views.Login));
-      }
-
       try {
         this.vm.curUser = await Model.MatrixRequest.GetProfile();
       } catch (MatrixException.FatalError err) {
         this.ShowError(this, new HamburgerContentEventArgs(err.Message));
       }
-
       await this.NotificationView.refreshList();
     }
     private async void HamburgerMenu_OnItemClick(object sender, ItemClickEventArgs e) {
