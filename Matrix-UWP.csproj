@@ -136,6 +136,7 @@
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AssignmentViewModel.cs" />
+    <Compile Include="ViewModel\CourseDetailViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\LibraryViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
@@ -148,8 +149,11 @@
       <DependentUpon>InfoMessage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\SettingViewModel.cs" />
-    <Compile Include="Views\Contents\Courses.xaml.cs">
-      <DependentUpon>Courses.xaml</DependentUpon>
+    <Compile Include="Views\Contents\CourseDetailPage.xaml.cs">
+      <DependentUpon>CourseDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Contents\CoursesPage.xaml.cs">
+      <DependentUpon>CoursesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Launcher.xaml.cs">
       <DependentUpon>Launcher.xaml</DependentUpon>
@@ -231,7 +235,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Contents\Courses.xaml">
+    <Page Include="Views\Contents\CourseDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Contents\CoursesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
