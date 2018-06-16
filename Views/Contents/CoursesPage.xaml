@@ -1,0 +1,79 @@
+﻿<Page
+  x:Class="Matrix_UWP.Views.Contents.CoursesPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.Views.Contents"
+  xmlns:model="using:Matrix_UWP.Model"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:converter="using:Matrix_UWP.Converters"
+  mc:Ignorable="d"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Page.Resources>
+
+    <!-- Convertors -->
+    <converter:BoolToCourseStatusColor x:Key="BoolToStatusColorCV"/>
+    <converter:BoolToCourseStatusString x:Key="BoolToStatusStringCV"/>
+    <converter:UserRoleToColor x:Key="RoleToColorCV"/>
+    <converter:UserRoleToRoleString x:Key="RoleToStringCV"/>
+    
+    <!-- ItemPanelTemplate -->
+    <ItemsPanelTemplate x:Key="PanelTemplate">
+      <ItemsWrapGrid MaximumRowsOrColumns="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10"/>
+    </ItemsPanelTemplate>
+    
+    <!-- GridView DataTemplate -->
+    <DataTemplate x:Key="CourseList" x:DataType="model:Course">
+      <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Name="CouseHeader" Orientation="Horizontal" Height="42" Padding="0, 10">
+          <TextBlock Text="{x:Bind creator.realname, Mode=OneWay}" Foreground="#337ab7"/>
+          <TextBlock Text="/" Margin="3, 0" Foreground="#337ab7"/>
+          <TextBlock Text="{x:Bind name, Mode=OneTime}" Foreground="#337ab7"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Height="18" Margin="0, 0, 0, 10">
+          <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="0, 0, 10, 0"/>
+          <TextBlock VerticalAlignment="Center" Text="{x:Bind teacher, Mode=OneTime}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Height="18" Margin="0, 0, 0, 10">
+          <TextBlock Text="&#xE163;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="0, 0, 10, 0"/>
+          <TextBlock Text="{x:Bind semester, Mode=OneTime}"/>
+          <TextBlock Text="&#xE187;" Foreground="{x:Bind role, Converter={StaticResource RoleToColorCV}, Mode=OneTime}" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="20, 0, 10, 0"/>
+          <TextBlock Text="{x:Bind role, Converter={StaticResource RoleToStringCV}, Mode=OneTime}" Foreground="{x:Bind role, Converter={StaticResource RoleToColorCV}, Mode=OneTime}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Height="18" Margin="0, 0, 0, 3">
+          <TextBlock Text="&#xE175;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="0, 0, 10, 0"/>
+          <TextBlock Text="进行中的作业" VerticalAlignment="Center" FontSize="13"/>
+          <TextBlock Text="{x:Bind unfinishedNum, Mode=OneTime}" Margin="5, 0" VerticalAlignment="Center"/>
+          <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" FontSize="13" Margin="15, 0, 10, 0"/>
+          <TextBlock Text="{x:Bind stuNum, Mode=OneTime}" VerticalAlignment="Center"/>
+          <Ellipse Height="13" Width="13" Fill="{x:Bind isOpen, Converter={StaticResource BoolToStatusColorCV}}" VerticalAlignment="Center" Margin="20, 0, 10, 0"/>
+          <TextBlock Text="{x:Bind isOpen, Converter={StaticResource BoolToStatusStringCV}}" VerticalAlignment="Center"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+  </Page.Resources>
+
+  <Pivot>
+    <PivotItem Header="所有课程">
+      <GridView ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.Courses}"/>
+    </PivotItem>
+    <PivotItem Header="已完成">
+      <GridView ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.OpenCourses}"/>
+    </PivotItem>
+    <PivotItem Header="未完成">
+      <GridView ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.ClosedCourses}"/>
+    </PivotItem>
+
+    <Pivot.RightHeader>
+      <AppBarButton x:Name="RefreshBtn" Click="RefreshBtn_Click" Icon="Refresh"/>
+    </Pivot.RightHeader>
+  </Pivot>
+</Page>
