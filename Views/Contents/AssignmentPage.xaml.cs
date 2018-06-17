@@ -30,7 +30,7 @@ namespace Matrix_UWP.Views.Contents {
 
     ViewModel.AssignmentViewModel viewModel = new ViewModel.AssignmentViewModel();
 
-    public event NavigationViewContentHandler OnError;
+    public event NavigationViewContentHandler OnContentError;
 
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
