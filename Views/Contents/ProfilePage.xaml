@@ -56,11 +56,11 @@
 
         </StackPanel>
         <StackPanel Grid.Column="1">
-          <TextBox x:Name="nicknameInput" PlaceholderText="昵称" Text="{x:Bind viewModel.curUser.nickname, Mode=OneWay}"/>
-          <TextBox x:Name="realnameInput" IsEnabled="False" Text="{x:Bind viewModel.curUser.realname, Mode=OneWay}" />
-          <TextBox x:Name="emailInput" Text="{x:Bind viewModel.curUser.email, Mode=OneWay}"/>
-          <TextBox x:Name="homepageInput" Text="{x:Bind viewModel.curUser.homepage, Mode=OneWay}"/>
-          <TextBox x:Name="phoneInput" Text="{x:Bind viewModel.curUser.phone, Mode=OneWay}" />
+          <TextBox x:Name="NicknameInput" PlaceholderText="昵称" Text="{x:Bind viewModel.curUser.nickname, Mode=OneWay}"/>
+          <TextBox x:Name="RealnameInput" IsEnabled="False" Text="{x:Bind viewModel.curUser.realname, Mode=OneWay}" />
+          <TextBox x:Name="EmailInput" Text="{x:Bind viewModel.curUser.email, Mode=OneWay}"/>
+          <TextBox x:Name="HomepageInput" Text="{x:Bind viewModel.curUser.homepage, Mode=OneWay}"/>
+          <TextBox x:Name="PhoneInput" Text="{x:Bind viewModel.curUser.phone, Mode=OneWay}" />
           <TextBox x:Name="AcademyInput" IsEnabled="False" Text="{x:Bind viewModel.curUser.academy, Mode=OneWay}"/>
           <TextBox x:Name="SpecialtyInput" IsEnabled="False" Text="{x:Bind viewModel.curUser.specialty, Mode=OneWay}"/>
           <TextBox x:Name="JoinDateInput" IsEnabled="False" Text="{x:Bind viewModel.curUser.joinDate, Mode=OneWay}"/>
