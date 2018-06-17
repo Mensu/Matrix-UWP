@@ -30,6 +30,8 @@ namespace Matrix_UWP.Views.Contents {
 
     ViewModel.AssignmentViewModel viewModel = new ViewModel.AssignmentViewModel();
 
+    public event NavigationViewContentHandler OnError;
+
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
       JObject param = (JObject)JsonConvert.DeserializeObject((string)e.Parameter);
