@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Matrix_UWP.Helpers {
   interface INavigationViewContent {
     Task Refresh();
-    event NavigationViewContentHandler OnError;
+    event NavigationViewContentHandler OnContentError;
   }
 
   delegate void NavigationViewContentHandler(object sender, NavigationViewContentEvent e);
