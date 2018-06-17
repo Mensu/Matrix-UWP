@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Matrix_UWP.Helpers {
-  interface INavigationViewContent {
+  public interface INavigationViewContent {
     Task Refresh();
     event NavigationViewContentHandler OnContentError;
   }
 
-  delegate void NavigationViewContentHandler(object sender, NavigationViewContentEvent e);
+  public delegate void NavigationViewContentHandler(object sender, NavigationViewContentEvent e);
 
-  class NavigationViewContentEvent: EventArgs {
+  public class NavigationViewContentEvent: EventArgs {
     public MatrixException.MatrixException Exception { get; set; }
     public string Message { get; set; }
 
