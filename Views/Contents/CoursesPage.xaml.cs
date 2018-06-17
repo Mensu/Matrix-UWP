@@ -30,7 +30,7 @@ namespace Matrix_UWP.Views.Contents {
     private void GridView_ItemClick(object sender, ItemClickEventArgs e) {
       var course = (Model.Course)e.ClickedItem;
       Debug.WriteLine($"转到课程{course.course_id}: {course.name}");
-      //Frame.Navigate(typeof(CoursePage), course.course_id);
+      Frame.Navigate(typeof(CourseDetailPage), course.course_id);
     }
   }
 }

@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace Matrix_UWP.ViewModel {
   class CourseDetailViewModel: BindableBase {
+    private int courseId = 0;
+    public int CourseId {
+      get => courseId;
+      set => SetProperty(ref courseId, value);
+    }
+
     private Model.Course course = new Model.Course();
     public Model.Course Course {
       get => course;

@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,8 +29,33 @@ namespace Matrix_UWP.Views.Contents {
 
     private ViewModel.CourseDetailViewModel viewModel = new ViewModel.CourseDetailViewModel();
 
-    private void Refresh_Click(object sender, RoutedEventArgs e) {
+    protected override async void OnNavigatedFrom(NavigationEventArgs e) {
+      base.OnNavigatedFrom(e);
+      viewModel.CourseId = (int)e.Parameter;
+      await GetCourse();
+    }
 
+    private async void Refresh_Click(object sender, RoutedEventArgs e) {
+      await GetCourse();
+    }
+
+    private async Task GetCourse() {
+      try {
+        viewModel.Course = await Model.MatrixRequest.GetCourse(viewModel.CourseId);
+        var assignments = await Model.MatrixRequest.GetAssignmentList(viewModel.CourseId);
+        viewModel.Assignments = assignments.ToList();
+      } catch (MatrixException.NetworkError err) {
+        Debug.WriteLine($"请求课程信息错误：{err.Message}");
+      }
+    }
+
+    private void AssignmentList_ItemClick(object sender, ItemClickEventArgs e) {
+      var assignment = (Model.Assignment)e.ClickedItem;
+      var param = new {
+        CsId = assignment.ca_id,
+        CourseId = assignment.course_id,
+      };
+      //Frame.Navigate(typeof(AssignmentPage), JsonConvert.SerializeObject(param));
     }
   }
 }

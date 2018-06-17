@@ -18,7 +18,7 @@
   
   <Pivot>
     <PivotItem x:Name="CourseAssignment" Header="课程题目">
-      <ListView x:Name="AssignmentList" ItemsSource="{x:Bind viewModel.Assignments}">
+      <ListView x:Name="AssignmentList" ItemsSource="{x:Bind viewModel.Assignments}" IsItemClickEnabled="True" ItemClick="AssignmentList_ItemClick">
         <ListView.ItemTemplate>
           <DataTemplate x:DataType="model:Assignment">
             <Grid x:Name="Assignment" HorizontalAlignment="Stretch">
