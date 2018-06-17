@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Matrix_UWP.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,21 +23,23 @@ namespace Matrix_UWP.Views.Contents {
   /// <summary>
   /// 可用于自身或导航至 Frame 内部的空白页。
   /// </summary>
-  public sealed partial class CourseDetailPage : Page {
+  public sealed partial class CourseDetailPage : Page, Helpers.INavigationViewContent {
     public CourseDetailPage() {
       this.InitializeComponent();
     }
 
     private ViewModel.CourseDetailViewModel viewModel = new ViewModel.CourseDetailViewModel();
 
+    public event NavigationViewContentHandler OnContentError;
+
     protected override async void OnNavigatedFrom(NavigationEventArgs e) {
       base.OnNavigatedFrom(e);
       viewModel.CourseId = (int)e.Parameter;
-      await GetCourse();
+      await Refresh();
     }
 
     private async void Refresh_Click(object sender, RoutedEventArgs e) {
-      await GetCourse();
+      await Refresh();
     }
 
     private async Task GetCourse() {
@@ -44,8 +47,9 @@ namespace Matrix_UWP.Views.Contents {
         viewModel.Course = await Model.MatrixRequest.GetCourse(viewModel.CourseId);
         var assignments = await Model.MatrixRequest.GetAssignmentList(viewModel.CourseId);
         viewModel.Assignments = assignments.ToList();
-      } catch (MatrixException.NetworkError err) {
+      } catch (MatrixException.MatrixException err) {
         Debug.WriteLine($"请求课程信息错误：{err.Message}");
+        OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }
     }
 
@@ -56,6 +60,10 @@ namespace Matrix_UWP.Views.Contents {
         CourseId = assignment.course_id,
       };
       //Frame.Navigate(typeof(AssignmentPage), JsonConvert.SerializeObject(param));
+    }
+
+    public async Task Refresh() {
+      await GetCourse();
     }
   }
 }

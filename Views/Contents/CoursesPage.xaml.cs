@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
+using Matrix_UWP.Helpers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -10,27 +12,34 @@ namespace Matrix_UWP.Views.Contents {
   /// <summary>
   /// 可用于自身或导航至 Frame 内部的空白页。
   /// </summary>
-  public sealed partial class CoursesPage : Page {
+  public sealed partial class CoursesPage : Page, Helpers.INavigationViewContent {
     public CoursesPage() {
       this.InitializeComponent();
       NavigationCacheMode = NavigationCacheMode.Enabled;
     }
-
+ 
     private ViewModel.CourseListViewModel viewModel = new ViewModel.CourseListViewModel();
+ 
+    public event NavigationViewContentHandler OnContentError;
 
     private async void RefreshBtn_Click(object sender, RoutedEventArgs e) {
-      try {
-        var courseList = await Model.MatrixRequest.GetCourseList();
-        viewModel.Courses = courseList.ToList();
-      } catch (MatrixException.FatalError err) {
-        Debug.WriteLine($"获取课程列表失败: {err.Message}");
-      }
+      await Refresh();
     }
 
     private void GridView_ItemClick(object sender, ItemClickEventArgs e) {
       var course = (Model.Course)e.ClickedItem;
       Debug.WriteLine($"转到课程{course.course_id}: {course.name}");
       Frame.Navigate(typeof(CourseDetailPage), course.course_id);
+    }
+
+    public async Task Refresh() {
+      try {
+        var courseList = await Model.MatrixRequest.GetCourseList();
+        viewModel.Courses = courseList.ToList();
+      } catch (MatrixException.MatrixException err) {
+        Debug.WriteLine($"获取课程列表失败: {err.Message}");
+        OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
+      }
     }
   }
 }
