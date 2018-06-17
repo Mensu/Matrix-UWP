@@ -100,6 +100,7 @@
     <Compile Include="Converters\UserTo.cs" />
     <Compile Include="Helpers\HttpJsonRequest.cs" />
     <Compile Include="Helpers\IHamburgerContent.cs" />
+    <Compile Include="Helpers\INavigationViewContent.cs" />
     <Compile Include="Helpers\ISOStringConverter.cs" />
     <Compile Include="Helpers\Nullable.cs" />
     <Compile Include="Model\Assignment.cs" />
