@@ -81,7 +81,7 @@
             </Grid>
           </Grid>
 
-          <toolkits:MarkdownTextBlock x:Name="Description"/>
+          <toolkits:MarkdownTextBlock x:Name="Description" Text="{x:Bind viewModel.Assignment.description}"/>
         </Grid>
       </ScrollViewer>
     </PivotItem>

@@ -37,7 +37,6 @@ namespace Matrix_UWP.Views.Contents {
       JObject param = (JObject)JsonConvert.DeserializeObject((string)e.Parameter);
       int courseId = Helpers.Nullable.ToInt(param["CourseId"]);
       int caId = Helpers.Nullable.ToInt(param["CaId"]);
-
       viewModel.Assignment = await Model.MatrixRequest.GetAssignment(courseId, caId);
     }
 
