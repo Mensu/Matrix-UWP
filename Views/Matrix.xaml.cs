@@ -25,6 +25,18 @@ namespace Matrix_UWP.Views {
     }
 
     private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) {
+      
+    }
+
+    private void Profile_Tapped(object sender, TappedRoutedEventArgs e) {
+
+    }
+
+    private async void Refresh_Click(object sender, RoutedEventArgs e) {
+
+    }
+
+    private async void Logout_Click(object sender, RoutedEventArgs e) {
 
     }
   }
