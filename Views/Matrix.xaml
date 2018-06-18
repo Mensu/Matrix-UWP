@@ -3,12 +3,18 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:local="using:Matrix_UWP.Views"
+  xmlns:convertors="using:Matrix_UWP.Converters"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-  <NavigationView IsPaneOpen="True"
+  <Page.Resources>
+    <convertors:UserToAvatar x:Key="UserToAvatarCV"/>
+  </Page.Resources>
+  
+  <NavigationView
+    IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
     x:Name="NavView"
     ItemInvoked="NavView_ItemInvoked"
     BackRequested="NavView_BackRequested">
@@ -117,13 +123,13 @@
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Rectangle x:Name="ProfileClicker" Grid.ColumnSpan="3" Fill="Transparent" Tapped="Profile_Tapped"/>
-            <Rectangle x:Name="Indicator" Grid.Column="0" Fill="{StaticResource AppBarBackgroundThemeBrush}"/>
+            <Rectangle x:Name="Indicator" Grid.Column="0" Fill="{StaticResource AppBarBackgroundThemeBrush}" Visibility="Collapsed"/>
             <Ellipse Height="40" Width="40" Grid.Column="1">
               <Ellipse.Fill>
-                <ImageBrush ImageSource="Assert\StoreLogo.png"/>
+                <ImageBrush ImageSource="{x:Bind viewModel.User, Converter={StaticResource UserToAvatarCV}}"/>
               </Ellipse.Fill>
             </Ellipse>
-            <TextBlock x:Name="Username" Text="HAHA" Grid.Column="2" VerticalAlignment="Center"/>
+            <TextBlock x:Name="Username" Text="{x:Bind viewModel.User.nickname}" Grid.Column="2" VerticalAlignment="Center"/>
           </Grid>
         </ContentPresenter>
       </Grid>
