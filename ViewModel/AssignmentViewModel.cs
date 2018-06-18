@@ -69,5 +69,11 @@ namespace Matrix_UWP.ViewModel {
     public bool? canShare {
       get { return _curAssignment != Model.Assignment.Null; }
     }
+
+    private Model.Assignment assignment;
+    public Model.Assignment Assignment {
+      get => assignment;
+      set => SetProperty(ref assignment, value);
+    }
   }
 }
