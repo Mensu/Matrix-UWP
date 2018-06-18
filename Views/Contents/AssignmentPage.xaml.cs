@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Matrix_UWP.Helpers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Matrix_UWP.Helpers;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,47 +24,46 @@ namespace Matrix_UWP.Views.Contents {
   /// <summary>
   /// 可用于自身或导航至 Frame 内部的空白页。
   /// </summary>
-  public sealed partial class LibrariesPage : Page, Helpers.INavigationViewContent {
-    public LibrariesPage() {
+  public sealed partial class AssignmentPage : Page, Helpers.INavigationViewContent {
+    public AssignmentPage() {
       this.InitializeComponent();
     }
+
+    ViewModel.AssignmentViewModel viewModel = new ViewModel.AssignmentViewModel();
 
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
     public event NavigationViewContentHandler OnContentLoaded;
     public event NavigationViewContentHandler TitleChanged;
 
+    protected override async void OnNavigatedTo(NavigationEventArgs e) {
+      base.OnNavigatedTo(e);
+      JObject param = (JObject)JsonConvert.DeserializeObject((string)e.Parameter);
+      int courseId = Helpers.Nullable.ToInt(param["CourseId"]);
+      int caId = Helpers.Nullable.ToInt(param["CaId"]);
+      await Refresh();
+    }
+
     public async Task Refresh() {
-      // notify start loading
+      int courseId = viewModel.Assignment.course_id;
+      int caId = viewModel.Assignment.ca_id;
+
+      // notify loading
       OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
+
       try {
-        var libraries = await Model.MatrixRequest.GetLibraryList();
-        viewModel.Libraries = libraries.ToList();
+        viewModel.Assignment = await Model.MatrixRequest.GetAssignment(courseId, caId);
       } catch (MatrixException.MatrixException err) {
-        var message = "获取题库列表失败";
+        var message = $"获取课程{courseId}作业{caId}详情失败";
         Debug.WriteLine($"{message}: {err.Message}");
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err, message));
       }
-      // notify loaded end
+
+      // notify loaded
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
-    }
 
-    ViewModel.LibrariesViewModel viewModel = new ViewModel.LibrariesViewModel();
-
-    protected override async void OnNavigatedTo(NavigationEventArgs e) {
-      base.OnNavigatedTo(e);
-      await Refresh();
-<<<<<<< HEAD
-=======
-
-      // Title would not change after refreshing
-      TitleChanged?.Invoke(this, new NavigationViewContentEvent("题库列表"));
->>>>>>> master
-    }
-
-    private void LibrariesPanel_ItemClick(object sender, ItemClickEventArgs e) {
-      var library = (Model.Library)e.ClickedItem;
-      // Todo: Library Detail
+      // set title since assignment name changed.
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent(viewModel.Assignment.name));
     }
   }
 }
