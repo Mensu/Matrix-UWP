@@ -24,6 +24,33 @@ namespace Matrix_UWP.Views {
   public sealed partial class Matrix : Page {
     public Matrix() {
       this.InitializeComponent();
+      ContentFrame.Navigated += ContentPageHandlerInject;
+    }
+
+    // 为导航到的新页面实例注册事件
+    private void ContentPageHandlerInject(object sender, NavigationEventArgs e) {
+      if (!(e.Content is Helpers.INavigationViewContent content)) {
+        Debug.WriteLine($"注入页面失败, 非法的页面: {e.SourcePageType.FullName}");
+        return;
+      }
+      if (!NavContents.Contains(content)) {
+        NavContents.Add(content);
+        content.OnContentError += Content_OnContentError;
+        content.OnContentLoaded += Content_OnContentLoaded;
+        content.OnContentLoading += Content_OnContentLoading;
+      }
+    }
+
+    private void Content_OnContentLoading(object sender, Helpers.NavigationViewContentEvent e) {
+      throw new NotImplementedException();
+    }
+
+    private void Content_OnContentLoaded(object sender, Helpers.NavigationViewContentEvent e) {
+      throw new NotImplementedException();
+    }
+
+    private void Content_OnContentError(object sender, Helpers.NavigationViewContentEvent e) {
+      throw new NotImplementedException();
     }
 
     ViewModel.MatrixViewModel viewModel = new ViewModel.MatrixViewModel();
@@ -60,7 +87,7 @@ namespace Matrix_UWP.Views {
 
     private void NavigateContent(string tag) {
       if (!ContentMap.ContainsKey(tag)) {
-        Debug.WriteLine($"未知的内容{tag}");
+        Debug.WriteLine($"未知的内容: {tag}");
         return;
       }
       if (NavigateHistory.ContainsKey(tag)) {
