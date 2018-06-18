@@ -151,6 +151,7 @@
     <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="Views\Contents\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Contents\AssignmentPage.xaml.cs">
       <DependentUpon>AssignmentPage.xaml</DependentUpon>
     </Compile>
