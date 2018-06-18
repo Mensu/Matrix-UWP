@@ -1,0 +1,42 @@
+﻿<Page
+  x:Class="Matrix_UWP.Views.Contents.LibrariesPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.Views.Contents"
+  xmlns:models="using:Matrix_UWP.Model"
+  xmlns:convertors="using:Matrix_UWP.Converters"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Page.Resources>
+    <convertors:DateTimeOffsetToString x:Key="DateTimeOffsetToCV"/>
+
+    <DataTemplate x:Key="LibrariyItem" x:DataType="models:Library">
+      <Grid Padding="20" Height="100" Width="300">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="1*"/>
+          <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="1"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" x:Name="LibraryName" Text="{x:Bind name}"/>
+        <SymbolIcon Grid.Row="1" Grid.Column="0" Symbol="ContactInfo"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="Owner" Text="{x:Bind owner}"/>
+        <SymbolIcon Grid.Row="1" Grid.Column="2" Symbol="Calendar"/>
+        <TextBlock Grid.Row="1" Grid.Column="3" x:Name="Time" Text="{x:Bind createdDate, Converter={StaticResource DateTimeOffsetToCV}}"/>
+      </Grid>
+    </DataTemplate>
+
+    <ItemsPanelTemplate x:Key="LibrariesPanelTemplate">
+      <ItemsWrapGrid MaximumRowsOrColumns="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" GroupPadding="10"/>
+    </ItemsPanelTemplate>
+  </Page.Resources>
+
+  <GridView x:Name="LibrariesPanel" ItemTemplate="{StaticResource LibrariyItem}" ItemsSource="{x:Bind viewModel}" ItemsPanel="{StaticResource LibrariesPanelTemplate}" ItemClick="LibrariesPanel_ItemClick" IsItemClickEnabled="True"/>
+</Page>
