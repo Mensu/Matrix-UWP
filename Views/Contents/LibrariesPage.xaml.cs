@@ -28,8 +28,12 @@ namespace Matrix_UWP.Views.Contents {
     }
 
     public event NavigationViewContentHandler OnContentError;
+    public event NavigationViewContentHandler OnContentLoading;
+    public event NavigationViewContentHandler OnContentLoaded;
 
     public async Task Refresh() {
+      // notify start loading
+      OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
         var libraries = await Model.MatrixRequest.GetLibraryList();
         viewModel.Libraries = libraries.ToList();
@@ -38,6 +42,8 @@ namespace Matrix_UWP.Views.Contents {
         Debug.WriteLine($"{message}: {err.Message}");
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err, message));
       }
+      // notify loaded end
+      OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
     }
 
     ViewModel.LibrariesViewModel viewModel = new ViewModel.LibrariesViewModel();
