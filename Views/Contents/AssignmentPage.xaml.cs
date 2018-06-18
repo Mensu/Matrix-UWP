@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -43,7 +44,12 @@ namespace Matrix_UWP.Views.Contents {
     public async Task Refresh() {
       int courseId = viewModel.Assignment.course_id;
       int caId = viewModel.Assignment.ca_id;
-      viewModel.Assignment = await Model.MatrixRequest.GetAssignment(courseId, caId);
+      try {
+        viewModel.Assignment = await Model.MatrixRequest.GetAssignment(courseId, caId);
+      } catch (MatrixException.MatrixException err) {
+        Debug.WriteLine($"获取课程{courseId}作业{caId}详情失败: {err.Message}");
+        OnContentError?.Invoke(err);
+      }
     }
   }
 }
