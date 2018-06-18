@@ -23,5 +23,10 @@ namespace Matrix_UWP.Helpers {
       Exception = exception;
       Message = message;
     }
+
+    public NavigationViewContentEvent(string message) {
+      Exception = null;
+      Message = message;
+    }
   }
 }

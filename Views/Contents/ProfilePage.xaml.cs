@@ -36,6 +36,7 @@ namespace Matrix_UWP.Views.Contents {
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
     public event NavigationViewContentHandler OnContentLoaded;
+    public event NavigationViewContentHandler TitleChanged;
 
     // Interface Refresh
     public async Task Refresh() {
@@ -56,6 +57,8 @@ namespace Matrix_UWP.Views.Contents {
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
       await Refresh();
+
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent("个人信息"));
     }
 
     private static readonly Dictionary<string, string> ProfileNames = new Dictionary<string, string> {

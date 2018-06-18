@@ -30,6 +30,7 @@ namespace Matrix_UWP.Views.Contents {
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
     public event NavigationViewContentHandler OnContentLoaded;
+    public event NavigationViewContentHandler TitleChanged;
 
     public async Task Refresh() {
       // notify start loading
@@ -51,6 +52,9 @@ namespace Matrix_UWP.Views.Contents {
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
       await Refresh();
+
+      // Title would not change after refreshing
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent("题库列表"));
     }
 
     private void LibrariesPanel_ItemClick(object sender, ItemClickEventArgs e) {

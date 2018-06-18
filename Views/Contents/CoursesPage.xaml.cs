@@ -21,6 +21,9 @@ namespace Matrix_UWP.Views.Contents {
     private ViewModel.CourseListViewModel viewModel = new ViewModel.CourseListViewModel();
  
     public event NavigationViewContentHandler OnContentError;
+    public event NavigationViewContentHandler OnContentLoading;
+    public event NavigationViewContentHandler OnContentLoaded;
+    public event NavigationViewContentHandler TitleChanged;
 
     private async void RefreshBtn_Click(object sender, RoutedEventArgs e) {
       await Refresh();
@@ -33,6 +36,7 @@ namespace Matrix_UWP.Views.Contents {
     }
 
     public async Task Refresh() {
+      OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
         var courseList = await Model.MatrixRequest.GetCourseList();
         viewModel.Courses = courseList.ToList();
@@ -40,6 +44,15 @@ namespace Matrix_UWP.Views.Contents {
         Debug.WriteLine($"获取课程列表失败: {err.Message}");
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }
+
+      OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
+
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent("课程列表"));
+    }
+
+    protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e) {
+      base.OnNavigatingFrom(e);
+      await Refresh();
     }
   }
 }

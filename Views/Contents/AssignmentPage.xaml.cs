@@ -34,6 +34,7 @@ namespace Matrix_UWP.Views.Contents {
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
     public event NavigationViewContentHandler OnContentLoaded;
+    public event NavigationViewContentHandler TitleChanged;
 
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
@@ -60,6 +61,9 @@ namespace Matrix_UWP.Views.Contents {
 
       // notify loaded
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
+
+      // set title since assignment name changed.
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent(viewModel.Assignment.name));
     }
   }
 }
