@@ -31,6 +31,8 @@ namespace Matrix_UWP.Views.Contents {
     private ViewModel.CourseDetailViewModel viewModel = new ViewModel.CourseDetailViewModel();
 
     public event NavigationViewContentHandler OnContentError;
+    public event NavigationViewContentHandler OnContentLoading;
+    public event NavigationViewContentHandler OnContentLoaded;
 
     protected override async void OnNavigatedFrom(NavigationEventArgs e) {
       base.OnNavigatedFrom(e);
@@ -43,6 +45,7 @@ namespace Matrix_UWP.Views.Contents {
     }
 
     private async Task GetCourse() {
+      OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
         viewModel.Course = await Model.MatrixRequest.GetCourse(viewModel.CourseId);
         var assignments = await Model.MatrixRequest.GetAssignmentList(viewModel.CourseId);
@@ -51,6 +54,7 @@ namespace Matrix_UWP.Views.Contents {
         Debug.WriteLine($"请求课程信息错误：{err.Message}");
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }
+      OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
     }
 
     private void AssignmentList_ItemClick(object sender, ItemClickEventArgs e) {
