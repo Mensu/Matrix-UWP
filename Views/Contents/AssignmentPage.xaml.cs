@@ -32,6 +32,8 @@ namespace Matrix_UWP.Views.Contents {
     ViewModel.AssignmentViewModel viewModel = new ViewModel.AssignmentViewModel();
 
     public event NavigationViewContentHandler OnContentError;
+    public event NavigationViewContentHandler OnContentLoading;
+    public event NavigationViewContentHandler OnContentLoaded;
 
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
@@ -44,12 +46,20 @@ namespace Matrix_UWP.Views.Contents {
     public async Task Refresh() {
       int courseId = viewModel.Assignment.course_id;
       int caId = viewModel.Assignment.ca_id;
+
+      // notify loading
+      OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
+
       try {
         viewModel.Assignment = await Model.MatrixRequest.GetAssignment(courseId, caId);
       } catch (MatrixException.MatrixException err) {
-        Debug.WriteLine($"获取课程{courseId}作业{caId}详情失败: {err.Message}");
-        OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
+        var message = $"获取课程{courseId}作业{caId}详情失败";
+        Debug.WriteLine($"{message}: {err.Message}");
+        OnContentError?.Invoke(this, new NavigationViewContentEvent(err, message));
       }
+
+      // notify loaded
+      OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
     }
   }
 }

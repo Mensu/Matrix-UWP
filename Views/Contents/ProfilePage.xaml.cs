@@ -34,15 +34,23 @@ namespace Matrix_UWP.Views.Contents {
 
     // Interface Error Event
     public event NavigationViewContentHandler OnContentError;
+    public event NavigationViewContentHandler OnContentLoading;
+    public event NavigationViewContentHandler OnContentLoaded;
 
     // Interface Refresh
     public async Task Refresh() {
+      // notify loading
+      OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
         viewModel.curUser = await Model.MatrixRequest.GetProfile();
       } catch (MatrixException.MatrixException err) {
-        Debug.WriteLine($"获取用户信息失败, {err.Message}");
-        OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
+        var message = "获取用户信息失败";
+        Debug.WriteLine($"{message}, {err.Message}");
+        OnContentError?.Invoke(this, new NavigationViewContentEvent(err, message));
       }
+
+      // notify loaded
+      OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
