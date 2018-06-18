@@ -38,7 +38,7 @@ namespace Matrix_UWP.Views.Contents {
       JObject param = (JObject)JsonConvert.DeserializeObject((string)e.Parameter);
       int courseId = Helpers.Nullable.ToInt(param["CourseId"]);
       int caId = Helpers.Nullable.ToInt(param["CaId"]);
-      viewModel.Assignment = await Model.MatrixRequest.GetAssignment(courseId, caId);
+      await Refresh();
     }
 
     public async Task Refresh() {
@@ -48,7 +48,7 @@ namespace Matrix_UWP.Views.Contents {
         viewModel.Assignment = await Model.MatrixRequest.GetAssignment(courseId, caId);
       } catch (MatrixException.MatrixException err) {
         Debug.WriteLine($"获取课程{courseId}作业{caId}详情失败: {err.Message}");
-        OnContentError?.Invoke(err);
+        OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }
     }
   }
