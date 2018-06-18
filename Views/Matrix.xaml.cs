@@ -27,6 +27,10 @@ namespace Matrix_UWP.Views {
       ContentFrame.Navigated += ContentPageHandlerInject;
     }
 
+    #region ContentPageInject
+
+    private HashSet<Helpers.INavigationViewContent> NavContents = new HashSet<Helpers.INavigationViewContent>();
+
     // 为导航到的新页面实例注册事件
     private void ContentPageHandlerInject(object sender, NavigationEventArgs e) {
       if (!(e.Content is Helpers.INavigationViewContent content)) {
@@ -53,8 +57,11 @@ namespace Matrix_UWP.Views {
       throw new NotImplementedException();
     }
 
+    #endregion
+
     ViewModel.MatrixViewModel viewModel = new ViewModel.MatrixViewModel();
 
+    #region NavigationHandle
     // 储存对应页面的类型
     private readonly Dictionary<String, Type> ContentMap = new Dictionary<string, Type> {
       //["home"] = typeof(Contents.Home),
@@ -67,23 +74,7 @@ namespace Matrix_UWP.Views {
 
     private string previousTag = null;
 
-    private HashSet<Helpers.INavigationViewContent> NavContents = new HashSet<Helpers.INavigationViewContent>();
-
     private Dictionary<String, String> NavigateHistory = new Dictionary<string, string>();
-
-    private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) {
-
-    }
-
-    private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-      Indicator.Visibility = Visibility.Collapsed;
-      if (args.IsSettingsInvoked) {
-        NavigateContent("setting");
-      } else {
-        var selected = sender.MenuItems.OfType<NavigationViewItem>().First(item => item.Content.ToString() == args.InvokedItem.ToString());
-        NavigateContent(selected.Tag.ToString());
-      }
-    }
 
     private void NavigateContent(string tag) {
       if (!ContentMap.ContainsKey(tag)) {
@@ -105,6 +96,24 @@ namespace Matrix_UWP.Views {
       previousTag = tag;
     }
 
+    #endregion
+
+    private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) {
+      if (ContentFrame.CanGoBack) {
+        ContentFrame.GoBack();
+      }
+    }
+
+    private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
+      Indicator.Visibility = Visibility.Collapsed;
+      if (args.IsSettingsInvoked) {
+        NavigateContent("setting");
+      } else {
+        var selected = sender.MenuItems.OfType<NavigationViewItem>().First(item => item.Content.ToString() == args.InvokedItem.ToString());
+        NavigateContent(selected.Tag.ToString());
+      }
+    }
+
     private void Profile_Tapped(object sender, TappedRoutedEventArgs e) {
       NavView.SelectedItem = null;
       Indicator.Visibility = Visibility.Visible;
@@ -112,7 +121,9 @@ namespace Matrix_UWP.Views {
     }
 
     private async void Refresh_Click(object sender, RoutedEventArgs e) {
-
+      if (ContentFrame.Content is Helpers.INavigationViewContent content) {
+        await content.Refresh();
+      }
     }
 
     private async void Logout_Click(object sender, RoutedEventArgs e) {
