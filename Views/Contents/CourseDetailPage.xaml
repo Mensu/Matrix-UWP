@@ -33,15 +33,5 @@
     <PivotItem Header="课程信息">
 
     </PivotItem>
-    <Pivot.RightHeader>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock x:Name="CourseName" Text="{x:Bind viewModel.Course.name, Mode=OneWay}" FontSize="{x:Bind CourseAssignment.FontSize}" Grid.Column="0"/>
-        <AppBarButton x:Name="Refresh" Icon="Refresh" Click="Refresh_Click" Grid.Column="1"/>
-      </Grid>
-    </Pivot.RightHeader>
   </Pivot>
 </Page>

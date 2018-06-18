@@ -71,9 +71,5 @@
     <PivotItem Header="未完成">
       <GridView ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.ClosedCourses}"/>
     </PivotItem>
-
-    <Pivot.RightHeader>
-      <AppBarButton x:Name="RefreshBtn" Click="RefreshBtn_Click" Icon="Refresh"/>
-    </Pivot.RightHeader>
   </Pivot>
 </Page>
