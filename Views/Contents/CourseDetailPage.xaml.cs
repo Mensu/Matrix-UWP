@@ -56,6 +56,7 @@ namespace Matrix_UWP.Views.Contents {
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
+
       TitleChanged?.Invoke(this, new NavigationViewContentEvent(viewModel.Course.name));
     }
 
