@@ -29,10 +29,13 @@ namespace Matrix_UWP.Views.Contents {
       this.InitializeComponent();
     }
 
+    // ViewModel
     private ViewModel.SettingViewModel viewModel = new ViewModel.SettingViewModel();
 
+    // Interface Error Event
     public event NavigationViewContentHandler OnContentError;
 
+    // Interface Refresh
     public async Task Refresh() {
       try {
         viewModel.curUser = await Model.MatrixRequest.GetProfile();
@@ -40,6 +43,11 @@ namespace Matrix_UWP.Views.Contents {
         Debug.WriteLine($"获取用户信息失败, {err.Message}");
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }
+    }
+
+    protected override async void OnNavigatedTo(NavigationEventArgs e) {
+      base.OnNavigatedTo(e);
+      await Refresh();
     }
 
     private static readonly Dictionary<string, string> ProfileNames = new Dictionary<string, string> {
