@@ -10,6 +10,7 @@ namespace Matrix_UWP.Helpers {
     event NavigationViewContentHandler OnContentError;
     event NavigationViewContentHandler OnContentLoading;
     event NavigationViewContentHandler OnContentLoaded;
+    event NavigationViewContentHandler TitleChanged;
   }
 
   public delegate void NavigationViewContentHandler(object sender, NavigationViewContentEvent e);
