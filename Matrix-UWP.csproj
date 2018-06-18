@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="ViewModel\AssignmentViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
+    <Compile Include="ViewModel\LibrariesViewModel.cs" />
     <Compile Include="ViewModel\LibraryViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\CourseListViewModel.cs" />
@@ -154,6 +155,9 @@
     </Compile>
     <Compile Include="Views\Contents\AssignmentPage.xaml.cs">
       <DependentUpon>AssignmentPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Contents\LibrariesPage.xaml.cs">
+      <DependentUpon>LibrariesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Launcher.xaml.cs">
       <DependentUpon>Launcher.xaml</DependentUpon>
@@ -240,6 +244,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Contents\AssignmentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Contents\LibrariesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
