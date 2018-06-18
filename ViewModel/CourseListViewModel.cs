@@ -30,5 +30,23 @@ namespace Matrix_UWP.ViewModel {
       openList = new ObservableCollection<Model.Course>(course_list.Where(one => one.isOpen == true));
       closeList = new ObservableCollection<Model.Course>(course_list.Where(one => one.isOpen == false));
     }
+
+    private List<Model.Course> courses;
+    public List<Model.Course> Courses {
+      get => courses;
+      set {
+        SetProperty(ref courses, value);
+        base.RaisePropertyChanged("ClosedCourses");
+        base.RaisePropertyChanged("OpenCourses");
+      }
+    }
+
+    public List<Model.Course> OpenCourses {
+      get => courses.Where(course => course.isOpen).ToList();
+    }
+
+    public List<Model.Course> ClosedCourses {
+      get => courses.Where(course => !course.isOpen).ToList();
+    }
   }
 }
