@@ -8,6 +8,8 @@ namespace Matrix_UWP.Helpers {
   public interface INavigationViewContent {
     Task Refresh();
     event NavigationViewContentHandler OnContentError;
+    event NavigationViewContentHandler OnContentLoading;
+    event NavigationViewContentHandler OnContentLoaded;
   }
 
   public delegate void NavigationViewContentHandler(object sender, NavigationViewContentEvent e);
@@ -16,7 +18,7 @@ namespace Matrix_UWP.Helpers {
     public MatrixException.MatrixException Exception { get; set; }
     public string Message { get; set; }
 
-    public NavigationViewContentEvent(MatrixException.MatrixException exception, string message = "") {
+    public NavigationViewContentEvent(MatrixException.MatrixException exception = null, string message = "") {
       Exception = exception;
       Message = message;
     }

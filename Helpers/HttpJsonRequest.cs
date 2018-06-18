@@ -237,7 +237,7 @@ namespace Matrix_UWP {
     }
   }
   namespace MatrixException {
-    class MatrixException : Exception {
+    public class MatrixException : Exception {
       public MatrixException(string message) : base(message) {
         Debug.WriteLine($"创建了 Matrix 异常: {this.Message}\n{this.StackTrace}");
       }
