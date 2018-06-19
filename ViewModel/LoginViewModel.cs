@@ -39,5 +39,17 @@ namespace Matrix_UWP.ViewModel {
       get { return _suggestions; }
       set { SetProperty(ref _suggestions, value); }
     }
+
+    private SvgImageSource captchaSource = new SvgImageSource();
+    public SvgImageSource CaptchaSource {
+      get => captchaSource;
+      set => SetProperty(ref captchaSource, value);
+    }
+
+    private bool needCaptcha = false;
+    public bool NeedCaptcha {
+      get => needCaptcha;
+      set => SetProperty(ref needCaptcha, value);
+    }
   }
 }

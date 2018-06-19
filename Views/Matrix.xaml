@@ -1,0 +1,149 @@
+﻿<Page
+  x:Class="Matrix_UWP.Views.Matrix"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.Views"
+  xmlns:convertors="using:Matrix_UWP.Converters"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Page.Resources>
+    <convertors:UserToAvatar x:Key="UserToAvatarCV"/>
+  </Page.Resources>
+
+  <NavigationView
+    IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
+    x:Name="NavView"
+    ItemInvoked="NavView_ItemInvoked"
+    BackRequested="NavView_BackRequested">
+
+    <NavigationView.MenuItems>
+      <NavigationViewItem x:Uid="HomeNavItem" Icon="Home" Content="主页" Tag="home"/>
+      <NavigationViewItem x:Uid="CourseNavItem" Icon="Edit" Content="课程" Tag="course"/>
+      <NavigationViewItem x:Uid="ExamNavItem" Icon="GoToStart" Content="考试" Tag="exam"/>
+      <NavigationViewItem x:Uid="LibraryNavItem" Icon="Library" Content="题库" Tag="library"/>
+    </NavigationView.MenuItems>
+
+    <NavigationView.HeaderTemplate>
+      <DataTemplate>
+        <Grid Margin="24,10,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+          <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                FontSize="28"
+                VerticalAlignment="Center"
+                Text="Welcome"/>
+          <CommandBar Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                DefaultLabelPosition="Right"
+                Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+            <AppBarButton x:Name="Refresh" Icon="Refresh" ToolTipService.ToolTip="刷新" Click="Refresh_Click"/>
+            <AppBarButton x:Name="Logout" Icon="Previous" ToolTipService.ToolTip="退出登录" Click="Logout_Click"/>
+          </CommandBar>
+        </Grid>
+      </DataTemplate>
+    </NavigationView.HeaderTemplate>
+
+    <NavigationView.PaneFooter>
+      <Grid
+        x:Name="UserProfile"
+        Height="40"
+        BorderThickness="1">
+        <Grid.BorderBrush>
+          <RevealBorderBrush/>
+        </Grid.BorderBrush>
+        <Grid.Background>
+          <RevealBackgroundBrush/>
+        </Grid.Background>
+        <!-- Learn From https://github.com/dotnet-architecture/eShopOnUWP/blob/master/src/eShop.UWP/Styles/Shell.xaml -->
+        <VisualStateManager.VisualStateGroups>
+          <VisualStateGroup x:Name="PointerStates">
+            <VisualState x:Name="Normal" />
+            <VisualState x:Name="Selected" />
+            <VisualState x:Name="PointerOver">
+              <VisualState.Setters>
+                <Setter Target="User.(RevealBrush.State)" Value="PointerOver"/>
+                <Setter Target="User.Background" Value="{ThemeResource NavigationViewItemBackgroundPointerOver}"/>
+                <Setter Target="User.BorderBrush" Value="{ThemeResource NavigationViewItemBorderBrushPointerOver}" />
+                <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource NavigationViewItemForegroundPointerOver}" />
+              </VisualState.Setters>
+            </VisualState>
+            <VisualState x:Name="PointerOverSelected">
+              <VisualState.Setters>
+                <Setter Target="User.(RevealBrush.State)" Value="PointerOver"/>
+                <Setter Target="User.Background" Value="{ThemeResource NavigationViewItemBackgroundSelectedPointerOver}" />
+                <Setter Target="User.BorderBrush" Value="{ThemeResource NavigationViewItemBorderBrushSelectedPointerOver}" />
+                <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource NavigationViewItemForegroundSelectedPointerOver}" />
+              </VisualState.Setters>
+            </VisualState>
+            <VisualState x:Name="PointerOverPressed">
+              <VisualState.Setters>
+                <Setter Target="User.(RevealBrush.State)" Value="Pressed"/>
+                <Setter Target="User.Background" Value="{ThemeResource NavigationViewItemBackgroundPressed}" />
+                <Setter Target="User.BorderBrush" Value="{ThemeResource NavigationViewItemBorderBrushPressed}" />
+                <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource NavigationViewItemForegroundPressed}" />
+              </VisualState.Setters>
+            </VisualState>
+            <VisualState x:Name="Pressed">
+              <VisualState.Setters>
+                <Setter Target="User.(RevealBrush.State)" Value="Pressed"/>
+                <Setter Target="User.Background" Value="{ThemeResource NavigationViewItemBackgroundPressed}" />
+                <Setter Target="User.BorderBrush" Value="{ThemeResource NavigationViewItemBorderBrushPressed}" />
+                <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource NavigationViewItemForegroundPressed}" />
+              </VisualState.Setters>
+            </VisualState>
+            <VisualState x:Name="PressedSelected">
+              <VisualState.Setters>
+                <Setter Target="User.(RevealBrush.State)" Value="Pressed"/>
+                <Setter Target="User.Background" Value="{ThemeResource NavigationViewItemBackgroundSelectedPressed}" />
+                <Setter Target="User.BorderBrush" Value="{ThemeResource NavigationViewItemBorderBrushSelectedPressed}" />
+                <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource NavigationViewItemForegroundSelectedPressed}" />
+              </VisualState.Setters>
+            </VisualState>
+          </VisualStateGroup>
+          <VisualStateGroup x:Name="DisabledStates">
+            <VisualState x:Name="Enabled"/>
+            <VisualState x:Name="Disabled">
+              <VisualState.Setters>
+                <Setter Target="User.RevealBorderThickness" Value="0"/>
+              </VisualState.Setters>
+            </VisualState>
+          </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <ContentPresenter x:Name="ContentPresenter">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="6"/>
+              <ColumnDefinition Width="40"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle x:Name="ProfileClicker" Grid.ColumnSpan="3" Fill="Transparent" Tapped="Profile_Tapped"/>
+            <Rectangle x:Name="Indicator" Grid.Column="0" Fill="{StaticResource AppBarBackgroundThemeBrush}" Visibility="Collapsed"/>
+            <Ellipse Height="40" Width="40" Grid.Column="1">
+              <Ellipse.Fill>
+                <ImageBrush ImageSource="{x:Bind viewModel.User, Converter={StaticResource UserToAvatarCV}}"/>
+              </Ellipse.Fill>
+            </Ellipse>
+            <TextBlock x:Name="Username" Text="{x:Bind viewModel.User.nickname}" Grid.Column="2" VerticalAlignment="Center"/>
+          </Grid>
+        </ContentPresenter>
+      </Grid>
+    </NavigationView.PaneFooter>
+    <Grid>
+      <ProgressBar x:Name="LoadingRing" Visibility="Collapsed" Height="80" Width="80"/>
+      <Frame x:Name="ContentFrame">
+        <Frame.ContentTransitions>
+          <TransitionCollection>
+            <NavigationThemeTransition/>
+          </TransitionCollection>
+        </Frame.ContentTransitions>
+      </Frame>
+    </Grid>
+  </NavigationView>
+
+</Page>

@@ -65,5 +65,9 @@ namespace Matrix_UWP.Views.Contents {
       // set title since assignment name changed.
       TitleChanged?.Invoke(this, new NavigationViewContentEvent(viewModel.Assignment.name));
     }
+
+    public void EnablePageCache() {
+      this.NavigationCacheMode = NavigationCacheMode.Enabled;
+    }
   }
 }

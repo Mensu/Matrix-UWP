@@ -46,6 +46,9 @@ namespace Matrix_UWP.Views.Contents {
       // notify loaded end
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
     }
+    public void EnablePageCache() {
+      this.NavigationCacheMode = NavigationCacheMode.Enabled;
+    }
 
     ViewModel.LibrariesViewModel viewModel = new ViewModel.LibrariesViewModel();
 
