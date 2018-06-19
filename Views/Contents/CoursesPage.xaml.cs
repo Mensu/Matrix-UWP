@@ -46,6 +46,9 @@ namespace Matrix_UWP.Views.Contents {
       }
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
     }
+    public void EnablePageCache() {
+      this.NavigationCacheMode = NavigationCacheMode.Enabled;
+    }
 
     protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e) {
       base.OnNavigatingFrom(e);
