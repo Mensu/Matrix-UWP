@@ -143,6 +143,7 @@
     <Compile Include="ViewModel\LibraryViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\CourseListViewModel.cs" />
+    <Compile Include="ViewModel\MatrixViewModel.cs" />
     <Compile Include="ViewModel\NotificationViewModel.cs" />
     <Compile Include="UserControls\CaptchaPopup.xaml.cs">
       <DependentUpon>CaptchaPopup.xaml</DependentUpon>

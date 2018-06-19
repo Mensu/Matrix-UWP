@@ -72,5 +72,9 @@ namespace Matrix_UWP.Views.Contents {
     public async Task Refresh() {
       await GetCourse();
     }
+
+    public void EnablePageCache() {
+      this.NavigationCacheMode = NavigationCacheMode.Enabled;
+    }
   }
 }

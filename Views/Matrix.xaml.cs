@@ -46,15 +46,19 @@ namespace Matrix_UWP.Views {
     }
 
     private void Content_OnContentLoading(object sender, Helpers.NavigationViewContentEvent e) {
-      throw new NotImplementedException();
+      ShowLoading();
     }
 
     private void Content_OnContentLoaded(object sender, Helpers.NavigationViewContentEvent e) {
-      throw new NotImplementedException();
+      StopLoading();
     }
 
-    private void Content_OnContentError(object sender, Helpers.NavigationViewContentEvent e) {
-      throw new NotImplementedException();
+    private async void Content_OnContentError(object sender, Helpers.NavigationViewContentEvent e) {
+      if (e.Exception is MatrixException.NotLogin) {
+        await DoLogin();
+      } else {
+        await ErrorPrompt(e.Message);
+      }
     }
 
     #endregion
@@ -75,6 +79,11 @@ namespace Matrix_UWP.Views {
     private string previousTag = null;
 
     private Dictionary<String, String> NavigateHistory = new Dictionary<string, string>();
+
+    private void ClearHistory() {
+      NavigateHistory.Clear();
+      previousTag = null;
+    }
 
     private void NavigateContent(string tag) {
       if (!ContentMap.ContainsKey(tag)) {
@@ -97,6 +106,14 @@ namespace Matrix_UWP.Views {
     }
 
     #endregion
+
+    private void ShowLoading() {
+
+    }
+
+    private void StopLoading() {
+
+    }
 
     private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) {
       if (ContentFrame.CanGoBack) {
@@ -127,19 +144,69 @@ namespace Matrix_UWP.Views {
     }
 
     private async void Logout_Click(object sender, RoutedEventArgs e) {
-
+      await Model.MatrixRequest.logout();
+      await DoLogin();
     }
 
-    private async Task FetchUser() {
+    #region LoginHandle
+    private async Task<bool> FetchUser() {
+      bool userChanged = true;
+      int previousUserId = viewModel.User.user_id;
       try {
         viewModel.User = await Model.MatrixRequest.GetProfile();
+        userChanged = (viewModel.User.user_id != previousUserId);
       } catch (MatrixException.MatrixException err) {
-        // handel error
+        await ErrorPrompt($"请求用户信息失败: {err.Message}");
+      }
+      return userChanged;
+    }
+
+    private async Task DoLogin(bool force = false) {
+      bool isLogin = false;
+
+      if (force == false) {
+        try {
+          isLogin = await Model.MatrixRequest.IsLogin();
+        } catch (MatrixException.MatrixException err) {
+          await ErrorPrompt($"请求登陆状态失败: {err.Message}");
+        }
+      }
+
+      bool cannotSkip = force || !isLogin;
+
+      if (cannotSkip) {
+        await LoginPrompt();
+      }
+
+      if (await FetchUser()) {
+        // 新用户
+        ClearHistory();
+        NavigateContent("home");
       }
     }
 
-    private async Task<bool> LoginPrompt() {
-      return true;
+    private async Task LoginPrompt() {
     }
+
+    #endregion
+
+    #region ErrorHandle
+    // 错误处理对话框
+    private ContentDialog dialog = new ContentDialog {
+      IsPrimaryButtonEnabled = true,
+      IsSecondaryButtonEnabled = true,
+      PrimaryButtonText = "确定",
+      SecondaryButtonText = "退出应用",
+      Title = "错误",
+    };
+    
+    private async Task ErrorPrompt(string message) {
+      dialog.Content = message;
+      var result = await dialog.ShowAsync();
+      if (result == ContentDialogResult.Secondary) {
+        Application.Current.Exit();
+      }
+    }
+    #endregion
   }
 }
