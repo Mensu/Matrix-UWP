@@ -27,6 +27,11 @@ namespace Matrix_UWP.Views {
       ContentFrame.Navigated += ContentPageHandlerInject;
     }
 
+    protected override void OnNavigatedTo(NavigationEventArgs e) {
+      base.OnNavigatedTo(e);
+      NavigateContent("home");
+    }
+
     #region ContentPageInject
 
     private HashSet<Helpers.INavigationViewContent> NavContents = new HashSet<Helpers.INavigationViewContent>();
