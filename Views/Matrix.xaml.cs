@@ -180,18 +180,27 @@ namespace Matrix_UWP.Views {
 
       bool cannotSkip = force || !isLogin;
 
+      bool success = true;
+
       if (cannotSkip) {
-        await LoginPrompt();
+        success = await LoginPrompt();
       }
 
-      if (await FetchUser()) {
+      if (!success) {
+        ClearHistory();
+        NavigateContent("setting");
+      } else if (await FetchUser()) {
         // 新用户
         ClearHistory();
         NavigateContent("home");
       }
     }
 
-    private async Task LoginPrompt() {
+    private Dialogs.LoginDialog LoginDialog = new Dialogs.LoginDialog();
+
+    private async Task<bool> LoginPrompt() {
+      await LoginDialog.ShowAsync();
+      return LoginDialog.Result == Dialogs.LoginDialog.LoginResult.Success;
     }
 
     #endregion
