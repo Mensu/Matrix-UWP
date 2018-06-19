@@ -12,7 +12,7 @@
   <Page.Resources>
     <convertors:UserToAvatar x:Key="UserToAvatarCV"/>
   </Page.Resources>
-  
+
   <NavigationView
     IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
     x:Name="NavView"
@@ -134,13 +134,16 @@
         </ContentPresenter>
       </Grid>
     </NavigationView.PaneFooter>
-    <Frame x:Name="ContentFrame">
-      <Frame.ContentTransitions>
-        <TransitionCollection>
-          <NavigationThemeTransition/>
-        </TransitionCollection>
-      </Frame.ContentTransitions>
-    </Frame>
+    <Grid>
+      <ProgressBar x:Name="LoadingRing" Visibility="Collapsed" Height="80" Width="80"/>
+      <Frame x:Name="ContentFrame">
+        <Frame.ContentTransitions>
+          <TransitionCollection>
+            <NavigationThemeTransition/>
+          </TransitionCollection>
+        </Frame.ContentTransitions>
+      </Frame>
+    </Grid>
   </NavigationView>
 
 </Page>

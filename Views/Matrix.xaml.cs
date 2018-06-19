@@ -42,6 +42,7 @@ namespace Matrix_UWP.Views {
         content.OnContentError += Content_OnContentError;
         content.OnContentLoaded += Content_OnContentLoaded;
         content.OnContentLoading += Content_OnContentLoading;
+        content.EnablePageCache();
       }
     }
 
@@ -108,11 +109,11 @@ namespace Matrix_UWP.Views {
     #endregion
 
     private void ShowLoading() {
-
+      LoadingRing.Visibility = Visibility.Visible;
     }
 
     private void StopLoading() {
-
+      LoadingRing.Visibility = Visibility.Collapsed;
     }
 
     private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) {
