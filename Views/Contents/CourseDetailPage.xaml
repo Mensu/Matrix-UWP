@@ -18,13 +18,13 @@
   
   <Pivot>
     <PivotItem x:Name="CourseAssignment" Header="课程题目">
-      <ListView x:Name="AssignmentList" ItemsSource="{x:Bind viewModel.Assignments}" IsItemClickEnabled="True" ItemClick="AssignmentList_ItemClick">
+      <ListView x:Name="AssignmentList" ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="AssignmentList_ItemClick">
         <ListView.ItemTemplate>
           <DataTemplate x:DataType="model:Assignment">
             <Grid x:Name="Assignment" HorizontalAlignment="Stretch">
-              <TextBlock Text="{x:Bind name}"/>
-              <TextBlock Text="{x:Bind type, Converter={StaticResource AssignmentTypeCV}}"/>
-              <TextBlock Text="{x:Bind endDate, Converter={StaticResource DateTimeOffsetCV}}"/>
+              <TextBlock Text="{x:Bind name, Mode=OneWay}"/>
+              <TextBlock Text="{x:Bind type, Converter={StaticResource AssignmentTypeCV}, Mode=OneWay}"/>
+              <TextBlock Text="{x:Bind endDate, Converter={StaticResource DateTimeOffsetCV}, Mode=OneWay}"/>
             </Grid>
           </DataTemplate>
         </ListView.ItemTemplate>

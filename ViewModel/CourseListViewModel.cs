@@ -31,7 +31,7 @@ namespace Matrix_UWP.ViewModel {
       closeList = new ObservableCollection<Model.Course>(course_list.Where(one => one.isOpen == false));
     }
 
-    private List<Model.Course> courses;
+    private List<Model.Course> courses = new List<Model.Course>();
     public List<Model.Course> Courses {
       get => courses;
       set {

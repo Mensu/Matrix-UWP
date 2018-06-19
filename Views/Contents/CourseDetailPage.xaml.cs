@@ -35,8 +35,9 @@ namespace Matrix_UWP.Views.Contents {
     public event NavigationViewContentHandler OnContentLoaded;
     public event NavigationViewContentHandler TitleChanged;
 
-    protected override async void OnNavigatedFrom(NavigationEventArgs e) {
-      base.OnNavigatedFrom(e);
+    protected override async void OnNavigatedTo(NavigationEventArgs e) {
+      base.OnNavigatedTo(e);
+      if (e.NavigationMode == NavigationMode.Back) return;
       viewModel.CourseId = (int)e.Parameter;
       await Refresh();
     }

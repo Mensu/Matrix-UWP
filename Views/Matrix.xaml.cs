@@ -47,8 +47,13 @@ namespace Matrix_UWP.Views {
         content.OnContentError += Content_OnContentError;
         content.OnContentLoaded += Content_OnContentLoaded;
         content.OnContentLoading += Content_OnContentLoading;
+        content.TitleChanged += Content_TitleChanged;
         content.EnablePageCache();
       }
+    }
+
+    private void Content_TitleChanged(object sender, Helpers.NavigationViewContentEvent e) {
+      viewModel.Title = e.Message;
     }
 
     private void Content_OnContentLoading(object sender, Helpers.NavigationViewContentEvent e) {

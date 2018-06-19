@@ -50,10 +50,9 @@ namespace Matrix_UWP.Views.Contents {
       this.NavigationCacheMode = NavigationCacheMode.Enabled;
     }
 
-    protected override async void OnNavigatingFrom(NavigatingCancelEventArgs e) {
-      base.OnNavigatingFrom(e);
+    protected override async void OnNavigatedTo(NavigationEventArgs e) {
+      base.OnNavigatedTo(e);
       await Refresh();
-
       TitleChanged?.Invoke(this, new NavigationViewContentEvent("课程列表"));
     }
   }

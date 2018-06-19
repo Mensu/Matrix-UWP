@@ -63,13 +63,13 @@
 
   <Pivot>
     <PivotItem Header="所有课程">
-      <GridView ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.Courses}"/>
+      <GridView IsItemClickEnabled="True" ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.Courses, Mode=OneWay}"/>
     </PivotItem>
     <PivotItem Header="已完成">
-      <GridView ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.OpenCourses}"/>
+      <GridView IsItemClickEnabled="True" ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.OpenCourses, Mode=OneWay}"/>
     </PivotItem>
     <PivotItem Header="未完成">
-      <GridView ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.ClosedCourses}"/>
+      <GridView IsItemClickEnabled="True" ItemClick="GridView_ItemClick" ItemTemplate="{StaticResource CourseList}" ItemsPanel="{StaticResource PanelTemplate}" ItemsSource="{x:Bind viewModel.ClosedCourses, Mode=OneWay}"/>
     </PivotItem>
   </Pivot>
 </Page>
