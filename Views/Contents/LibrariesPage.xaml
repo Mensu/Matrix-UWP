@@ -14,22 +14,65 @@
     <convertors:DateTimeOffsetToString x:Key="DateTimeOffsetToCV"/>
 
     <DataTemplate x:Key="LibrariyItem" x:DataType="models:Library">
-      <Grid Padding="20" Height="100" Width="300">
+      <Grid Padding="15" Width="300">
+        <Grid.Resources>
+          <Style TargetType="SymbolIcon">
+            <Setter Property="Margin" Value="0, 0, 5, 0"/>
+            <Setter Property="RenderTransform" Value="0.7, 0.7"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+          </Style>
+          <Style x:Key="LibraryTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+          </Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+          </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
-          <RowDefinition Height="1*"/>
-          <RowDefinition Height="1*"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1"/>
-          <ColumnDefinition Width="Auto"/>
-          <ColumnDefinition Width="1"/>
-          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="30"/>
+          <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" x:Name="LibraryName" Text="{x:Bind name}"/>
-        <SymbolIcon Grid.Row="1" Grid.Column="0" Symbol="ContactInfo"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="Owner" Text="{x:Bind owner}"/>
-        <SymbolIcon Grid.Row="1" Grid.Column="2" Symbol="Calendar"/>
-        <TextBlock Grid.Row="1" Grid.Column="3" x:Name="Time" Text="{x:Bind createdDate, Converter={StaticResource DateTimeOffsetToCV}}"/>
+        <TextBlock
+          Grid.Row="0"
+          Grid.Column="0"
+          Grid.ColumnSpan="2"
+          Style="{StaticResource LibraryTitle}"
+          ToolTipService.ToolTip="{x:Bind name, Mode=OneWay}"
+          VerticalAlignment="Center"
+          Margin="0, 0, 0, 10"
+          x:Name="LibraryName"
+          Text="{x:Bind name, Mode=OneWay}"
+          TextTrimming="CharacterEllipsis"/>
+        <SymbolIcon
+          Grid.Row="1"
+          Grid.Column="0"
+          VerticalAlignment="Center"
+          Symbol="ContactInfo"/>
+        <TextBlock
+          Grid.Row="1"
+          Grid.Column="1"
+          x:Name="Owner"
+          VerticalAlignment="Center"
+          Text="{x:Bind owner, Mode=OneWay}"
+          TextTrimming="CharacterEllipsis"/>
+        <SymbolIcon
+          Grid.Row="2"
+          Grid.Column="0"
+          VerticalAlignment="Center"
+          Symbol="Calendar"/>
+        <TextBlock
+          Grid.Row="2"
+          Grid.Column="1"
+          x:Name="Time"
+          VerticalAlignment="Center"
+          Text="{x:Bind createdDate, Converter={StaticResource DateTimeOffsetToCV}, Mode=OneWay}"
+          TextTrimming="CharacterEllipsis"/>
       </Grid>
     </DataTemplate>
 
@@ -38,5 +81,5 @@
     </ItemsPanelTemplate>
   </Page.Resources>
 
-  <GridView x:Name="LibrariesPanel" ItemTemplate="{StaticResource LibrariyItem}" ItemsSource="{x:Bind viewModel}" ItemsPanel="{StaticResource LibrariesPanelTemplate}" ItemClick="LibrariesPanel_ItemClick" IsItemClickEnabled="True"/>
+  <GridView x:Name="LibrariesPanel" ItemTemplate="{StaticResource LibrariyItem}" ItemsSource="{x:Bind viewModel.Libraries, Mode=OneWay}" ItemsPanel="{StaticResource LibrariesPanelTemplate}" ItemClick="LibrariesPanel_ItemClick" IsItemClickEnabled="True"/>
 </Page>

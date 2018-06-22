@@ -9,22 +9,16 @@ namespace Matrix_UWP.Converters {
   class UserRoleToRoleString : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, string language) {
       Model.Course.UserRole? role = value as Model.Course.UserRole?;
-      string ret = "角色是";
       switch (role) {
         case Model.Course.UserRole.Teacher:
-          ret += "老师";
-          break;
+          return "老师";
         case Model.Course.UserRole.TA:
-          ret += "助教";
-          break;
+          return "助教";
         case Model.Course.UserRole.Student:
-          ret += "学生";
-          break;
+          return "学生";
         default:
-          ret = "未知身份";
-          break;
+          return "未知身份";
       }
-      return ret;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language) {

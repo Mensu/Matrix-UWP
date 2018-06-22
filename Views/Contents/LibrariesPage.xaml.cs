@@ -25,6 +25,7 @@ namespace Matrix_UWP.Views.Contents {
   public sealed partial class LibrariesPage : Page, Helpers.INavigationViewContent {
     public LibrariesPage() {
       this.InitializeComponent();
+      NavigationCacheMode = NavigationCacheMode.Required;
     }
 
     public event NavigationViewContentHandler OnContentError;
@@ -45,9 +46,6 @@ namespace Matrix_UWP.Views.Contents {
       }
       // notify loaded end
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
-    }
-    public void EnablePageCache() {
-      this.NavigationCacheMode = NavigationCacheMode.Enabled;
     }
 
     ViewModel.LibrariesViewModel viewModel = new ViewModel.LibrariesViewModel();

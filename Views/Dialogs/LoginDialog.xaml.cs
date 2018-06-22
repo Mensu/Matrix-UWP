@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,6 +26,7 @@ namespace Matrix_UWP.Views.Dialogs {
 
     public enum LoginResult {
       Success,
+      Failed,
       Cancel,
     }
 
@@ -49,6 +51,7 @@ namespace Matrix_UWP.Views.Dialogs {
         ShowMessage("密码错误");
       } catch (MatrixException.WrongCaptcha) {
         viewModel.NeedCaptcha = true;
+        await LoadCaptcha();
       } catch (MatrixException.MatrixException) {
         ShowMessage("未知的错误");
       }
@@ -63,16 +66,16 @@ namespace Matrix_UWP.Views.Dialogs {
     }
 
     private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
+      var deferral = args.GetDeferral();
       bool success = await DoLogin();
       if (success) {
         Result = LoginResult.Success;
+        Hide();
       } else {
-        args.Cancel = false;
+        Result = LoginResult.Failed;
       }
-    }
-
-    private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) {
-      Result = LoginResult.Cancel;
+      args.Cancel = Result == LoginResult.Failed;
+      deferral.Complete();
     }
 
     private void Username_LostFocus(object sender, RoutedEventArgs e) {
@@ -98,7 +101,7 @@ namespace Matrix_UWP.Views.Dialogs {
         bool success = await DoLogin();
         if (success) {
           Result = LoginResult.Success;
-          this.Hide();
+          Hide();
         }
       }
     }
@@ -114,16 +117,16 @@ namespace Matrix_UWP.Views.Dialogs {
         ShowMessage("网络错误，无法获取验证码");
       }
       // cast string to IRandomAccessStream
-      using (var stream = new MemoryStream()) {
-        using (var writer = new StreamWriter(stream)) {
-          writer.Write(captcha);
-          writer.Flush();
-          stream.Position = 0;
-          var svg = new SvgImageSource();
-          await svg.SetSourceAsync(stream.AsRandomAccessStream());
-          viewModel.CaptchaSource = svg;
-        }
+      var stream = new MemoryStream();
+      using (var writer = new StreamWriter(stream)) {
+        writer.Write(captcha);
+        writer.Flush();
+        stream.Position = 0;
+        var svg = new SvgImageSource();
+        await svg.SetSourceAsync(stream.AsRandomAccessStream());
+        viewModel.CaptchaSource = svg;
       }
+
     }
   }
 }

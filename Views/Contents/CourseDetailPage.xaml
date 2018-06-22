@@ -7,6 +7,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:model="using:Matrix_UWP.Model"
   xmlns:convertor="using:Matrix_UWP.Converters"
+  xmlns:toolkits="using:Microsoft.Toolkit.Uwp.UI.Controls"
   mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -16,22 +17,32 @@
     <convertor:DateTimeOffsetToString x:Key="DateTimeOffsetCV"/>
   </Page.Resources>
   
-  <Pivot>
-    <PivotItem x:Name="CourseAssignment" Header="课程题目">
+  <Pivot Padding="15, 0">
+    <PivotItem x:Name="CourseAssignment" Header="课程题目" HorizontalAlignment="Stretch">
       <ListView x:Name="AssignmentList" ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="AssignmentList_ItemClick">
+        <ListView.ItemContainerStyle>
+          <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+          </Style>
+        </ListView.ItemContainerStyle>
         <ListView.ItemTemplate>
           <DataTemplate x:DataType="model:Assignment">
-            <Grid x:Name="Assignment" HorizontalAlignment="Stretch">
-              <TextBlock Text="{x:Bind name, Mode=OneWay}"/>
-              <TextBlock Text="{x:Bind type, Converter={StaticResource AssignmentTypeCV}, Mode=OneWay}"/>
-              <TextBlock Text="{x:Bind endDate, Converter={StaticResource DateTimeOffsetCV}, Mode=OneWay}"/>
+            <Grid x:Name="Assignment">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="{x:Bind name, Mode=OneWay}"/>
+              <TextBlock Grid.Column="1" Text="{x:Bind type, Converter={StaticResource AssignmentTypeCV}, Mode=OneWay}" MinWidth="100"/>
+              <TextBlock Grid.Column="2" Text="{x:Bind endDate, Converter={StaticResource DateTimeOffsetCV}, Mode=OneWay}" MinWidth="150"/>
             </Grid>
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
     </PivotItem>
     <PivotItem Header="课程信息">
-
+      <toolkits:MarkdownTextBlock x:Name="CourseDescription" Padding="10" Text="{x:Bind viewModel.Course.description, Mode=OneWay}"/>
     </PivotItem>
   </Pivot>
 </Page>

@@ -70,7 +70,7 @@ namespace Matrix_UWP.ViewModel {
       get { return _curAssignment != Model.Assignment.Null; }
     }
 
-    private Model.Assignment assignment;
+    private Model.Assignment assignment = new Model.Assignment();
     public Model.Assignment Assignment {
       get => assignment;
       set => SetProperty(ref assignment, value);

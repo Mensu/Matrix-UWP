@@ -24,5 +24,11 @@ namespace Matrix_UWP.ViewModel {
       get => title;
       set => SetProperty(ref title, value);
     }
+
+    private bool loading = false;
+    public bool Loading {
+      get => loading;
+      set => SetProperty(ref loading, value);
+    }
   }
 }

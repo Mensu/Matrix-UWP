@@ -26,6 +26,7 @@ namespace Matrix_UWP.Views.Contents {
   public sealed partial class CourseDetailPage : Page, Helpers.INavigationViewContent {
     public CourseDetailPage() {
       this.InitializeComponent();
+      NavigationCacheMode = NavigationCacheMode.Required;
     }
 
     private ViewModel.CourseDetailViewModel viewModel = new ViewModel.CourseDetailViewModel();
@@ -46,8 +47,8 @@ namespace Matrix_UWP.Views.Contents {
       await Refresh();
     }
 
-    private async Task GetCourse() {
-      OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
+    public async Task Refresh() {
+             OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
         viewModel.Course = await Model.MatrixRequest.GetCourse(viewModel.CourseId);
         var assignments = await Model.MatrixRequest.GetAssignmentList(viewModel.CourseId);
@@ -64,18 +65,10 @@ namespace Matrix_UWP.Views.Contents {
     private void AssignmentList_ItemClick(object sender, ItemClickEventArgs e) {
       var assignment = (Model.Assignment)e.ClickedItem;
       var param = new {
-        CsId = assignment.ca_id,
-        CourseId = assignment.course_id,
+        assignment.ca_id,
+        assignment.course_id,
       };
-      //Frame.Navigate(typeof(AssignmentPage), JsonConvert.SerializeObject(param));
-    }
-
-    public async Task Refresh() {
-      await GetCourse();
-    }
-
-    public void EnablePageCache() {
-      this.NavigationCacheMode = NavigationCacheMode.Enabled;
+      Frame.Navigate(typeof(AssignmentPage), JsonConvert.SerializeObject(param));
     }
   }
 }

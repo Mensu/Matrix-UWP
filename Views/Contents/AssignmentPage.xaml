@@ -5,22 +5,30 @@
   xmlns:local="using:Matrix_UWP.Views.Contents"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:convertors="using:Matrix_UWP.Converters"
   xmlns:toolkits="using:Microsoft.Toolkit.Uwp.UI.Controls"
   mc:Ignorable="d"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-  <Pivot x:Name="AssignmentPivot">
+  <Page.Resources>
+    <convertors:DateTimeOffsetToString x:Key="DatetimeCV"/>
+  </Page.Resources>
+  
+  <Pivot x:Name="AssignmentPivot" Padding="15, 0">
     <PivotItem Header="题目描述">
       <ScrollViewer>
-        <Grid x:Name="DetailPanel">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="1*"/>
-          </Grid.RowDefinitions>
-          <Grid x:Name="InfoDetail" Grid.Row="0">
+        <StackPanel x:Name="DetailPanel" Margin="0, 10">
+          <Grid x:Name="InfoDetail" Grid.Row="0" Padding="10, 0" Margin="0, 10">
+            <Grid.BorderBrush>
+              <RevealBorderBrush Color="AliceBlue"/>
+            </Grid.BorderBrush>
             <Grid.Resources>
               <Style TargetType="TextBlock">
-                <Setter Property="FontSize" Value="26"/>
+                <Setter Property="FontSize" Value="15"/>
+              </Style>
+              <Style TargetType="TextBlock" x:Key="Colon">
+                <Setter Property="Margin" Value="5, 0"/>
+                <Setter Property="FontSize" Value="15"/>
               </Style>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
@@ -39,11 +47,11 @@
                 <ColumnDefinition Width="1*"/>
               </Grid.ColumnDefinitions>
               <TextBlock Grid.Column="0" Grid.Row="0" x:Name="AuthorLabel" Text="出题"/>
-              <TextBlock Grid.Column="1" Grid.Row="0" Text=" : "/>
-              <TextBlock Grid.Column="2" Grid.Row="0" x:Name="Author"/>
+              <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="0" x:Name="Author" Text="{x:Bind viewModel.Assignment.creator.nickname, Mode=OneWay}"/>
               <TextBlock Grid.Column="0" Grid.Row="1" x:Name="MailLabel" Text="邮箱"/>
-              <TextBlock Grid.Column="1" Grid.Row="1" Text=" : "/>
-              <TextBlock Grid.Column="2" Grid.Row="1" x:Name="Mail"/>
+              <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="1" x:Name="Mail" Text="{x:Bind viewModel.Assignment.creator.email, Mode=OneWay}"/>
             </Grid>
             <Grid Grid.Column="1">
               <Grid.RowDefinitions>
@@ -56,11 +64,11 @@
                 <ColumnDefinition Width="1*"/>
               </Grid.ColumnDefinitions>
               <TextBlock Grid.Column="0" Grid.Row="0" x:Name="JudgeStatusLabel" TextAlignment="Right" Text="评测"/>
-              <TextBlock Grid.Column="1" Grid.Row="0" Text=" : "/>
-              <TextBlock Grid.Column="2" Grid.Row="0" x:Name="JudgeStatus"/>
+              <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="0" x:Name="JudgeStatus" Text="{x:Bind viewModel.Assignment.type, Mode=OneWay}"/>
               <TextBlock Grid.Column="0" Grid.Row="1" x:Name="DueTimeLabel" TextAlignment="Right" Text="截至时间"/>
-              <TextBlock Grid.Column="1" Grid.Row="1" Text=" : "/>
-              <TextBlock Grid.Column="2" Grid.Row="1" x:Name="DueTime"/>
+              <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="1" x:Name="DueTime" Text="{x:Bind viewModel.Assignment.endDate, Converter={StaticResource DatetimeCV}, Mode=OneWay}"/>
             </Grid>
             <Grid Grid.Column="2">
               <Grid.RowDefinitions>
@@ -73,16 +81,16 @@
                 <ColumnDefinition Width="Auto"/>
               </Grid.ColumnDefinitions>
               <TextBlock Grid.Column="0" Grid.Row="0" x:Name="MemoryLimitLabel" TextAlignment="Right" Text="空间限制"/>
-              <TextBlock Grid.Column="1" Grid.Row="0" Text=" : "/>
+              <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource Colon}" Text=":"/>
               <TextBlock Grid.Column="2" Grid.Row="0" x:Name="MemoryLimit"/>
               <TextBlock Grid.Column="0" Grid.Row="1" x:Name="TimeLimitLabel" TextAlignment="Right" Text="时间限制"/>
-              <TextBlock Grid.Column="1" Grid.Row="1" Text=" : "/>
+              <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource Colon}" Text=":"/>
               <TextBlock Grid.Column="2" Grid.Row="1" x:Name="TimeLimit"/>
             </Grid>
           </Grid>
 
-          <toolkits:MarkdownTextBlock x:Name="Description" Text="{x:Bind viewModel.Assignment.description}"/>
-        </Grid>
+          <toolkits:MarkdownTextBlock x:Name="Description" Margin="0, 10, 0, 0" Text="{x:Bind viewModel.Assignment.description, Mode=OneWay}"/>
+        </StackPanel>
       </ScrollViewer>
     </PivotItem>
     <PivotItem Header="答题区域"></PivotItem>

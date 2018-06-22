@@ -15,7 +15,7 @@ namespace Matrix_UWP.Views.Contents {
   public sealed partial class CoursesPage : Page, Helpers.INavigationViewContent {
     public CoursesPage() {
       this.InitializeComponent();
-      NavigationCacheMode = NavigationCacheMode.Enabled;
+      NavigationCacheMode = NavigationCacheMode.Required;
     }
 
     private ViewModel.CourseListViewModel viewModel = new ViewModel.CourseListViewModel();
@@ -45,9 +45,6 @@ namespace Matrix_UWP.Views.Contents {
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
-    }
-    public void EnablePageCache() {
-      this.NavigationCacheMode = NavigationCacheMode.Enabled;
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e) {

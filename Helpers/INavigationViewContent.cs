@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace Matrix_UWP.Helpers {
   public interface INavigationViewContent {
     Task Refresh();
-    void EnablePageCache();
     event NavigationViewContentHandler OnContentError;
     event NavigationViewContentHandler OnContentLoading;
     event NavigationViewContentHandler OnContentLoaded;

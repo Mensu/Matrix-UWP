@@ -48,7 +48,6 @@ namespace Matrix_UWP.Views {
         content.OnContentLoaded += Content_OnContentLoaded;
         content.OnContentLoading += Content_OnContentLoading;
         content.TitleChanged += Content_TitleChanged;
-        content.EnablePageCache();
       }
     }
 
@@ -101,12 +100,12 @@ namespace Matrix_UWP.Views {
         Debug.WriteLine($"未知的内容: {tag}");
         return;
       }
+      // has history
+      if (previousTag != null) {
+        // save previous content history
+        NavigateHistory[previousTag] = ContentFrame.GetNavigationState();
+      }
       if (NavigateHistory.ContainsKey(tag)) {
-        // has history
-        if (previousTag != null) {
-          // save previous content history
-          NavigateHistory[previousTag] = ContentFrame.GetNavigationState();
-        }
         // restore history
         ContentFrame.SetNavigationState(NavigateHistory[tag]);
       } else {
@@ -149,14 +148,28 @@ namespace Matrix_UWP.Views {
     }
 
     private async void Refresh_Click(object sender, RoutedEventArgs e) {
+      await RefreshContent();
+    }
+
+    private async Task RefreshContent() {
       if (ContentFrame.Content is Helpers.INavigationViewContent content) {
         await content.Refresh();
+      }
+      try {
+        viewModel.User = await Model.MatrixRequest.GetProfile();
+      } catch (MatrixException.MatrixException err) {
+        await ErrorPrompt($"获取用户信息失败: {err.Message}");
       }
     }
 
     private async void Logout_Click(object sender, RoutedEventArgs e) {
-      await Model.MatrixRequest.logout();
-      await DoLogin();
+      try {
+        await Model.MatrixRequest.logout();
+      } catch (MatrixException.NotLogin) {
+      } catch (MatrixException.MatrixException err) {
+        await ErrorPrompt($"退出登录失败: {err.Message}");
+      }
+      await DoLogin(true);
     }
 
     #region LoginHandle
@@ -178,6 +191,8 @@ namespace Matrix_UWP.Views {
       if (force == false) {
         try {
           isLogin = await Model.MatrixRequest.IsLogin();
+        } catch (MatrixException.NotLogin) {
+          isLogin = false;
         } catch (MatrixException.MatrixException err) {
           await ErrorPrompt($"请求登陆状态失败: {err.Message}");
         }
@@ -199,6 +214,7 @@ namespace Matrix_UWP.Views {
         ClearHistory();
         NavigateContent("home");
       }
+      await RefreshContent();
     }
 
     private Dialogs.LoginDialog LoginDialog = new Dialogs.LoginDialog();

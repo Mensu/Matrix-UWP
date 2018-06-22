@@ -27,6 +27,7 @@ namespace Matrix_UWP.Views.Contents {
   public sealed partial class ProfilePage : Page, Helpers.INavigationViewContent {
     public ProfilePage() {
       this.InitializeComponent();
+      NavigationCacheMode = NavigationCacheMode.Required;
     }
 
     // ViewModel
@@ -52,10 +53,6 @@ namespace Matrix_UWP.Views.Contents {
 
       // notify loaded
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
-    }
-
-    public void EnablePageCache() {
-      this.NavigationCacheMode = NavigationCacheMode.Enabled;
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
