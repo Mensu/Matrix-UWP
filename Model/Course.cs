@@ -20,7 +20,7 @@ namespace Matrix_UWP.Model {
       }
       var data = token as JObject;
       this.course_id = Helpers.Nullable.ToInt(data["course_id"]);
-      this.name = Helpers.Nullable.ToString(data["name"]);
+      this.name = Helpers.Nullable.ToString(data["course_name"]);
       this.creator = new User(data["creator"]);
       this.progressingNum = Helpers.Nullable.ToInt(data["progressing_num"]);
       this.unfinishedNum = Helpers.Nullable.ToInt(data["unfinished_num"]);

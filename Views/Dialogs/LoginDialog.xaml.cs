@@ -49,7 +49,7 @@ namespace Matrix_UWP.Views.Dialogs {
         ShowMessage("密码错误");
       } catch (MatrixException.WrongCaptcha) {
         viewModel.NeedCaptcha = true;
-      } catch (MatrixException.MatrixException err) {
+      } catch (MatrixException.MatrixException) {
         ShowMessage("未知的错误");
       }
       if (success) {
