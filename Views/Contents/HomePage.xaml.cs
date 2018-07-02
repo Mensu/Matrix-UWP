@@ -27,6 +27,7 @@ namespace Matrix_UWP.Views.Contents {
       this.InitializeComponent();
     }
 
+    public string GetTitle() { return "主页"; }
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
     public event NavigationViewContentHandler OnContentLoaded;
@@ -46,7 +47,7 @@ namespace Matrix_UWP.Views.Contents {
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
       await Refresh();
-      TitleChanged?.Invoke(this, new NavigationViewContentEvent("Home"));
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent(GetTitle()));
     }
   }
 }

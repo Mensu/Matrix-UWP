@@ -113,6 +113,9 @@ namespace Matrix_UWP.Views {
         ContentFrame.Navigate(ContentMap[tag]);
       }
       previousTag = tag;
+      if (ContentFrame.Content is Helpers.INavigationViewContent content) {
+        Title.Text = content.GetTitle();
+      }
     }
 
     #endregion

@@ -20,6 +20,7 @@ namespace Matrix_UWP.Views.Contents {
 
     private ViewModel.CourseListViewModel viewModel = new ViewModel.CourseListViewModel();
 
+    public string GetTitle() { return "课程列表"; }
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
     public event NavigationViewContentHandler OnContentLoaded;
@@ -50,7 +51,7 @@ namespace Matrix_UWP.Views.Contents {
     protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
       await Refresh();
-      TitleChanged?.Invoke(this, new NavigationViewContentEvent("课程列表"));
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent(GetTitle()));
     }
   }
 }

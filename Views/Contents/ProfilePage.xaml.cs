@@ -33,6 +33,7 @@ namespace Matrix_UWP.Views.Contents {
     // ViewModel
     private ViewModel.SettingViewModel viewModel = new ViewModel.SettingViewModel();
 
+    public string GetTitle() { return "个人信息"; }
     // Interface Error Event
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
@@ -59,7 +60,7 @@ namespace Matrix_UWP.Views.Contents {
       base.OnNavigatedTo(e);
       await Refresh();
 
-      TitleChanged?.Invoke(this, new NavigationViewContentEvent("个人信息"));
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent(GetTitle()));
     }
 
     private static readonly Dictionary<string, string> ProfileNames = new Dictionary<string, string> {

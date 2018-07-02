@@ -20,6 +20,8 @@ namespace Matrix_UWP.Views.Contents {
 
     ViewModel.AssignmentViewModel viewModel = new ViewModel.AssignmentViewModel();
 
+
+    public string GetTitle() { return viewModel.Assignment.name; }
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
     public event NavigationViewContentHandler OnContentLoaded;
@@ -51,7 +53,7 @@ namespace Matrix_UWP.Views.Contents {
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
 
       // set title since assignment name changed.
-      TitleChanged?.Invoke(this, new NavigationViewContentEvent(viewModel.Assignment.name));
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent(GetTitle()));
     }
   }
 }

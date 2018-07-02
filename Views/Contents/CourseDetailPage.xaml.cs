@@ -31,6 +31,7 @@ namespace Matrix_UWP.Views.Contents {
 
     private ViewModel.CourseDetailViewModel viewModel = new ViewModel.CourseDetailViewModel();
 
+    public string GetTitle() { return viewModel.Course.name; }
     public event NavigationViewContentHandler OnContentError;
     public event NavigationViewContentHandler OnContentLoading;
     public event NavigationViewContentHandler OnContentLoaded;
@@ -59,7 +60,7 @@ namespace Matrix_UWP.Views.Contents {
       }
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
 
-      TitleChanged?.Invoke(this, new NavigationViewContentEvent(viewModel.Course.name));
+      TitleChanged?.Invoke(this, new NavigationViewContentEvent(GetTitle()));
     }
 
     private void AssignmentList_ItemClick(object sender, ItemClickEventArgs e) {
