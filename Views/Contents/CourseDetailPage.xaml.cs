@@ -48,7 +48,7 @@ namespace Matrix_UWP.Views.Contents {
     }
 
     public async Task Refresh() {
-             OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
+      OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
         viewModel.Course = await Model.MatrixRequest.GetCourse(viewModel.CourseId);
         var assignments = await Model.MatrixRequest.GetAssignmentList(viewModel.CourseId);

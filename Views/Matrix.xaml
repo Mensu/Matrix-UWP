@@ -120,10 +120,9 @@
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="6"/>
-              <ColumnDefinition Width="40"/>
+              <ColumnDefinition Width="42"/>
               <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Rectangle x:Name="ProfileClicker" Grid.ColumnSpan="3" Fill="Transparent" Tapped="Profile_Tapped"/>
             <Rectangle x:Name="Indicator" Grid.Column="0" Fill="{StaticResource AppBarBackgroundThemeBrush}" Visibility="Collapsed"/>
             <Ellipse Height="30" Width="30" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
               <Ellipse.Fill>
@@ -131,6 +130,7 @@
               </Ellipse.Fill>
             </Ellipse>
             <TextBlock x:Name="Username" Text="{x:Bind viewModel.User.nickname, Mode=OneWay}" Grid.Column="2" VerticalAlignment="Center"/>
+            <Rectangle x:Name="ProfileClicker" Grid.ColumnSpan="3" Fill="Transparent" Tapped="Profile_Tapped"/>
           </Grid>
         </ContentPresenter>
       </Grid>

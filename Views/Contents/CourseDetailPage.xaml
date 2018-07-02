@@ -16,10 +16,10 @@
     <convertor:AssignemtTypeToString x:Key="AssignmentTypeCV"/>
     <convertor:DateTimeOffsetToString x:Key="DateTimeOffsetCV"/>
   </Page.Resources>
-  
-  <Pivot Padding="15, 0">
+
+  <Pivot>
     <PivotItem x:Name="CourseAssignment" Header="课程题目" HorizontalAlignment="Stretch">
-      <ListView x:Name="AssignmentList" ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="AssignmentList_ItemClick">
+      <ListView x:Name="AssignmentList" Margin="15, 0" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.IsVerticalScrollChainingEnabled="True" ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollMode="Enabled" ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="AssignmentList_ItemClick">
         <ListView.ItemContainerStyle>
           <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
@@ -27,16 +27,40 @@
         </ListView.ItemContainerStyle>
         <ListView.ItemTemplate>
           <DataTemplate x:DataType="model:Assignment">
-            <Grid x:Name="Assignment">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Text="{x:Bind name, Mode=OneWay}"/>
-              <TextBlock Grid.Column="1" Text="{x:Bind type, Converter={StaticResource AssignmentTypeCV}, Mode=OneWay}" MinWidth="100"/>
-              <TextBlock Grid.Column="2" Text="{x:Bind endDate, Converter={StaticResource DateTimeOffsetCV}, Mode=OneWay}" MinWidth="150"/>
-            </Grid>
+            <UserControl>
+              <Grid>
+                <VisualStateManager.VisualStateGroups>
+                  <VisualStateGroup>
+                    <VisualState>
+                      <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                      </VisualState.StateTriggers>
+                      <VisualState.Setters>
+                        <Setter Target="Assignment.Width" Value="Auto"/>
+                      </VisualState.Setters>
+                    </VisualState>
+                    <VisualState>
+                      <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowHeight="1100"/>
+                      </VisualState.StateTriggers>
+                      <VisualState.Setters>
+                        <Setter Target="Assignment.Width" Value="1024"/>
+                      </VisualState.Setters>
+                    </VisualState>
+                  </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <Grid x:Name="Assignment">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="150"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="{x:Bind name, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Text="{x:Bind type, Converter={StaticResource AssignmentTypeCV}, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="2" Text="{x:Bind endDate, Converter={StaticResource DateTimeOffsetCV}, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+              </Grid>
+            </UserControl>
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>

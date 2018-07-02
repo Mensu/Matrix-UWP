@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Matrix_UWP.Helpers;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using MarkdownSharp;
 using Windows.ApplicationModel.DataTransfer;
 
@@ -87,7 +77,6 @@ namespace Matrix_UWP.UserControls {
       var options = new MarkdownOptions {
         AutoHyperlink = true,
         LinkEmails = true,
-        AutoNewlines = false,
       };
       Markdown md = new Markdown(options);
       string html_description = md.Transform(desc);

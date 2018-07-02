@@ -78,7 +78,7 @@ namespace Matrix_UWP.Views {
     #region NavigationHandle
     // 储存对应页面的类型
     private readonly Dictionary<String, Type> ContentMap = new Dictionary<string, Type> {
-      //["home"] = typeof(Contents.Home),
+      ["home"] = typeof(Contents.HomePage),
       ["course"] = typeof(Contents.CoursesPage),
       ["library"] = typeof(Contents.LibrariesPage),
       //["exam"] = typeof(Contents.ExamsPage),
