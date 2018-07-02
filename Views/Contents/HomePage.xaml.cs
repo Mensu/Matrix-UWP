@@ -41,6 +41,11 @@ namespace Matrix_UWP.Views.Contents {
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }
       OnContentLoaded?.Invoke(this, new NavigationViewContentEvent());
+    }
+
+    protected override async void OnNavigatedTo(NavigationEventArgs e) {
+      base.OnNavigatedTo(e);
+      await Refresh();
       TitleChanged?.Invoke(this, new NavigationViewContentEvent("Home"));
     }
   }
