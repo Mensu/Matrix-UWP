@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -27,9 +28,26 @@ namespace Matrix_UWP.Views {
       ContentFrame.Navigated += ContentPageHandlerInject;
     }
 
-    protected override void OnNavigatedTo(NavigationEventArgs e) {
+    protected override async void OnNavigatedTo(NavigationEventArgs e) {
       base.OnNavigatedTo(e);
+      await FetchUser();
       NavigateContent("home");
+    }
+
+    private bool DialogLock = false;
+ 
+    private bool DialogLockAcquire() {
+      lock (this) {
+        if (!DialogLock) {
+          DialogLock = true;
+          return true;
+        }
+      }
+      return false;
+    }
+
+    private void DialogLockRelease() {
+      DialogLock = false;
     }
 
     #region ContentPageInject
@@ -108,14 +126,14 @@ namespace Matrix_UWP.Views {
       if (NavigateHistory.ContainsKey(tag)) {
         // restore history
         ContentFrame.SetNavigationState(NavigateHistory[tag]);
+        if (ContentFrame.Content is Helpers.INavigationViewContent content) {
+          Title.Text = content.GetTitle();
+        }
       } else {
         // navigate to new content
         ContentFrame.Navigate(ContentMap[tag]);
       }
       previousTag = tag;
-      if (ContentFrame.Content is Helpers.INavigationViewContent content) {
-        Title.Text = content.GetTitle();
-      }
     }
 
     #endregion
@@ -197,7 +215,7 @@ namespace Matrix_UWP.Views {
         } catch (MatrixException.NotLogin) {
           isLogin = false;
         } catch (MatrixException.MatrixException err) {
-          await ErrorPrompt($"请求登陆状态失败: {err.Message}");
+          Debug.WriteLine($"请求登陆状态失败: {err.Message}");
         }
       }
 
@@ -223,7 +241,11 @@ namespace Matrix_UWP.Views {
     private Dialogs.LoginDialog LoginDialog = new Dialogs.LoginDialog();
 
     private async Task<bool> LoginPrompt() {
+      if (!DialogLockAcquire()) {
+        return false;
+      }
       await LoginDialog.ShowAsync();
+      DialogLockRelease();
       return LoginDialog.Result == Dialogs.LoginDialog.LoginResult.Success;
     }
 
@@ -238,10 +260,14 @@ namespace Matrix_UWP.Views {
       SecondaryButtonText = "退出应用",
       Title = "错误",
     };
-    
+
     private async Task ErrorPrompt(string message) {
       dialog.Content = message;
+      if (!DialogLockAcquire()) {
+        return;
+      }
       var result = await dialog.ShowAsync();
+      DialogLockRelease();
       if (result == ContentDialogResult.Secondary) {
         Application.Current.Exit();
       }

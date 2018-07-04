@@ -14,13 +14,23 @@
     <!-- Convertor -->
     <convertor:AssignemtTypeToString x:Key="AssignmentTypeCV"/>
     <convertor:DateTimeOffsetToString x:Key="DateTimeOffsetCV"/>
+    <Style x:Key="ItemStyle" TargetType="Grid">
+      <Setter Property="MinHeight" Value="44"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="Margin" Value="12, 0"/>
+    </Style>
     <DataTemplate x:Key="TodoItem" x:DataType="model:Assignment">
-      <Grid>
+      <Grid Style="{StaticResource ItemStyle}">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="1*"/>
           <ColumnDefinition Width="100"/>
           <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+          <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+          </Style>
+        </Grid.Resources>
         <TextBlock Grid.Column="0" Text="{x:Bind name, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
         <TextBlock Grid.Column="1" Text="{x:Bind type, Converter={StaticResource AssignmentTypeCV}, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
         <TextBlock Grid.Column="2" Text="{x:Bind endDate, Converter={StaticResource DateTimeOffsetCV}, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
@@ -30,23 +40,44 @@
 
   <ScrollViewer>
     <StackPanel>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1*"/>
-          <ColumnDefinition Width="100"/>
-          <ColumnDefinition Width="150"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Text="作业名" TextTrimming="CharacterEllipsis"/>
-        <TextBlock Grid.Column="1" Text="题型" TextTrimming="CharacterEllipsis"/>
-        <TextBlock Grid.Column="2" Text="截至日期" TextTrimming="CharacterEllipsis"/>
-      </Grid>
       <ListView
+        HorizontalAlignment="Stretch"
+        MaxWidth="800"
         ItemTemplate="{StaticResource TodoItem}"
         ItemsSource="{x:Bind viewModel.TodoAssignments, Mode=OneWay}"
         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         ScrollViewer.VerticalScrollBarVisibility="Disabled"
         ScrollViewer.VerticalScrollMode="Disabled"
-        ScrollViewer.HorizontalScrollMode="Disabled"/>
+        ScrollViewer.HorizontalScrollMode="Disabled">
+        <ListView.ItemContainerStyle>
+          <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+          </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.Header>
+          <Grid Style="{StaticResource ItemStyle}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1*"/>
+              <ColumnDefinition Width="100"/>
+              <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition/>
+              <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+              <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+              </Style>
+            </Grid.Resources>
+            <TextBlock Grid.Column="0" Text="作业名" TextTrimming="CharacterEllipsis"/>
+            <TextBlock Grid.Column="1" Text="题型" TextTrimming="CharacterEllipsis"/>
+            <TextBlock Grid.Column="2" Text="截至日期" TextTrimming="CharacterEllipsis"/>
+            <Line Grid.ColumnSpan="3" Grid.Row="1" Height="1" StrokeThickness="1" HorizontalAlignment="Stretch" X1="1" Stretch="Fill" Stroke="Black"/>
+          </Grid>
+        </ListView.Header>
+      </ListView>
     </StackPanel>
   </ScrollViewer>
 </Page>
