@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,9 @@ namespace Matrix_UWP.Services {
   public class Database {
     private Database(string name = "MatrixUWP.db") {
       var storagePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, name);
-      Connection = new SqliteConnection($"Data Source={storagePath};Version=3;");
+      Debug.WriteLine($"Open Db {storagePath}");
+      Connection = new SqliteConnection($"Data Source={storagePath}");
+      Connection.Open();
     }
     public SqliteConnection Connection { get; set; }
     static public Database Service = new Database();

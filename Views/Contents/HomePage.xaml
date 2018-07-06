@@ -42,13 +42,14 @@
     <StackPanel>
       <ListView
         HorizontalAlignment="Stretch"
-        MaxWidth="800"
+        MaxWidth="1024"
         ItemTemplate="{StaticResource TodoItem}"
         ItemsSource="{x:Bind viewModel.TodoAssignments, Mode=OneWay}"
         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         ScrollViewer.VerticalScrollBarVisibility="Disabled"
         ScrollViewer.VerticalScrollMode="Disabled"
         ScrollViewer.HorizontalScrollMode="Disabled"
+        IsItemClickEnabled="True"
         ItemClick="ListView_ItemClick">
         <ListView.ItemContainerStyle>
           <Style TargetType="ListViewItem">

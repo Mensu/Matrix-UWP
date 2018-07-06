@@ -34,8 +34,8 @@ namespace Matrix_UWP.ViewModel {
       set { SetProperty(ref password, value); }
     }
 
-    private ObservableCollection<string> suggestions = new ObservableCollection<string>();
-    public ObservableCollection<string> Suggestions {
+    private List<string> suggestions = new List<string>();
+    public List<string> Suggestions {
       get { return suggestions; }
       set { SetProperty(ref suggestions, value); }
     }

@@ -26,6 +26,7 @@
       Height="31"
       Margin="0, 0, 0, 15"
       QueryIcon="People"
+      ItemsSource="{x:Bind viewModel.Suggestions, Mode=OneWay}"
       LostFocus="Username_LostFocus"
       TextChanged="Username_TextChanged"
       SuggestionChosen="Username_SuggestionChosen"

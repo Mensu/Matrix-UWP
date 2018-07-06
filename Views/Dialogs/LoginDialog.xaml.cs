@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“内容对话框”项模板
 
@@ -31,8 +22,6 @@ namespace Matrix_UWP.Views.Dialogs {
     }
 
     public LoginResult Result = LoginResult.Cancel;
-
-    private Model.SuggestionInput SuggestionServ = Model.SuggestionInput.GetInstance();
 
     private ViewModel.LoginViewModel viewModel = new ViewModel.LoginViewModel();
 
@@ -57,6 +46,8 @@ namespace Matrix_UWP.Views.Dialogs {
       }
       if (success) {
         viewModel.NeedCaptcha = false;
+        viewModel.Suggestions = new List<string>();
+        Services.UsernameSuggest.Service.Add(viewModel.Username);
       }
       return success;
     }
@@ -70,7 +61,6 @@ namespace Matrix_UWP.Views.Dialogs {
       bool success = await DoLogin();
       if (success) {
         Result = LoginResult.Success;
-        Hide();
       } else {
         Result = LoginResult.Failed;
       }
@@ -87,13 +77,13 @@ namespace Matrix_UWP.Views.Dialogs {
       }
     }
 
-    private void Username_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
+    private async void Username_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
       if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
-      viewModel.Suggestions = SuggestionServ.loadUser(Username.Text);
+      viewModel.Suggestions = await Services.UsernameSuggest.Service.RetrieveCandidates(Username.Text);
     }
 
     private void Username_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) {
-
+      sender.Text = args.SelectedItem?.ToString();
     }
 
     private async void Password_KeyUp(object sender, KeyRoutedEventArgs e) {

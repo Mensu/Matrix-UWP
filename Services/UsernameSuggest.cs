@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Matrix_UWP.Services {
   public class UsernameSuggest {
-    public UsernameSuggest Service = new UsernameSuggest();
+    static public UsernameSuggest Service = new UsernameSuggest();
     private UsernameSuggest() {
       string initialSql = @"
         CREATE TABLE IF NOT EXISTS
@@ -20,7 +20,7 @@ namespace Matrix_UWP.Services {
     }
 
     private readonly string retrieveCandidates = @"
-      SELECT ID
+      SELECT USERNAME
       FROM USERNAME_SUGGESTION
       WHERE USERNAME LIKE $PATTERN;
     ";
@@ -38,14 +38,14 @@ namespace Matrix_UWP.Services {
       return candidates;
     }
 
-    private readonly string add = @"
+    private readonly string addUser = @"
       INSERT OR IGNORE INTO
-      USERNAME_SUGGESTION VALUES($USERNAME);
+      USERNAME_SUGGESTION(USERNAME) VALUES($USERNAME);
     ";
     public void Add(string username) {
       var connection = Database.Service.Connection;
       var command = connection.CreateCommand();
-      command.CommandText = retrieveCandidates;
+      command.CommandText = addUser;
       command.Parameters.AddWithValue("$USERNAME", username);
       command.ExecuteReader();
     }

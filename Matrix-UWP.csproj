@@ -111,7 +111,6 @@
     <Compile Include="Model\MatrixRequest.cs" />
     <Compile Include="Model\MatrixRequestResult.cs" />
     <Compile Include="Model\Notification.cs" />
-    <Compile Include="Model\SuggestionInput.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AssignmentViewModel.cs" />
@@ -216,11 +215,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="SQLite.UWP.2015, Version=3.18.0">
-      <Name>SQLite for Universal Windows Platform</Name>
-    </SDKReference>
-  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <PackageReference Include="MarkdownSharp">
@@ -235,17 +229,11 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>3.0.0</Version>
     </PackageReference>
-    <PackageReference Include="Mntone.SvgForXaml">
-      <Version>0.9.2</Version>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Prism.Core">
       <Version>7.0.0.396</Version>
-    </PackageReference>
-    <PackageReference Include="SQLitePCL">
-      <Version>3.8.7.2</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
