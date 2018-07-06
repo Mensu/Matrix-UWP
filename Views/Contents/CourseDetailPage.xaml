@@ -20,7 +20,15 @@
   <Pivot>
     <PivotItem x:Name="CourseAssignment" Header="课程题目" HorizontalAlignment="Stretch">
       <ScrollViewer MaxWidth="1024">
-        <ListView x:Name="AssignmentList" Margin="15, 0" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.IsVerticalScrollChainingEnabled="True" ScrollViewer.IsVerticalRailEnabled="True" ScrollViewer.VerticalScrollMode="Enabled" ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="AssignmentList_ItemClick">
+        <ListView
+          x:Name="AssignmentList"
+          ItemsSource="{x:Bind viewModel.Assignments, Mode=OneWay}"
+          IsItemClickEnabled="True"
+          ItemClick="AssignmentList_ItemClick"
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+          ScrollViewer.VerticalScrollMode="Disabled"
+          ScrollViewer.HorizontalScrollMode="Disabled">
           <ListView.Resources>
             <Style x:Key="ItemStyle" TargetType="Grid">
               <Setter Property="MinHeight" Value="44"/>
