@@ -23,7 +23,7 @@ namespace Matrix_UWP.Views.Contents {
   /// 可用于自身或导航至 Frame 内部的空白页。
   /// </summary>
   public sealed partial class HomePage : Page, Helpers.INavigationViewContent {
-    ViewModel.HomePageViewModel viewModel = new ViewModel.HomePageViewModel();
+    ViewModel.HomeViewModel viewModel = new ViewModel.HomeViewModel();
     public HomePage() {
       this.InitializeComponent();
     }

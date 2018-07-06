@@ -46,6 +46,20 @@ namespace Matrix_UWP {
         }
         return response;
       }
+ 
+      public async Task<HttpResponseMessage> PutAsync(Uri uri, JObject body) {
+        IHttpContent jsonContent = new HttpJsonContent(body);
+        HttpResponseMessage response = null;
+        string meta = $"PUT {uri}";
+        try {
+          Debug.WriteLine($"Requesting: {meta}");
+          Debug.WriteLine($"with body: {JsonConvert.SerializeObject(body, Formatting.Indented)}");
+          response = await httpClient.PutAsync(uri, jsonContent);
+        } catch (Exception e) {
+          throw new MatrixException.NetworkError(meta, e);
+        }
+        return response;
+      }
 
 
       private void init() {
@@ -82,6 +96,10 @@ namespace Matrix_UWP {
       }
       public async new Task<JObject> PostAsync(Uri uri, JObject body) {
         var response = await base.PostAsync(uri, body);
+        return await parseResponseAsJson(response);
+      }
+      public async new Task<JObject> PutAsync(Uri uri, JObject body) {
+        var response = await base.PutAsync(uri, body);
         return await parseResponseAsJson(response);
       }
     }

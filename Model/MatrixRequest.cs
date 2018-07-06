@@ -47,6 +47,19 @@ namespace Matrix_UWP {
         }
         return result;
       }
+      static async private Task<MatrixRequestResult> PutAsync(string uri, JObject body) {
+        var obj = await json_req.PutAsync(new Uri(uri), body);
+        var result = new MatrixRequestResult(obj);
+        switch (result.status) {
+          case "UNKNOWN_ERROR":
+            throw new MatrixException.ServerError();
+          case "NOT_AUTHORIZED":
+            throw new MatrixException.NotLogin();
+          default:
+            break;
+        }
+        return result;
+      }
       static async public Task<User> Login(string username, string password, string captcha = "") {
         var body = new JObject {
           ["username"] = username,
@@ -180,25 +193,28 @@ namespace Matrix_UWP {
 
       static public async Task ChangeMsgState(int msg_id, bool? is_read) {
         var body = new JObject {
-          ["status"] = is_read == true ? 1 : 0
+          ["status"] = is_read ?? false,
         };
         var ids = new JArray {
           msg_id
         };
-        body["ids"] = ids;
-        var result = await PostAsync($"{root}/api/notification/msgStatusChange", body);
+        body["id"] = ids;
+        var result = await PutAsync($"{root}/api/notifications/status", body);
         if (!result.success) {
           throw new MatrixException.SoftError(result);
         }
       }
 
       static async public Task<ObservableCollection<Notification>> GetNotificationList() {
-        var ret = await GetListAsync<Notification>($"{root}/api/notification/unReadMessages");
-        var read = await GetListAsync<Notification>($"{root}/api/notification/readedMessages");
-        foreach (var notification in read) {
-          ret.Add(notification);
+        var result = await GetAsync($"{root}/api/notifications");
+        if (result.success) {
+          var notifications = new ObservableCollection<Notification>();
+          foreach (JToken notification in result.data["notifications"] as JArray) {
+            notifications.Add(new Notification(notification));
+          }
+          return notifications;
         }
-        return ret;
+        throw new MatrixException.SoftError(result);
       }
 
       static async public Task<ObservableCollection<Assignment>> GetAssignmentList(int course_id) {

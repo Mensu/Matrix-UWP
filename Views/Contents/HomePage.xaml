@@ -48,7 +48,8 @@
         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
         ScrollViewer.VerticalScrollBarVisibility="Disabled"
         ScrollViewer.VerticalScrollMode="Disabled"
-        ScrollViewer.HorizontalScrollMode="Disabled">
+        ScrollViewer.HorizontalScrollMode="Disabled"
+        ItemClick="ListView_ItemClick">
         <ListView.ItemContainerStyle>
           <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

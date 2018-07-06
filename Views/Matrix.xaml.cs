@@ -101,7 +101,8 @@ namespace Matrix_UWP.Views {
       ["library"] = typeof(Contents.LibrariesPage),
       //["exam"] = typeof(Contents.ExamsPage),
       ["profile"] = typeof(Contents.ProfilePage),
-      //["setting"] = typeof(Contents.SettingPage),
+      ["setting"] = typeof(Contents.ProfilePage),
+      ["notification"] = typeof(Contents.Notification),
     };
 
     private string previousTag = null;
@@ -273,5 +274,9 @@ namespace Matrix_UWP.Views {
       }
     }
     #endregion
+
+    private void Notification_Click(object sender, RoutedEventArgs e) {
+      NavigateContent("notification");
+    }
   }
 }

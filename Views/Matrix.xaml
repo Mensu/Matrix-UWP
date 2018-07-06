@@ -44,6 +44,7 @@
           VerticalAlignment="Top"
           DefaultLabelPosition="Right"
           Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+          <AppBarButton x:Name="Notification" Icon="Message" ToolTipService.ToolTip="通知" Click="Notification_Click"/>
           <AppBarButton x:Name="Refresh" Icon="Refresh" ToolTipService.ToolTip="刷新" Click="Refresh_Click"/>
           <AppBarButton x:Name="Logout" Icon="Previous" ToolTipService.ToolTip="退出登录" Click="Logout_Click"/>
         </CommandBar>

@@ -42,10 +42,10 @@ namespace Matrix_UWP.Views.Dialogs {
       bool success = false;
       string captcha = "";
       if (viewModel.NeedCaptcha == true) {
-        captcha = viewModel.captcha;
+        captcha = viewModel.Captcha;
       }
       try {
-        await Model.MatrixRequest.Login(viewModel.username, viewModel.password, captcha);
+        await Model.MatrixRequest.Login(viewModel.Username, viewModel.Password, captcha);
         success = true;
       } catch (MatrixException.WrongPassword) {
         ShowMessage("密码错误");
@@ -79,17 +79,17 @@ namespace Matrix_UWP.Views.Dialogs {
     }
 
     private void Username_LostFocus(object sender, RoutedEventArgs e) {
-      if (viewModel.username == "") return;
+      if (viewModel.Username == "") return;
       try {
-        viewModel.avatar = new BitmapImage(Model.MatrixRequest.GetAvatarUri(viewModel.username));
+        viewModel.Avatar = new BitmapImage(Model.MatrixRequest.GetAvatarUri(viewModel.Username));
       } catch (Exception) {
-        viewModel.avatar = defaultAvatar;
+        viewModel.Avatar = defaultAvatar;
       }
     }
 
     private void Username_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) {
       if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
-      viewModel.suggestions = SuggestionServ.loadUser(Username.Text);
+      viewModel.Suggestions = SuggestionServ.loadUser(Username.Text);
     }
 
     private void Username_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) {

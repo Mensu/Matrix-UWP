@@ -26,6 +26,7 @@ namespace Matrix_UWP.Model {
       Course,
       Homework,
       Discussion,
+      Library,
       System
     }
 
@@ -95,6 +96,8 @@ namespace Matrix_UWP.Model {
           return Type.Homework;
         case "discussion":
           return Type.Discussion;
+        case "library":
+          return Type.Library;
         default:
           break;
       }
@@ -122,6 +125,11 @@ namespace Matrix_UWP.Model {
               return $"在话题“{title}”的评论回复中提到了你";
             }
           }
+        case Type.Library:
+          string name = Helpers.Nullable.ToString(content["library_name"]);
+          string problem = Helpers.Nullable.ToString(content["prob_title"]);
+          string action = Helpers.Nullable.ToString(content["action"], "变动");
+          return $"{action}了{name}中的{problem}";
         default:
           break;
       }
