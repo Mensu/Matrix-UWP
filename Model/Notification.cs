@@ -19,6 +19,7 @@ namespace Matrix_UWP.Model {
       this.time = Helpers.Nullable.ToDateTimeOffset(data["time"], DateTimeOffset.MinValue);
       this.type = this.stringToType(Helpers.Nullable.ToString(data["type"]));
       this.content = this.getContent(data["content"]);
+      Link = data["content"]?["link"] as JToken;
       this.sender = this.getSender(data["sender"]);
     }
 
@@ -29,6 +30,8 @@ namespace Matrix_UWP.Model {
       Library,
       System
     }
+
+    public JToken Link;
 
     public int msg_id {
       get;

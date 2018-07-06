@@ -89,10 +89,30 @@
       </Grid>
     </DataTemplate>
   </Page.Resources>
-  <ScrollViewer MaxWidth="1024">
-    <ListView
-      x:Name="Notifications"
-      ItemTemplate="{StaticResource NotificationItemView}"
-      ItemsSource="{x:Bind viewModel.Notifications, Mode=OneWay}"/>
-  </ScrollViewer>
+  <Grid VerticalAlignment="Stretch">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0" HorizontalAlignment="Right">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <ComboBox Grid.Column="0" x:Name="Status" SelectionChanged="Status_SelectionChanged" SelectedIndex="0">
+        <ComboBoxItem Tag="All" Content="全部"/>
+        <ComboBoxItem Tag="Unread" Content="未读"/>
+        <ComboBoxItem Tag="Read" Content="已读"/>
+      </ComboBox>
+      <Button x:Name="ReadAll" Grid.Column="1" Click="ReadAll_Click" Content="全部标记为已读"/>
+    </Grid>
+    <ScrollViewer Grid.Row="1" VerticalAlignment="Stretch" MaxWidth="1024">
+      <ListView
+        x:Name="Notifications"
+        ItemClick="Notifications_ItemClick"
+        IsItemClickEnabled="True"
+        ItemTemplate="{StaticResource NotificationItemView}"
+        ItemsSource="{x:Bind viewModel.FilteredNotification, Mode=OneWay}"/>
+    </ScrollViewer>
+  </Grid>
 </Page>

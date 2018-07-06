@@ -11,7 +11,29 @@ namespace Matrix_UWP.ViewModel {
     private List<Model.Notification> notifications = new List<Model.Notification>();
     public List<Model.Notification> Notifications {
       get => notifications;
-      set => SetProperty(ref notifications, value);
+      set {
+        SetProperty(ref notifications, value);
+        RaisePropertyChanged("FilteredNotification");
+      }
+    }
+
+    public enum Status {
+      All,
+      Read,
+      Unread,
+    };
+
+    private Status statusFilter = Status.All;
+    public Status StatusFilter {
+      get => statusFilter;
+      set {
+        SetProperty(ref statusFilter, value);
+        RaisePropertyChanged("FilteredNotification");
+      }
+    }
+
+    public List<Model.Notification> FilteredNotification {
+      get => notifications.Where(notification => (statusFilter == Status.All || notification.is_read == (statusFilter == Status.Read))).ToList();
     }
   }
 }

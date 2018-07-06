@@ -206,6 +206,16 @@ namespace Matrix_UWP {
         }
       }
 
+      static public async Task ReadAllNotifications() {
+        var body = new JObject() {
+          ["status"] = true,
+        };
+        var result = await PutAsync($"{root}/api/notifications/statuses", body);
+        if (!result.success) {
+          throw new MatrixException.SoftError(result);
+        }
+      }
+
       static async public Task<List<Notification>> GetNotificationList() {
         var result = await GetAsync($"{root}/api/notifications");
         if (result.success) {

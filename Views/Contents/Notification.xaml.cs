@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -76,6 +77,43 @@ namespace Matrix_UWP.Views.Contents {
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err, $"标记列表状态失败：{err.Message}"));
       }
     }
-  }
 
+    private async void ReadAll_Click(object sender, RoutedEventArgs e) {
+      try {
+        await Model.MatrixRequest.ReadAllNotifications();
+      } catch (MatrixException.MatrixException err) {
+        OnContentError?.Invoke(this, new NavigationViewContentEvent(err, $"标记列表状态失败：{err.Message}"));
+      } finally {
+        await Refresh();
+      }
+    }
+
+    private Dictionary<string, ViewModel.NotificationViewModel.Status> statusMap = new Dictionary<string, ViewModel.NotificationViewModel.Status>() {
+      ["All"] = ViewModel.NotificationViewModel.Status.All,
+      ["Unread"] = ViewModel.NotificationViewModel.Status.Unread,
+      ["Read"] = ViewModel.NotificationViewModel.Status.Read,
+    };
+
+    private void Status_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+      if (sender is ComboBox combo) {
+        ComboBoxItem item = combo.SelectedItem as ComboBoxItem;
+        viewModel.StatusFilter = statusMap[item.Tag.ToString()];
+      }
+    }
+
+    private void Notifications_ItemClick(object sender, ItemClickEventArgs e) {
+      Model.Notification notification = e.ClickedItem as Model.Notification;
+      switch (notification.type) {
+        case Model.Notification.Type.Course:
+          Frame.Navigate(typeof(CourseDetailPage), Helpers.Nullable.ToInt(notification.Link));
+          break;
+        case Model.Notification.Type.Homework:
+          Frame.Navigate(typeof(AssignmentPage), notification.Link.ToString());
+          break;
+        default:
+          Debug.WriteLine("不支持的跳转");
+          break;
+      }
+    }
+  }
 }
