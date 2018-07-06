@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using Windows.Web.Http;
 using Matrix_UWP.Helpers;
 using Windows.Storage.Streams;
+using System.Collections.Generic;
 
 namespace Matrix_UWP {
   namespace Model {
@@ -166,7 +167,7 @@ namespace Matrix_UWP {
         throw new MatrixException.SoftError(result);
       }
 
-      static async public Task<ObservableCollection<Course>> GetCourseList() {
+      static async public Task<List<Course>> GetCourseList() {
         return await GetListAsync<Course>($"{root}/api/courses");
       }
 
@@ -205,10 +206,10 @@ namespace Matrix_UWP {
         }
       }
 
-      static async public Task<ObservableCollection<Notification>> GetNotificationList() {
+      static async public Task<List<Notification>> GetNotificationList() {
         var result = await GetAsync($"{root}/api/notifications");
         if (result.success) {
-          var notifications = new ObservableCollection<Notification>();
+          var notifications = new List<Notification>();
           foreach (JToken notification in result.data["notifications"] as JArray) {
             notifications.Add(new Notification(notification));
           }
@@ -217,7 +218,7 @@ namespace Matrix_UWP {
         throw new MatrixException.SoftError(result);
       }
 
-      static async public Task<ObservableCollection<Assignment>> GetAssignmentList(int course_id) {
+      static async public Task<List<Assignment>> GetAssignmentList(int course_id) {
         return await GetListAsync<Assignment>($"{root}/api/courses/{course_id}/assignments");
       }
 
@@ -229,15 +230,15 @@ namespace Matrix_UWP {
         return new Assignment(result.data);
       }
 
-      static async public Task<ObservableCollection<Library>> GetLibraryList() {
+      static async public Task<List<Library>> GetLibraryList() {
         return await GetListAsync<Library>($"{root}/api/libraries");
       }
 
-      static async public Task<ObservableCollection<Assignment>> GetUnjudgeAssignment() {
+      static async public Task<List<Assignment>> GetUnjudgeAssignment() {
         return await GetListAsync<Assignment>($"{root}/api/courses/assignments?state=started&waitingForMyJudging=1", null);
       }
 
-      static async public Task<ObservableCollection<Assignment>> GetUnfinishAssignment() {
+      static async public Task<List<Assignment>> GetUnfinishAssignment() {
         return await GetListAsync<Assignment>($"{root}/api/courses/assignments?state=progressing&unsubmitted=1&notFullGrade=1", null);
       }
 
@@ -249,11 +250,33 @@ namespace Matrix_UWP {
         return reader.ReadString(buffer.Length);
       }
 
-      static async public Task<ObservableCollection<T>> GetListAsync<T>(string uri, string query = "") where T : class {
+      static async public Task<int> SubmitProgramming(int course_id, int ca_id, List<CodeFile> submissions) {
+        JArray answers = new JArray();
+        foreach (var submission in submissions) {
+          answers.Add(new JObject() {
+            ["code"] = submission.Code,
+            ["name"] = submission.Name,
+          });
+        }
+        JObject body = new JObject() {
+          ["detail"] = new JObject() {
+            ["answers"] = answers,
+          }
+        };
+        var result = await PostAsync($"{root}/api/courses/{course_id}/assignments/{ca_id}/submissions", body);
+        if (result.success) return Helpers.Nullable.ToInt(result.data["sub_asgn_id"]);
+        throw new MatrixException.SoftError(result);
+      }
+
+      static public Task<List<Submission>> GetSubmissionList(int course_id, int ca_id) {
+        return GetListAsync<Submission>($"{root}/api/courses/{course_id}/assignments/{ca_id}/submissions");
+      }
+
+      static async public Task<List<T>> GetListAsync<T>(string uri, string query = "") where T : class {
         MatrixRequestResult result = await GetAsync(uri, query);
         if (result.success) {
           JArray arr = result.data as JArray;
-          ObservableCollection<T> ret = new ObservableCollection<T>();
+          List<T> ret = new List<T>();
           foreach (JObject one in arr) {
             // 软爸爸的C#泛型类不能初始化，实在是很蛋疼啊。
             // 还好软爸爸留了一条退路。

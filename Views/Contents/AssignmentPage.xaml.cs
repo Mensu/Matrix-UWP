@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -43,6 +44,7 @@ namespace Matrix_UWP.Views.Contents {
 
       try {
         viewModel.Assignment = await Model.MatrixRequest.GetAssignment(courseId, caId);
+        viewModel.Submissions = await Model.MatrixRequest.GetSubmissionList(courseId, caId);
       } catch (MatrixException.MatrixException err) {
         var message = $"获取课程{courseId}作业{caId}详情失败";
         Debug.WriteLine($"{message}: {err.Message}");
@@ -54,6 +56,10 @@ namespace Matrix_UWP.Views.Contents {
 
       // set title since assignment name changed.
       TitleChanged?.Invoke(this, new NavigationViewContentEvent(GetTitle()));
+    }
+
+    private async void SubmitAssignment(object sender, RoutedEventArgs e) {
+      await viewModel.Assignment.SubmitProgramming();
     }
   }
 }

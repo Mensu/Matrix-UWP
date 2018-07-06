@@ -52,8 +52,7 @@ namespace Matrix_UWP.Views.Contents {
       OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
         viewModel.Course = await Model.MatrixRequest.GetCourse(viewModel.CourseId);
-        var assignments = await Model.MatrixRequest.GetAssignmentList(viewModel.CourseId);
-        viewModel.Assignments = assignments.ToList();
+        viewModel.Assignments = await Model.MatrixRequest.GetAssignmentList(viewModel.CourseId);
       } catch (MatrixException.MatrixException err) {
         Debug.WriteLine($"请求课程信息错误：{err.Message}");
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));

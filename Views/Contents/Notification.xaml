@@ -93,6 +93,6 @@
     <ListView
       x:Name="Notifications"
       ItemTemplate="{StaticResource NotificationItemView}"
-      ItemsSource="{x:Bind viewModel.list, Mode=OneWay}"/>
+      ItemsSource="{x:Bind viewModel.Notifications, Mode=OneWay}"/>
   </ScrollViewer>
 </Page>

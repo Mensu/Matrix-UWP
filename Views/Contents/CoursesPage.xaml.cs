@@ -39,8 +39,7 @@ namespace Matrix_UWP.Views.Contents {
     public async Task Refresh() {
       OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
-        var courseList = await Model.MatrixRequest.GetCourseList();
-        viewModel.Courses = courseList.ToList();
+        viewModel.Courses = await Model.MatrixRequest.GetCourseList();
       } catch (MatrixException.MatrixException err) {
         Debug.WriteLine($"获取课程列表失败: {err.Message}");
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));

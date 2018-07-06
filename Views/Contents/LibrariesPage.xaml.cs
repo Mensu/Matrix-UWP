@@ -38,8 +38,7 @@ namespace Matrix_UWP.Views.Contents {
       // notify start loading
       OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
-        var libraries = await Model.MatrixRequest.GetLibraryList();
-        viewModel.Libraries = libraries.ToList();
+        viewModel.Libraries = await Model.MatrixRequest.GetLibraryList();
       } catch (MatrixException.MatrixException err) {
         var message = "获取题库列表失败";
         Debug.WriteLine($"{message}: {err.Message}");

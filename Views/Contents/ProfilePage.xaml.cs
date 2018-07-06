@@ -45,7 +45,7 @@ namespace Matrix_UWP.Views.Contents {
       // notify loading
       OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
-        viewModel.curUser = await Model.MatrixRequest.GetProfile();
+        viewModel.CurUser = await Model.MatrixRequest.GetProfile();
       } catch (MatrixException.MatrixException err) {
         var message = "获取用户信息失败";
         Debug.WriteLine($"{message}, {err.Message}");

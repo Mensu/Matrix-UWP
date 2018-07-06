@@ -37,8 +37,7 @@ namespace Matrix_UWP.Views.Contents {
     public async Task Refresh() {
       OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
-        var todo = await Model.MatrixRequest.GetUnfinishAssignment();
-        viewModel.TodoAssignments = todo.ToList();
+        viewModel.TodoAssignments = await Model.MatrixRequest.GetUnfinishAssignment();
       } catch (MatrixException.MatrixException err) {
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
       }

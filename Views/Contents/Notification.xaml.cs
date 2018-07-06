@@ -48,7 +48,7 @@ namespace Matrix_UWP.Views.Contents {
     public async Task Refresh() {
       OnContentLoading?.Invoke(this, new NavigationViewContentEvent());
       try {
-        viewModel.list = await Model.MatrixRequest.GetNotificationList();
+        viewModel.Notifications = await Model.MatrixRequest.GetNotificationList();
       } catch (MatrixException.MatrixException err) {
         OnContentError?.Invoke(this, new NavigationViewContentEvent(err, $"获取通知列表失败：{err.Message}"));
       }
