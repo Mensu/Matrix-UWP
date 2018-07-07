@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -306,7 +306,7 @@ namespace Matrix_UWP {
     }
 
     class NotLogin : FatalError {
-      public NotLogin() : base("登陆已过期，请重新登陆") { }
+      public NotLogin() : base("用户名为学号，初始密码为123456") { }
     }
 
     class SoftError : MatrixException {
