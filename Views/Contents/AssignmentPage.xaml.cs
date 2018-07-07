@@ -59,7 +59,11 @@ namespace Matrix_UWP.Views.Contents {
     }
 
     private async void SubmitAssignment(object sender, RoutedEventArgs e) {
-      await viewModel.Assignment.SubmitProgramming();
+      try {
+        await viewModel.Assignment.SubmitProgramming();
+      } catch (MatrixException.MatrixException err) {
+        OnContentError?.Invoke(this, new NavigationViewContentEvent(err));
+      }
     }
   }
 }
