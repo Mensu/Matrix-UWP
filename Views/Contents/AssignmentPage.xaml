@@ -1,0 +1,189 @@
+﻿<Page
+  x:Class="Matrix_UWP.Views.Contents.AssignmentPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.Views.Contents"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:convertors="using:Matrix_UWP.Converters"
+  xmlns:toolkits="using:Microsoft.Toolkit.Uwp.UI.Controls"
+  xmlns:monaco="using:Monaco"
+  xmlns:monacoEditor="using:Monaco.Editor"
+  xmlns:model="using:Matrix_UWP.Model"
+  mc:Ignorable="d"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Page.Resources>
+    <convertors:DateTimeOffsetToString x:Key="DatetimeCV"/>
+  </Page.Resources>
+  
+  <Pivot x:Name="AssignmentPivot" Padding="15, 0">
+    <PivotItem Header="题目描述">
+      <ScrollViewer>
+        <StackPanel x:Name="DetailPanel" Margin="0, 10">
+          <Grid x:Name="InfoDetail" Grid.Row="0" Padding="10, 0" Margin="0, 10">
+            <Grid.BorderBrush>
+              <RevealBorderBrush Color="AliceBlue"/>
+            </Grid.BorderBrush>
+            <Grid.Resources>
+              <Style TargetType="TextBlock">
+                <Setter Property="FontSize" Value="15"/>
+              </Style>
+              <Style TargetType="TextBlock" x:Key="Colon">
+                <Setter Property="Margin" Value="5, 0"/>
+                <Setter Property="FontSize" Value="15"/>
+              </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="1*"/>
+              <ColumnDefinition Width="1*"/>
+              <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Grid.Row="0" x:Name="AuthorLabel" Text="出题"/>
+              <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="0" x:Name="Author" Text="{x:Bind viewModel.Assignment.creator.nickname, Mode=OneWay}"/>
+              <TextBlock Grid.Column="0" Grid.Row="1" x:Name="MailLabel" Text="邮箱"/>
+              <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="1" x:Name="Mail" Text="{x:Bind viewModel.Assignment.creator.email, Mode=OneWay}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Grid.Row="0" x:Name="JudgeStatusLabel" TextAlignment="Right" Text="评测"/>
+              <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="0" x:Name="JudgeStatus" Text="{x:Bind viewModel.Assignment.type, Mode=OneWay}"/>
+              <TextBlock Grid.Column="0" Grid.Row="1" x:Name="DueTimeLabel" TextAlignment="Right" Text="截至时间"/>
+              <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="1" x:Name="DueTime" Text="{x:Bind viewModel.Assignment.endDate, Converter={StaticResource DatetimeCV}, Mode=OneWay}"/>
+            </Grid>
+            <Grid Grid.Column="2">
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Grid.Row="0" x:Name="MemoryLimitLabel" TextAlignment="Right" Text="空间限制"/>
+              <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="0" x:Name="MemoryLimit"/>
+              <TextBlock Grid.Column="0" Grid.Row="1" x:Name="TimeLimitLabel" TextAlignment="Right" Text="时间限制"/>
+              <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource Colon}" Text=":"/>
+              <TextBlock Grid.Column="2" Grid.Row="1" x:Name="TimeLimit"/>
+            </Grid>
+          </Grid>
+
+          <toolkits:MarkdownTextBlock x:Name="Description" Margin="0, 10, 0, 0" Text="{x:Bind viewModel.Assignment.description, Mode=OneWay}"/>
+        </StackPanel>
+      </ScrollViewer>
+    </PivotItem>
+    <PivotItem Header="答题区域">
+      <Pivot x:Name="CodeEditor" ItemsSource="{x:Bind viewModel.Assignment.Files, Mode=TwoWay}">
+        <Pivot.HeaderTemplate>
+          <DataTemplate x:DataType="model:CodeFile">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="{x:Bind Name}"/>
+              <SymbolIcon Grid.Column="1" Visibility="{x:Bind ReadOnly}" Symbol="Pin"/>
+            </Grid>
+          </DataTemplate>
+        </Pivot.HeaderTemplate>
+        <Pivot.RightHeader>
+          <Button Width="80" Margin="15, 0" Content="提交" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="SubmitAssignment"/>
+        </Pivot.RightHeader>
+        <Pivot.ItemTemplate>
+          <DataTemplate x:DataType="model:CodeFile">
+            <monaco:CodeEditor Text="{x:Bind Code}">
+              <monaco:CodeEditor.Options>
+                <monacoEditor:IEditorConstructionOptions ReadOnly="{x:Bind ReadOnly}" Language="{x:Bind Language}"/>
+              </monaco:CodeEditor.Options>
+            </monaco:CodeEditor>
+          </DataTemplate>
+        </Pivot.ItemTemplate>
+      </Pivot>
+    </PivotItem>
+    <PivotItem Header="提交记录">
+      <ScrollViewer MaxWidth="1024">
+        <ListView
+          x:Name="AssignmentList"
+          ItemsSource="{x:Bind viewModel.Submissions, Mode=OneWay}"
+          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+          ScrollViewer.VerticalScrollMode="Disabled"
+          ScrollViewer.HorizontalScrollMode="Disabled">
+          <ListView.Resources>
+            <Style x:Key="ItemStyle" TargetType="Grid">
+              <Setter Property="MinHeight" Value="44"/>
+              <Setter Property="VerticalAlignment" Value="Center"/>
+              <Setter Property="Margin" Value="12, 0"/>
+            </Style>
+          </ListView.Resources>
+          <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+              <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+              <Setter Property="Padding" Value="0"/>
+            </Style>
+          </ListView.ItemContainerStyle>
+          <ListView.Header>
+            <Grid Style="{StaticResource ItemStyle}">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+              </Grid.RowDefinitions>
+              <Grid.Resources>
+                <Style TargetType="TextBlock">
+                  <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+              </Grid.Resources>
+              <TextBlock Grid.Column="0" Text="ID" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Grid.Column="1" Text="分数" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Grid.Column="2" Text="提交日期" TextTrimming="CharacterEllipsis"/>
+              <Line Grid.ColumnSpan="3" Grid.Row="1" Height="1" StrokeThickness="1" HorizontalAlignment="Stretch" X1="1" Stretch="Fill" Stroke="Black"/>
+            </Grid>
+          </ListView.Header>
+          <ListView.ItemTemplate>
+            <DataTemplate x:DataType="model:Submission">
+              <Grid x:Name="Assignment" Style="{StaticResource ItemStyle}">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="1*"/>
+                  <ColumnDefinition Width="100"/>
+                  <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{x:Bind SubCaId, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="1" Text="{x:Bind Grade, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="2" Text="{x:Bind SubmitAt, Converter={StaticResource DatetimeCV}, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+              </Grid>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+      </ScrollViewer>
+    </PivotItem>
+  </Pivot>
+</Page>

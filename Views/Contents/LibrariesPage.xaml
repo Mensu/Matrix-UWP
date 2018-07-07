@@ -1,0 +1,85 @@
+﻿<Page
+  x:Class="Matrix_UWP.Views.Contents.LibrariesPage"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.Views.Contents"
+  xmlns:models="using:Matrix_UWP.Model"
+  xmlns:convertors="using:Matrix_UWP.Converters"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Page.Resources>
+    <convertors:DateTimeOffsetToString x:Key="DateTimeOffsetToCV"/>
+
+    <DataTemplate x:Key="LibrariyItem" x:DataType="models:Library">
+      <Grid Padding="15" Width="300">
+        <Grid.Resources>
+          <Style TargetType="SymbolIcon">
+            <Setter Property="Margin" Value="0, 0, 5, 0"/>
+            <Setter Property="RenderTransform" Value="0.7, 0.7"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+          </Style>
+          <Style x:Key="LibraryTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+          </Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+          </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="30"/>
+          <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock
+          Grid.Row="0"
+          Grid.Column="0"
+          Grid.ColumnSpan="2"
+          Style="{StaticResource LibraryTitle}"
+          ToolTipService.ToolTip="{x:Bind name, Mode=OneWay}"
+          VerticalAlignment="Center"
+          Margin="0, 0, 0, 10"
+          x:Name="LibraryName"
+          Text="{x:Bind name, Mode=OneWay}"
+          TextTrimming="CharacterEllipsis"/>
+        <SymbolIcon
+          Grid.Row="1"
+          Grid.Column="0"
+          VerticalAlignment="Center"
+          Symbol="ContactInfo"/>
+        <TextBlock
+          Grid.Row="1"
+          Grid.Column="1"
+          x:Name="Owner"
+          VerticalAlignment="Center"
+          Text="{x:Bind owner, Mode=OneWay}"
+          TextTrimming="CharacterEllipsis"/>
+        <SymbolIcon
+          Grid.Row="2"
+          Grid.Column="0"
+          VerticalAlignment="Center"
+          Symbol="Calendar"/>
+        <TextBlock
+          Grid.Row="2"
+          Grid.Column="1"
+          x:Name="Time"
+          VerticalAlignment="Center"
+          Text="{x:Bind createdDate, Converter={StaticResource DateTimeOffsetToCV}, Mode=OneWay}"
+          TextTrimming="CharacterEllipsis"/>
+      </Grid>
+    </DataTemplate>
+
+    <ItemsPanelTemplate x:Key="LibrariesPanelTemplate">
+      <ItemsWrapGrid MaximumRowsOrColumns="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" GroupPadding="10"/>
+    </ItemsPanelTemplate>
+  </Page.Resources>
+
+  <GridView x:Name="LibrariesPanel" ItemTemplate="{StaticResource LibrariyItem}" ItemsSource="{x:Bind viewModel.Libraries, Mode=OneWay}" ItemsPanel="{StaticResource LibrariesPanelTemplate}" ItemClick="LibrariesPanel_ItemClick" IsItemClickEnabled="True"/>
+</Page>

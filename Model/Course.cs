@@ -19,18 +19,18 @@ namespace Matrix_UWP.Model {
         token = new JObject();
       }
       var data = token as JObject;
-      this.course_id = Helpers.Nullable.toInt(data["course_id"]);
-      this.name = Helpers.Nullable.toString(data["name"]);
+      this.course_id = Helpers.Nullable.ToInt(data["course_id"]);
+      this.name = Helpers.Nullable.ToString(data["course_name"]);
       this.creator = new User(data["creator"]);
-      this.progressingNum = Helpers.Nullable.toInt(data["progressing_num"]);
-      this.unfinishedNum = Helpers.Nullable.toInt(data["unfinished_num"]);
-      this.semester = Helpers.Nullable.toString(data["semester"]);
-      this.isOpen = Helpers.Nullable.toString(data["status"], "open") == "open";
-      this.stuNum = Helpers.Nullable.toInt(data["student_num"]);
-      this.description = Helpers.Nullable.toString(data["description"]);
-      this.teacher = Helpers.Nullable.toString(data["teacher"]);
+      this.progressingNum = Helpers.Nullable.ToInt(data["progressing_num"]);
+      this.unfinishedNum = Helpers.Nullable.ToInt(data["unfinished_num"]);
+      this.semester = Helpers.Nullable.ToString(data["semester"]);
+      this.isOpen = Helpers.Nullable.ToString(data["status"], "open") == "open";
+      this.stuNum = Helpers.Nullable.ToInt(data["student_num"]);
+      this.description = Helpers.Nullable.ToString(data["description"]);
+      this.teacher = Helpers.Nullable.ToString(data["teacher"]);
 
-      string role = Helpers.Nullable.toString(data["role"], "student");
+      string role = Helpers.Nullable.ToString(data["role"], "student");
       switch (role) {
         case "teacher":
           this.role = UserRole.Teacher;

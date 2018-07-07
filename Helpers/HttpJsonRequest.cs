@@ -21,7 +21,7 @@ namespace Matrix_UWP {
         this.init();
       }
 
-      public async Task<HttpResponseMessage> getAsync(Uri uri) {
+      public async Task<HttpResponseMessage> GetAsync(Uri uri) {
         HttpResponseMessage response = null;
         string meta = $"GET {uri}";
         try {
@@ -33,7 +33,7 @@ namespace Matrix_UWP {
         return response;
       }
 
-      public async Task<HttpResponseMessage> postAsync(Uri uri, JObject body) {
+      public async Task<HttpResponseMessage> PostAsync(Uri uri, JObject body) {
         IHttpContent jsonContent = new HttpJsonContent(body);
         HttpResponseMessage response = null;
         string meta = $"POST {uri}";
@@ -41,6 +41,20 @@ namespace Matrix_UWP {
           Debug.WriteLine($"Requesting: {meta}");
           Debug.WriteLine($"with body: {JsonConvert.SerializeObject(body, Formatting.Indented)}");
           response = await httpClient.PostAsync(uri, jsonContent);
+        } catch (Exception e) {
+          throw new MatrixException.NetworkError(meta, e);
+        }
+        return response;
+      }
+ 
+      public async Task<HttpResponseMessage> PutAsync(Uri uri, JObject body) {
+        IHttpContent jsonContent = new HttpJsonContent(body);
+        HttpResponseMessage response = null;
+        string meta = $"PUT {uri}";
+        try {
+          Debug.WriteLine($"Requesting: {meta}");
+          Debug.WriteLine($"with body: {JsonConvert.SerializeObject(body, Formatting.Indented)}");
+          response = await httpClient.PutAsync(uri, jsonContent);
         } catch (Exception e) {
           throw new MatrixException.NetworkError(meta, e);
         }
@@ -76,12 +90,16 @@ namespace Matrix_UWP {
           throw new MatrixException.ParseError(e, text);
         }
       }
-      public async new Task<JObject> getAsync(Uri uri) {
-        var response = await base.getAsync(uri);
+      public async new Task<JObject> GetAsync(Uri uri) {
+        var response = await base.GetAsync(uri);
         return await parseResponseAsJson(response);
       }
-      public async new Task<JObject> postAsync(Uri uri, JObject body) {
-        var response = await base.postAsync(uri, body);
+      public async new Task<JObject> PostAsync(Uri uri, JObject body) {
+        var response = await base.PostAsync(uri, body);
+        return await parseResponseAsJson(response);
+      }
+      public async new Task<JObject> PutAsync(Uri uri, JObject body) {
+        var response = await base.PutAsync(uri, body);
         return await parseResponseAsJson(response);
       }
     }
@@ -92,10 +110,7 @@ namespace Matrix_UWP {
       private IHttpFilter innerFilter;
 
       public PlugInFilter(IHttpFilter innerFilter) {
-        if (innerFilter == null) {
-          throw new ArgumentException("innerFilter cannot be null.");
-        }
-        this.innerFilter = innerFilter;
+        this.innerFilter = innerFilter ?? throw new ArgumentException("innerFilter cannot be null.");
       }
 
       public IAsyncOperationWithProgress<HttpResponseMessage, HttpProgress> SendRequestAsync(HttpRequestMessage request) {
@@ -105,21 +120,13 @@ namespace Matrix_UWP {
           HttpBaseProtocolFilter filter = new HttpBaseProtocolFilter();
           HttpCookieCollection cookieCollection = filter.CookieManager.GetCookies(requestUri);
 
-          //string text = cookieCollection.Count + " cookies found.\r\n";
-          foreach (HttpCookie cookie in cookieCollection) {
-            //text += "--------------------\r\n";
-            //text += "Name: " + cookie.Name + "\r\n";
-            //text += "Domain: " + cookie.Domain + "\r\n";
-            //text += "Path: " + cookie.Path + "\r\n";
-            //text += "Value: " + cookie.Value + "\r\n";
-            //text += "Expires: " + cookie.Expires + "\r\n";
-            //text += "Secure: " + cookie.Secure + "\r\n";
-            //text += "HttpOnly: " + cookie.HttpOnly + "\r\n";
-            if (cookie.Name == "X-CSRF-Token") {
-              request.Headers.Add(cookie.Name, cookie.Value);
-              Debug.WriteLine("csrf token added");
-            }
+          var csrf = cookieCollection.FirstOrDefault(cookie => cookie.Name == "X-CSRF-Token");
+          if (csrf != null) {
+            request.Headers.Add(csrf.Name, csrf.Value);
+            Debug.Write("csrf token added");
           }
+
+
           //Debug.WriteLine(text);
           //request.Headers.Add("Custom-Header", "CustomRequestValue");
           HttpResponseMessage response = await innerFilter.SendRequestAsync(request).AsTask(cancellationToken, progress);
@@ -139,19 +146,16 @@ namespace Matrix_UWP {
     // 这个大概是发 json 用的
     class HttpJsonContent : IHttpContent {
       JObject json;
-      HttpContentHeaderCollection headers;
 
-      public HttpContentHeaderCollection Headers {
-        get {
-          return headers;
-        }
-      }
+      public HttpContentHeaderCollection Headers { get; }
 
       public HttpJsonContent(JObject json) {
         this.json = json;
-        headers = new HttpContentHeaderCollection();
-        headers.ContentType = new HttpMediaTypeHeaderValue("application/json");
-        headers.ContentType.CharSet = "UTF-8";
+        Headers = new HttpContentHeaderCollection {
+          ContentType = new HttpMediaTypeHeaderValue("application/json") {
+            CharSet = "UTF-8"
+          }
+        };
       }
 
       public IAsyncOperationWithProgress<ulong, ulong> BufferAllAsync() {
@@ -251,7 +255,7 @@ namespace Matrix_UWP {
     }
   }
   namespace MatrixException {
-    class MatrixException : Exception {
+    public class MatrixException : Exception {
       public MatrixException(string message) : base(message) {
         Debug.WriteLine($"创建了 Matrix 异常: {this.Message}\n{this.StackTrace}");
       }

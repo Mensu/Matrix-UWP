@@ -1,0 +1,118 @@
+﻿<Page
+  x:Class="Matrix_UWP.Views.Contents.Notification"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="using:Matrix_UWP.Views.Contents"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:convertors="using:Matrix_UWP.Converters"
+  xmlns:model="using:Matrix_UWP.Model"
+  mc:Ignorable="d"
+  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Page.Resources>
+    <convertors:BoolToGray x:Key="BoolToGray"/>
+    <convertors:BoolToVisible x:Key="BoolToVisible"/>
+    <convertors:BoolToOpacity x:Key="BoolToOpacity"/>
+    <convertors:DateTimeOffsetToString x:Key="DateTimeOffsetToString"/>
+    <DataTemplate x:Key="NotificationItemView" x:DataType="model:Notification">
+      <Grid Height="80">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="42"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <CheckBox
+          x:Name="checkbox"
+          Grid.Column="0"
+          VerticalAlignment="Center"
+          Height="32"
+          Width="32"
+          IsChecked="{x:Bind is_read, Mode=TwoWay}"
+          Checked="Checkbox_Checked"
+          Unchecked="Checkbox_Checked"/>
+        <Grid Grid.Column="1">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <TextBlock
+            x:Name="title"
+            Grid.Row="0"
+            VerticalAlignment="Center"
+            FontWeight="Normal"
+            FontSize="15"
+            LineHeight="20"
+            TextWrapping="Wrap"
+            Text="{x:Bind sender}"
+            Foreground="{x:Bind is_read, Converter={StaticResource BoolToGray}, Mode=OneWay}"/>
+          <Line
+            x:Name="line0"
+            Grid.Row="0"
+            Stretch="Fill"
+            Stroke="#FF969696"
+            StrokeThickness="2"
+            X1="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Stretch"
+            Opacity="0.0"/>
+          <TextBlock
+            x:Name="content"
+            Grid.Row="1"
+            VerticalAlignment="Center"
+            FontWeight="Normal"
+            FontSize="15"
+            LineHeight="20"
+            TextWrapping="Wrap"
+            Text="{x:Bind content}"
+            Foreground="{x:Bind is_read, Converter={StaticResource BoolToGray}, Mode=OneWay}"/>
+          <Line
+            x:Name="line1"
+            Grid.Row="1"
+            Stretch="Fill"
+            Stroke="#FF969696"
+            StrokeThickness="2"
+            X1="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Stretch"
+            Opacity="0.0"/>
+        </Grid>
+        <TextBlock
+          x:Name="time"
+          Grid.Column="2"
+          VerticalAlignment="Center"
+          FontWeight="Normal"
+          FontSize="15"
+          LineHeight="20"
+          TextWrapping="Wrap"
+          Text="{x:Bind time, Converter={StaticResource DateTimeOffsetToString}}"
+          Foreground="{x:Bind is_read, Converter={StaticResource BoolToGray}, Mode=OneWay}"/>
+      </Grid>
+    </DataTemplate>
+  </Page.Resources>
+  <Grid VerticalAlignment="Stretch">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid Grid.Row="0" HorizontalAlignment="Right">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <ComboBox Grid.Column="0" x:Name="Status" SelectionChanged="Status_SelectionChanged" SelectedIndex="0">
+        <ComboBoxItem Tag="All" Content="全部"/>
+        <ComboBoxItem Tag="Unread" Content="未读"/>
+        <ComboBoxItem Tag="Read" Content="已读"/>
+      </ComboBox>
+      <Button x:Name="ReadAll" Grid.Column="1" Click="ReadAll_Click" Content="全部标记为已读"/>
+    </Grid>
+    <ScrollViewer Grid.Row="1" VerticalAlignment="Stretch" MaxWidth="1024">
+      <ListView
+        x:Name="Notifications"
+        ItemClick="Notifications_ItemClick"
+        IsItemClickEnabled="True"
+        ItemTemplate="{StaticResource NotificationItemView}"
+        ItemsSource="{x:Bind viewModel.FilteredNotification, Mode=OneWay}"/>
+    </ScrollViewer>
+  </Grid>
+</Page>

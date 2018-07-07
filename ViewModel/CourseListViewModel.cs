@@ -8,27 +8,23 @@ using System.Collections.ObjectModel;
 
 namespace Matrix_UWP.ViewModel {
   class CourseListViewModel: BindableBase {
-    private ObservableCollection<Model.Course> _closeList = new ObservableCollection<Model.Course>();
-    public ObservableCollection<Model.Course> closeList {
-      get { return _closeList; }
-      set { SetProperty(ref _closeList, value); }
+
+    private List<Model.Course> courses = new List<Model.Course>();
+    public List<Model.Course> Courses {
+      get => courses;
+      set {
+        SetProperty(ref courses, value);
+        base.RaisePropertyChanged("ClosedCourses");
+        base.RaisePropertyChanged("OpenCourses");
+      }
     }
 
-    private ObservableCollection<Model.Course> _openList = new ObservableCollection<Model.Course>();
-    public ObservableCollection<Model.Course> openList {
-      get { return _openList; }
-      set { SetProperty(ref _openList, value); }
+    public List<Model.Course> OpenCourses {
+      get => courses.Where(course => course.isOpen).ToList();
     }
 
-    private bool _isClose;
-    public bool? isClose {
-      get { return _isClose; }
-      set { SetProperty(ref _isClose, value ?? false); }
-    }
-
-    public void Update(ObservableCollection<Model.Course> course_list) {
-      openList = new ObservableCollection<Model.Course>(course_list.Where(one => one.isOpen == true));
-      closeList = new ObservableCollection<Model.Course>(course_list.Where(one => one.isOpen == false));
+    public List<Model.Course> ClosedCourses {
+      get => courses.Where(course => !course.isOpen).ToList();
     }
   }
 }

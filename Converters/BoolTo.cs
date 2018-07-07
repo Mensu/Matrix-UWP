@@ -86,7 +86,19 @@ namespace Matrix_UWP.Converters {
   }
   class BoolToCourseStatusColor : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, string language) {
-      return new SolidColorBrush((value ?? false).Equals(true) ? Colors.Green : Colors.Red);
+      var color = new Windows.UI.Color();
+      if ((value ?? false).Equals(true)) {
+        color.R = 16;
+        color.G = 142;
+        color.B = 233;
+        color.A = 255;
+      } else {
+        color.R = 240;
+        color.G = 65;
+        color.B = 52;
+        color.A = 255;
+      }
+      return new SolidColorBrush(color);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language) {

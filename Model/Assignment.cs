@@ -13,18 +13,51 @@ namespace Matrix_UWP.Model {
         token = new JObject();
       }
       var data = token as JObject;
-      this.course_id = Helpers.Nullable.toInt(data["course_id"]);
-      this.ca_id = Helpers.Nullable.toInt(data["ca_id"]);
-      this.startDate = Helpers.Nullable.toDateTimeOffset(data["startdate"], DateTimeOffset.MinValue);
-      this.endDate = Helpers.Nullable.toDateTimeOffset(data["enddate"], DateTimeOffset.MinValue);
-      this.name = Helpers.Nullable.toString(data["title"]);
-      this.course_name = Helpers.Nullable.toString(data["courseName"]);
-      this.description = Helpers.Nullable.toString(data["description"]);
+      this.course_id = Helpers.Nullable.ToInt(data["course_id"]);
+      this.ca_id = Helpers.Nullable.ToInt(data["ca_id"]);
+      this.startDate = Helpers.Nullable.ToDateTimeOffset(data["startdate"], DateTimeOffset.MinValue);
+      this.endDate = Helpers.Nullable.ToDateTimeOffset(data["enddate"], DateTimeOffset.MinValue);
+      this.name = Helpers.Nullable.ToString(data["title"]);
+      this.course_name = Helpers.Nullable.ToString(data["courseName"]);
+      this.description = Helpers.Nullable.ToString(data["description"]);
       this.creator = new User(data["author"]);
-      this.student_num_waiting_for_judge = Helpers.Nullable.toInt(data["stuNumWaitingForJudging"]);
-      this.total_student_num = Helpers.Nullable.toInt(data["totalStuNum"]);
+      this.student_num_waiting_for_judge = Helpers.Nullable.ToInt(data["stuNumWaitingForJudging"]);
+      this.total_student_num = Helpers.Nullable.ToInt(data["totalStuNum"]);
       this.type = this.getType(data["type"] ?? "");
+
+      if (IsProgramming && data.ContainsKey("config")) {
+        var config = data["config"];
+        string lang = Helpers.Nullable.ToString(config["standard_language"], "text");
+        var files = data["files"] as JArray;
+        var submissions = config["submission"] as JArray;
+        List<CodeFile> assignmentFiles = new List<CodeFile>();
+        foreach (JToken submission in submissions) {
+          CodeFile submissionFile = new CodeFile(Helpers.Nullable.ToString(submission, "未知"), lang);
+          assignmentFiles.Add(submissionFile);
+          this.Submissions.Add(submissionFile);
+        }
+        foreach (JToken file in files) {
+          assignmentFiles.Add(new CodeFile(file, lang));
+        }
+        Files = assignmentFiles;
+      }
     }
+
+    public Task<int> SubmitProgramming() {
+      return MatrixRequest.SubmitProgramming(course_id, ca_id, Submissions);
+    }
+
+    public bool IsProgramming {
+      get => type == Type.RealtimeProgramming || type == Type.ProgrammingProblem || type == Type.ScheduleProgramming;
+    }
+
+    private List<CodeFile> files = new List<CodeFile>();
+    public List<CodeFile> Files {
+      get => files;
+      set => SetProperty(ref files, value);
+    }
+
+    public List<CodeFile> Submissions { get; set; } = new List<CodeFile>();
 
     public enum Type {
       RealtimeProgramming,
