@@ -23,7 +23,7 @@
     <NavigationView.MenuItems>
       <NavigationViewItem x:Uid="HomeNavItem" Icon="Home" Content="主页" Tag="home"/>
       <NavigationViewItem x:Uid="CourseNavItem" Icon="Edit" Content="课程" Tag="course"/>
-      <NavigationViewItem x:Uid="ExamNavItem" Icon="GoToStart" Content="考试" Tag="exam"/>
+      <NavigationViewItem x:Uid="ExamNavItem" Visibility="Collapsed" Icon="GoToStart" Content="考试" Tag="exam"/>
       <NavigationViewItem x:Uid="LibraryNavItem" Icon="Library" Content="题库" Tag="library"/>
     </NavigationView.MenuItems>
 
