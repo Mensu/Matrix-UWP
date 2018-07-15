@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -202,7 +202,7 @@ namespace Matrix_UWP.Views {
         viewModel.User = await Model.MatrixRequest.GetProfile();
         userChanged = (viewModel.User.user_id != previousUserId);
       } catch (MatrixException.MatrixException err) {
-        await ErrorPrompt($"请求用户信息失败: {err.Message}");
+        await ErrorPrompt($"欢迎使用Matrix系统，请登录！ {err.Message}");
       }
       return userChanged;
     }
@@ -259,7 +259,7 @@ namespace Matrix_UWP.Views {
       IsSecondaryButtonEnabled = true,
       PrimaryButtonText = "确定",
       SecondaryButtonText = "退出应用",
-      Title = "错误",
+      Title = "温馨提示",
     };
 
     private async Task ErrorPrompt(string message) {
